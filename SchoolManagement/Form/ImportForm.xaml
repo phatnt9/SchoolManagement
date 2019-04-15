@@ -1,0 +1,126 @@
+﻿<Window x:Class="SchoolManagement.Form.ImportForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchoolManagement.Form"
+        mc:Ignorable="d"
+        Title="ImportForm" Height="140" Width="280"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel>
+                <!--<StackPanel 
+                     Margin="0,10,0,0"
+                     Orientation="Horizontal"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center">
+                     <Label
+                     Content="Date"
+                     ></Label>
+                     <DatePicker
+                     Name="dtpImport"
+                     Width="100"/>
+                     </StackPanel>-->
+                <StackPanel
+                    Margin="0,10,0,0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <Label
+                        Content="File excel:"
+                        >
+                    </Label>
+                    <TextBox 
+                        Name="txtFile"
+                        IsEnabled="False"
+                        Width="100"></TextBox>
+                    <Button 
+                        Margin="10,0,0,0"
+                        Width="50"
+                        Content="..."
+                        Click="btnSelectFile_Click">
+                    </Button>
+                </StackPanel>
+                <StackPanel
+                    Margin="0,10,0,0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <Button
+                        Name="btn_import"
+                        Width="70" 
+                        Height="20"
+                        Padding="5 0"
+                        Content="Import" 
+                        Margin="10 0" 
+                        Click="Import_Click"></Button>
+                    <Button
+                        Name="btn_stop"
+                        Width="70" 
+                        Height="20"
+                        Padding="5 0"
+                        Content="Stop" 
+                        Margin="10 0" 
+                        Click="Stop_Click"></Button>
+                    <Button
+                        Width="70" 
+                        Height="20"
+                        Padding="5 0"
+                        Content="Close" 
+                        Margin="10 0" 
+                        Click="Close_Click"></Button>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <Grid>
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <Label Name="processStatusText" Margin="0 -1" Content="Ready"></Label>
+                                <!--<Grid>
+                                    <Canvas Width="17" 
+                                            Margin="0 5"
+                                            VerticalAlignment="Top"
+                                            HorizontalAlignment="Center">
+                                        <Ellipse
+                                            Fill="Green"
+                                            Height="15"
+                                            Width="15"></Ellipse>
+                                    </Canvas>
+                                </Grid>-->
+                            </StackPanel>
+                        </Grid>
+                    </StatusBarItem>
+                    <StatusBarItem HorizontalAlignment="Right">
+                        <Grid>
+                            <ProgressBar
+                                Name="pbStatus"
+                                Margin="5 0"
+                                Minimum="0"
+                                Maximum="100"
+                                Width="200"
+                                Height="20">
+                            </ProgressBar>
+                            <TextBlock 
+                                FontWeight="Bold"
+                                Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center" />
+                        </Grid>
+                        
+                    </StatusBarItem>
+                </StatusBar>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>
