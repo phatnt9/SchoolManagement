@@ -32,7 +32,7 @@
                 FontSize="30"
                 HorizontalContentAlignment="Center" 
                 VerticalContentAlignment="Center">
-                APP
+                RFID READER
             </Label>
         </Grid>
         <Grid Grid.Row="2">
@@ -45,18 +45,19 @@
                 <GroupBox 
                     Header="Account list" 
                     FontSize="16">
-                    <DataGrid FontSize="12">
+                    <DataGrid 
+                        Name="AccountListData"
+                        ItemsSource="{Binding groupedAccount}"
+                        CanUserReorderColumns="False" 
+                        CanUserAddRows="False"
+                        CanUserResizeRows="False"
+                        CanUserDeleteRows="False"
+                        SelectionMode="Single"
+                        SelectionUnit="FullRow"
+                        AutoGenerateColumns="True"
+                        FontSize="12">
                         <DataGrid.Columns>
-                            <DataGridTextColumn 
-                                        Header="ID"
-                                        Width="Auto"
-                                        ></DataGridTextColumn>
-                            <DataGridTextColumn 
-                                        Header="Name"
-                                        Width="Auto"></DataGridTextColumn>
-                            <DataGridTextColumn 
-                                        Header="Data"
-                                        Width="*"></DataGridTextColumn>
+                            
                         </DataGrid.Columns>
                     </DataGrid>
                 </GroupBox>
@@ -343,12 +344,12 @@
                     Width="70"
                     Height="23"
                     Click="Registration_Click">Registration</Button>
-                <Button
+                <!--<Button
                     Name="import"
                     Margin="15 0"
                     Width="70"
                     Height="23"
-                    Click="Import_Click">Import</Button>
+                    Click="Import_Click">Import</Button>-->
                 <Button
                     Name="cancel"
                     Margin="15 0"
@@ -382,7 +383,33 @@
                         </Grid>
                     </StatusBarItem>
                     <Separator></Separator>
-                    <StatusBarItem></StatusBarItem>
+                    <StatusBarItem>
+                        <!--<Grid>
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <Label Name="processStatusText" Margin="0 -1" Content="Ready"></Label>
+                            </StackPanel>
+                        </Grid>-->
+                    </StatusBarItem>
+                    <StatusBarItem>
+                        <Grid>
+                            <ProgressBar
+                                Name="pbStatus"
+                                Margin="5 0"
+                                Minimum="0"
+                                Maximum="100"
+                                Width="200"
+                                Height="20">
+                            </ProgressBar>
+                            <TextBlock 
+                                FontWeight="Bold"
+                                Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center" />
+                        </Grid>
+                    </StatusBarItem>
                 </StatusBar>
             </DockPanel>
         </Grid>
