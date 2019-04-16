@@ -46,7 +46,11 @@ namespace SchoolManagement.Form
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 this.txtFile.Text = directory = openFileDialog1.FileName;
-
+                string fileName = "DataImport.xlsx";
+                string path = Path.Combine(Environment.CurrentDirectory, fileName);
+                Console.WriteLine(path);
+                //FileInfo fileInfo = new FileInfo("DataImport");
+                //Console.WriteLine(fileInfo.DirectoryName);
             }
         }
 

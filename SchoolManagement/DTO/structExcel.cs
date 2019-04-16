@@ -15,7 +15,7 @@ namespace SchoolManagement.DTO
         private string _studentname;
         private string _email;
         private string _address;
-        private string _timeCheck;
+        private List<DateTime> _timeCheck;
 
 
         public string serialId { get => _serialId; set => _serialId = value; }
@@ -25,6 +25,12 @@ namespace SchoolManagement.DTO
         public string studentname { get => _studentname; set => _studentname = value; }
         public string email { get => _email; set => _email = value; }
         public string address { get => _address; set => _address = value; }
-        public string timeCheck { get => _timeCheck; set => _timeCheck = value; }
+        public List<DateTime> timeCheck { get => _timeCheck; set => _timeCheck = value; }
+
+        public structExcel()
+        {
+            timeCheck = new List<DateTime>();
+        }
+
     }
 }

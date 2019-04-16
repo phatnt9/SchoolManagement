@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="ImportForm" Height="140" Width="280"
+        Title="ImportForm" Height="150" Width="290"
         ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
