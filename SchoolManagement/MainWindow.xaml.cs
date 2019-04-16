@@ -15,6 +15,7 @@ namespace SchoolManagement
         MainWindowModel mainModel;
         public BackgroundWorker workerProfile;
         public BackgroundWorker workerTimeCheck;
+        public BackgroundWorker workerDatagridTimeCheck;
 
         public MainWindow()
         {
@@ -69,6 +70,14 @@ namespace SchoolManagement
                             break;
                         }
                 }
+            }
+        }
+
+        private void Btn_search_Click(object sender, RoutedEventArgs e)
+        {
+            if (AccountListData.SelectedItem != null)
+            {
+                mainModel.LoadTimeCheck((AccountListData.SelectedItem as structExcel).serialId);
             }
         }
     }

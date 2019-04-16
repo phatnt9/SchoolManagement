@@ -311,11 +311,12 @@
                                         <Grid Grid.Column="1">
                                             <StackPanel>
                                                 <Button
+                                                    Name="btn_search"
                                                     Width="70"
                                                     Height="20"
                                                     Margin="0 5"
                                                     Content="Search"
-                                                    ></Button>
+                                                    Click="Btn_search_Click"></Button>
                                                 <Button
                                                     Width="70"
                                                     Height="20"
@@ -328,11 +329,27 @@
                                     
                                 </Grid>
                                 <Grid Grid.Row="1">
-                                    <DataGrid>
+                                    <DataGrid
+                                        Name="TimeCheckListData"
+                        ItemsSource="{Binding groupedTimeCheck}"
+                        CanUserReorderColumns="False" 
+                        CanUserAddRows="False"
+                        CanUserResizeRows="False"
+                        CanUserDeleteRows="False"
+                        SelectionMode="Single"
+                        SelectionUnit="FullRow"
+                        AutoGenerateColumns="False">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn 
                                                 Header="Date"
                                                 Width="*"
+                                                IsReadOnly="True"
+                                Binding="{Binding Path=Date}"
+                                                ></DataGridTextColumn><DataGridTextColumn 
+                                                Header="Time"
+                                                Width="*"
+                                                IsReadOnly="True"
+                                Binding="{Binding Path=TimeOfDay}"
                                                 ></DataGridTextColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
