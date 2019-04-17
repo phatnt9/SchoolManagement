@@ -32,7 +32,7 @@
                 FontSize="30"
                 HorizontalContentAlignment="Center" 
                 VerticalContentAlignment="Center">
-                APP
+                RFID READER
             </Label>
         </Grid>
         <Grid Grid.Row="2">
@@ -45,18 +45,39 @@
                 <GroupBox 
                     Header="Account list" 
                     FontSize="16">
-                    <DataGrid FontSize="12">
+                    <DataGrid 
+                        Name="AccountListData"
+                        ItemsSource="{Binding groupedAccount}"
+                        CanUserReorderColumns="False" 
+                        CanUserAddRows="False"
+                        CanUserResizeRows="False"
+                        CanUserDeleteRows="False"
+                        SelectionMode="Single"
+                        SelectionUnit="FullRow"
+                        AutoGenerateColumns="False"
+                        FontSize="12">
                         <DataGrid.Columns>
                             <DataGridTextColumn 
-                                        Header="ID"
-                                        Width="Auto"
-                                        ></DataGridTextColumn>
+                                Width="*" 
+                                Header="Id"
+                                Visibility="Visible"
+                                IsReadOnly="True"
+                                Binding="{Binding Path=serialId}">
+                            </DataGridTextColumn>
                             <DataGridTextColumn 
-                                        Header="Name"
-                                        Width="Auto"></DataGridTextColumn>
+                                Width="*" 
+                                Header="Name"
+                                Visibility="Visible"
+                                IsReadOnly="True"
+                                Binding="{Binding Path=name}">
+                            </DataGridTextColumn>
                             <DataGridTextColumn 
-                                        Header="Data"
-                                        Width="*"></DataGridTextColumn>
+                                Width="*" 
+                                Header="Gender"
+                                Visibility="Visible"
+                                IsReadOnly="True"
+                                Binding="{Binding Path=gender}">
+                            </DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </GroupBox>
@@ -70,7 +91,10 @@
                 <GroupBox 
                     Header="Data" 
                     FontSize="16">
-                    <TabControl FontSize="12">
+                    <TabControl 
+                        Name="DataTabControl"
+                        SelectionChanged="DataTabControl_SelectionChanged"
+                        FontSize="12">
                         <TabItem Header="Info">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -81,10 +105,10 @@
                                     <Grid Margin="0,5,0,5" Name="profile_image">
                                         <StackPanel>
                                             <Viewbox MaxHeight="250">
-                                                <!--<Image 
+                                                <Image 
                                                     Width="{Binding ActualWidth, ElementName=profile_image}"
                                                     Height="{Binding ActualHeight, ElementName=profile_image}"
-                                                    Source="pack://siteoforigin:,,,/Resources/PPN.jpg"/>-->
+                                                    Source="pack://siteoforigin:,,,/Resources/images.png"/>
                                             </Viewbox>
                                         </StackPanel>
                                     </Grid>
@@ -114,7 +138,7 @@
                                                                 Margin="5 0"
                                                                 VerticalAlignment="Center"
                                                                 TextAlignment="Left"
-                                                                Text="1"></TextBox>
+                                                                Text=""></TextBox>
                                                         </Grid>
                                                     </Grid>
                                                 </StackPanel>
@@ -132,7 +156,7 @@
                                                                 Margin="5 0"
                                                                 VerticalAlignment="Center"
                                                                 TextAlignment="Left"
-                                                                Text="Phạm Phước Nguyên"></TextBox>
+                                                                Text=""></TextBox>
                                                         </Grid>
                                                     </Grid>
                                                 </StackPanel>
@@ -151,7 +175,7 @@
                                                                 HorizontalAlignment="Left">
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <CheckBox 
-                                                                        IsChecked="True"
+                                                                        IsChecked="{x:Null}"
                                                                         VerticalAlignment="Center"></CheckBox>
                                                                     <Label Content="Male"></Label>
                                                                 </StackPanel>
@@ -173,7 +197,7 @@
                                                                 Margin="5 0"
                                                                 VerticalAlignment="Center"
                                                                 TextAlignment="Left"
-                                                                Text="dd/MM/yyyy"></TextBox>
+                                                                Text=""></TextBox>
                                                         </Grid>
                                                     </Grid>
                                                 </StackPanel>
@@ -209,7 +233,7 @@
                                                                 Margin="5 0"
                                                                 VerticalAlignment="Center"
                                                                 TextAlignment="Left"
-                                                                Text="nguyen.pham@seldatinc.com"></TextBox>
+                                                                Text=""></TextBox>
                                                         </Grid>
                                                     </Grid>
                                                 </StackPanel>
@@ -227,7 +251,7 @@
                                                                 Margin="5 0"
                                                                 VerticalAlignment="Center"
                                                                 TextAlignment="Left"
-                                                                Text="17/2 Bình Lợi"></TextBox>
+                                                                Text=""></TextBox>
                                                         </Grid>
                                                     </Grid>
                                                 </StackPanel>
@@ -287,11 +311,12 @@
                                         <Grid Grid.Column="1">
                                             <StackPanel>
                                                 <Button
+                                                    Name="btn_search"
                                                     Width="70"
                                                     Height="20"
                                                     Margin="0 5"
                                                     Content="Search"
-                                                    ></Button>
+                                                    Click="Btn_search_Click"></Button>
                                                 <Button
                                                     Width="70"
                                                     Height="20"
@@ -304,23 +329,27 @@
                                     
                                 </Grid>
                                 <Grid Grid.Row="1">
-                                    <DataGrid>
+                                    <DataGrid
+                                        Name="TimeCheckListData"
+                        ItemsSource="{Binding groupedTimeCheck}"
+                        CanUserReorderColumns="False" 
+                        CanUserAddRows="False"
+                        CanUserResizeRows="False"
+                        CanUserDeleteRows="False"
+                        SelectionMode="Single"
+                        SelectionUnit="FullRow"
+                        AutoGenerateColumns="False">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn 
-                                                Header="Id"
-                                                Width="*"
-                                                ></DataGridTextColumn>
-                                            <DataGridTextColumn 
-                                                Header="Name"
-                                                Width="*"
-                                                ></DataGridTextColumn>
-                                            <DataGridTextColumn 
-                                                Header="Data"
-                                                Width="*"
-                                                ></DataGridTextColumn>
                                             <DataGridTextColumn 
                                                 Header="Date"
                                                 Width="*"
+                                                IsReadOnly="True"
+                                Binding="{Binding Path=Date}"
+                                                ></DataGridTextColumn><DataGridTextColumn 
+                                                Header="Time"
+                                                Width="*"
+                                                IsReadOnly="True"
+                                Binding="{Binding Path=TimeOfDay}"
                                                 ></DataGridTextColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
@@ -343,12 +372,18 @@
                     Width="70"
                     Height="23"
                     Click="Registration_Click">Registration</Button>
+                <!--<Button
+                     Name="import"
+                     Margin="15 0"
+                     Width="70"
+                     Height="23"
+                     Click="Import_Click">Import</Button>-->
                 <Button
-                    Name="import"
-                    Margin="15 0"
-                    Width="70"
-                    Height="23"
-                    Click="Import_Click">Import</Button>
+                     Name="test"
+                     Margin="15 0"
+                     Width="70"
+                     Height="23"
+                     Click="test_Click">test</Button>
                 <Button
                     Name="cancel"
                     Margin="15 0"
@@ -382,7 +417,33 @@
                         </Grid>
                     </StatusBarItem>
                     <Separator></Separator>
-                    <StatusBarItem></StatusBarItem>
+                    <StatusBarItem>
+                        <!--<Grid>
+                             <StackPanel
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Orientation="Horizontal">
+                             <Label Name="processStatusText" Margin="0 -1" Content="Ready"></Label>
+                             </StackPanel>
+                             </Grid>-->
+                    </StatusBarItem>
+                    <StatusBarItem>
+                        <Grid>
+                            <ProgressBar
+                                Name="pbStatus"
+                                Margin="5 0"
+                                Minimum="0"
+                                Maximum="100"
+                                Width="200"
+                                Height="20">
+                            </ProgressBar>
+                            <TextBlock 
+                                FontWeight="Bold"
+                                Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center" />
+                        </Grid>
+                    </StatusBarItem>
                 </StatusBar>
             </DockPanel>
         </Grid>

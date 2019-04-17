@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\thanhhau89\seldatui\SeldatRobot\bin\Debug\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -73,13 +76,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Communication\BridgeNodeServerCtrl.cs" />
-    <Compile Include="Communication\JObjectExtensions.cs" />
-    <Compile Include="Communication\Message.cs" />
-    <Compile Include="Communication\MessageTypes.cs" />
-    <Compile Include="Communication\Operation.cs" />
-    <Compile Include="Communication\RosSocket.cs" />
     <Compile Include="Constant.cs" />
+    <Compile Include="DTO\Person.cs" />
     <Compile Include="DTO\structExcel.cs" />
     <Compile Include="Form\ImportForm.xaml.cs">
       <DependentUpon>ImportForm.xaml</DependentUpon>
@@ -93,7 +91,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\DeviceItem.cs" />
     <Compile Include="Model\MainWindowModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -112,6 +109,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="DataImport.xlsx" />
     <None Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -120,15 +118,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="TimeCheck.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\55458317_2177077632391576_1451144805072502784_n.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\PPN.jpg" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
@@ -160,15 +153,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="log4net">
-      <Version>2.0.8</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="WebSocketSharp">
-      <Version>1.0.3-rc11</Version>
-    </PackageReference>
+    <None Include="Resources\images.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
