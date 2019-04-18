@@ -10,6 +10,7 @@ namespace SchoolManagement.DTO
     {
         private string _serialId;
         private string _name;
+        private string _class;
         private string _gender;
         private DateTime _birthDate;
         private string _studentname;
@@ -20,6 +21,7 @@ namespace SchoolManagement.DTO
 
         public string serialId { get => _serialId; set => _serialId = value; }
         public string name { get => _name; set => _name = value; }
+        public string Class { get => _class; set => _class = value; }
         public string gender { get => _gender; set => _gender = value; }
         public DateTime birthDate { get => _birthDate; set => _birthDate = value; }
         public string studentname { get => _studentname; set => _studentname = value; }

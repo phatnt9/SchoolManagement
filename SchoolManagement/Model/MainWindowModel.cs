@@ -13,7 +13,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace SchoolManagement.Model
 {
-    class MainWindowModel
+    public class MainWindowModel
     {
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -125,14 +125,15 @@ namespace SchoolManagement.Model
                         }
                         structExcel.name = xlRange.Cells[i, 2].Value2.ToString();
                         structExcel.name = structExcel.name.ToUpper();
-                        structExcel.gender = xlRange.Cells[i, 3].Value2.ToString();
-                        string sDate = xlRange.Cells[i, 4].Value2.ToString();
+                        structExcel.Class = xlRange.Cells[i, 3].Value2.ToString();
+                        structExcel.gender = xlRange.Cells[i, 4].Value2.ToString();
+                        string sDate = xlRange.Cells[i, 5].Value2.ToString();
                         double date = double.Parse(sDate);
                         var dateTime = DateTime.FromOADate(date).ToString("MMMM dd, yyyy");
                         structExcel.birthDate = DateTime.Parse(dateTime);
-                        structExcel.studentname = xlRange.Cells[i, 5].Value2.ToString();
-                        structExcel.email = xlRange.Cells[i, 6].Value2.ToString();
-                        structExcel.address = xlRange.Cells[i, 7].Value2.ToString();
+                        structExcel.studentname = xlRange.Cells[i, 6].Value2.ToString();
+                        structExcel.email = xlRange.Cells[i, 7].Value2.ToString();
+                        structExcel.address = xlRange.Cells[i, 8].Value2.ToString();
 
                         if (!Constant.listData.ContainsKey(structExcel.serialId))
                         {
