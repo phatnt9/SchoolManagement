@@ -18,7 +18,6 @@ namespace SchoolManagement.Model
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public MainWindow mainW;
-        private string selectedSerialId;
         public ListCollectionView groupedAccount { get; private set; }
         public ListCollectionView groupedTimeCheck { get; private set; }
         public List<structExcel> accountsList;
@@ -355,14 +354,13 @@ namespace SchoolManagement.Model
         public void LoadTimeCheck(string serialId)
         {
             timeCheckDataGrid.Clear();
-            selectedSerialId = serialId;
             mainW.workerDatagridTimeCheck = new BackgroundWorker();
             mainW.workerDatagridTimeCheck.WorkerSupportsCancellation = true;
             mainW.workerDatagridTimeCheck.WorkerReportsProgress = true;
             mainW.workerDatagridTimeCheck.DoWork += WorkerDatagridTimeCheck_DoWork; ;
             mainW.workerDatagridTimeCheck.ProgressChanged += WorkerDatagridTimeCheck_ProgressChanged; ;
             mainW.workerDatagridTimeCheck.RunWorkerCompleted += WorkerDatagridTimeCheck_RunWorkerCompleted; ; ;
-            mainW.workerDatagridTimeCheck.RunWorkerAsync();
+            mainW.workerDatagridTimeCheck.RunWorkerAsync(argument: serialId);
         }
 
         private void WorkerDatagridTimeCheck_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -398,6 +396,7 @@ namespace SchoolManagement.Model
         {
             try
             {
+                string selectedSerialId = (string)e.Argument;
                 if (Constant.listData.ContainsKey(selectedSerialId))
                 {
                     int maxI = Constant.listData[selectedSerialId].timeCheck.Count;
