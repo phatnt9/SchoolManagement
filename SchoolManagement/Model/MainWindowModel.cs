@@ -60,7 +60,7 @@ namespace SchoolManagement.Model
                 mainW.workerTimeCheck.DoWork += WorkerTimeCheck_DoWork; ;
                 mainW.workerTimeCheck.ProgressChanged += WorkerTimeCheck_ProgressChanged; ;
                 mainW.workerTimeCheck.RunWorkerCompleted += WorkerTimeCheck_RunWorkerCompleted; ; ;
-                mainW.workerTimeCheck.RunWorkerAsync();
+                mainW.workerTimeCheck.RunWorkerAsync(argument: pathTimeCheck);
             }
             catch (Exception ex)
             {
@@ -91,7 +91,7 @@ namespace SchoolManagement.Model
                 mainW.workerProfile.DoWork += WorkerProfile_DoWork;
                 mainW.workerProfile.ProgressChanged += WorkerProfile_ProgressChanged;
                 mainW.workerProfile.RunWorkerCompleted += WorkerProfile_RunWorkerCompleted; ;
-                mainW.workerProfile.RunWorkerAsync();
+                mainW.workerProfile.RunWorkerAsync(argument: path);
             }
             catch (Exception ex)
             {
@@ -100,8 +100,7 @@ namespace SchoolManagement.Model
         }
         private void WorkerProfile_DoWork(object sender, DoWorkEventArgs e)
         {
-            string fileNameProfile = "DataImport.xlsx";
-            string pathProfile = Path.Combine(Environment.CurrentDirectory, fileNameProfile);
+            string pathProfile = (string)e.Argument;
 
             Excel.Application xlApp = new Excel.Application();
             Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(pathProfile);
@@ -165,8 +164,7 @@ namespace SchoolManagement.Model
         }
         private void WorkerTimeCheck_DoWork(object sender, DoWorkEventArgs e)
         {
-            string fileNameTimeCheck = "TimeCheck.xlsx";
-            string pathTimeCheck = Path.Combine(Environment.CurrentDirectory, fileNameTimeCheck);
+            string pathTimeCheck = (string)e.Argument;
 
             Excel.Application xlApp = new Excel.Application();
             Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(pathTimeCheck);

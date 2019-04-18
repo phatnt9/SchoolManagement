@@ -312,14 +312,14 @@
                                             <StackPanel>
                                                 <Button
                                                     Name="btn_search"
-                                                    Width="70"
-                                                    Height="20"
+                                                    Width="72"
+                                                    Height="22"
                                                     Margin="0 5"
                                                     Content="Search"
                                                     Click="Btn_search_Click"></Button>
                                                 <Button
-                                                    Width="70"
-                                                    Height="20"
+                                                    Width="72"
+                                                    Height="22"
                                                     Margin="0 5"
                                                     Content="Export"
                                                     ></Button>
