@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SchoolManagement.Communication;
+using SchoolManagement.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,17 @@ namespace SchoolManagement.Model
 
 
 
+        }
+        public class JStringProfile
+        {
+            public int status;
+            public List<String> data;
+        }
+        public class JStringClient
+        {
+            public int deviceId;
+            public int status;
+            public List<String> data;
         }
         int publishdata;
         public event Action<String> MessageCallBack;
@@ -69,10 +82,29 @@ namespace SchoolManagement.Model
                 switch (status)
                 {
                     case CLIENTCMD.REQUEST_PROFILE:
-                        List<string> serialList=mainWindowModel.GetListSerialId();
+                        
+                        JStringProfile Jprofile = new JStringProfile();
+                        Jprofile.status = (int)SERVERRESPONSE.RESP_PROFILE_SUCCESS;
+                        Jprofile.data= mainWindowModel.GetListSerialId();
+                        String dataResp = JsonConvert.SerializeObject(Jprofile).ToString();
+                        StandardString info = new StandardString();
+                        info.data = dataResp;
+                        this.Publish(publishdata, info);
                         //dynamic product=new JOb
                         break;
                     case CLIENTCMD.REQUEST_REG_PERSON_LIST:
+                        List<Person> personList = new List<Person>();
+                        JObject dataClient = JObject.Parse(standard.data);
+                        JArray results = new JArray(dataClient["data"]);
+                        foreach( var result in results)
+                        {
+                            String serialId = (String)result["serialId"];
+                            String tick = (String)result["tick"];
+                            Person person = new Person() { serialId=serialId,tick=tick};
+                            personList.Add(person);
+                        }
+                        if(personList.Count>0)
+                            mainWindowModel.CheckinServer(personList);
                         break;
 
                 }

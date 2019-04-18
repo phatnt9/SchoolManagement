@@ -423,7 +423,7 @@ namespace SchoolManagement.Model
             }
         }
 
-        bool CheckinServer(List<Person> person)
+        public bool CheckinServer(List<Person> person)
         {
             try
             {

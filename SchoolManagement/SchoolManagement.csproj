@@ -88,6 +88,7 @@
     <Compile Include="Communication\MessageTypes.cs" />
     <Compile Include="Communication\Operation.cs" />
     <Compile Include="Communication\RosSocket.cs" />
+    <Compile Include="Communication\SerialCOM.cs" />
     <Compile Include="Constant.cs" />
     <Compile Include="DTO\Person.cs" />
     <Compile Include="DTO\structExcel.cs" />
