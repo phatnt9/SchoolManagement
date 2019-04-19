@@ -69,8 +69,18 @@ namespace SchoolManagement.Model
         }
         public void createRosTerms()
         {
-            publishdata = this.Advertise("/testpub", "std_msgs/String");
-            int subscription = this.Subscribe("/testsub", "std_msgs/String", DataHandler);
+            publishdata = this.Advertise("ServerPublish", "std_msgs/String");
+            int subscription = this.Subscribe("ClientPublish", "std_msgs/String", DataHandler);
+        }
+        public void sendProfile()
+        {
+            JStringProfile Jprofile = new JStringProfile();
+            Jprofile.status = (int)SERVERRESPONSE.RESP_PROFILE_SUCCESS;
+            Jprofile.data = mainWindowModel.GetListSerialId();
+            String dataResp = JsonConvert.SerializeObject(Jprofile).ToString();
+            StandardString info = new StandardString();
+            info.data = dataResp;
+            this.Publish(publishdata, info);
         }
         private void DataHandler(Message message)
         {
@@ -82,14 +92,7 @@ namespace SchoolManagement.Model
                 switch (status)
                 {
                     case CLIENTCMD.REQUEST_PROFILE:
-                        
-                        JStringProfile Jprofile = new JStringProfile();
-                        Jprofile.status = (int)SERVERRESPONSE.RESP_PROFILE_SUCCESS;
-                        Jprofile.data= mainWindowModel.GetListSerialId();
-                        String dataResp = JsonConvert.SerializeObject(Jprofile).ToString();
-                        StandardString info = new StandardString();
-                        info.data = dataResp;
-                        this.Publish(publishdata, info);
+                        sendProfile();
                         //dynamic product=new JOb
                         break;
                     case CLIENTCMD.REQUEST_REG_PERSON_LIST:

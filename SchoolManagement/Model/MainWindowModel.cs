@@ -35,7 +35,7 @@ namespace SchoolManagement.Model
             groupedTimeCheck = (ListCollectionView)CollectionViewSource.GetDefaultView(timeCheckDataGrid);
 
             deviceItem = new DeviceItem(this);
-            deviceItem.Start("ws://192.168.1.6:9090");
+            deviceItem.Start("ws://192.168.1.121:9090");
 
         }
 
