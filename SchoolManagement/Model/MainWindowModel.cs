@@ -24,7 +24,7 @@ namespace SchoolManagement.Model
         public List<structExcel> accountsList;
         public List<Person> timeCheckList;
         public List<DateTime> timeCheckDataGrid;
-
+        public DeviceItem deviceItem;
         public MainWindowModel(MainWindow mainW)
         {
             this.mainW = mainW;
@@ -33,6 +33,10 @@ namespace SchoolManagement.Model
             timeCheckDataGrid = new List<DateTime>();
             groupedAccount = (ListCollectionView)CollectionViewSource.GetDefaultView(accountsList);
             groupedTimeCheck = (ListCollectionView)CollectionViewSource.GetDefaultView(timeCheckDataGrid);
+
+            deviceItem = new DeviceItem(this);
+            deviceItem.Start("ws://192.168.1.6:9090");
+
         }
 
         public void LoadTimeCheckFromExcel()
