@@ -17,13 +17,22 @@ namespace SchoolManagement.Communication
             this.port = port;
             this.baudr = baudr;
         }
-        public void Open()
+        public bool Open()
         {
-            _serialPort = new SerialPort();
-            _serialPort.PortName = port;//Set your board COM
-            _serialPort.BaudRate = baudr;
-            _serialPort.ReadTimeout = 5000;
-            _serialPort.Open();
+            try
+            {
+                _serialPort = new SerialPort();
+                _serialPort.PortName = port;//Set your board COM
+                _serialPort.BaudRate = baudr;
+                _serialPort.ReadTimeout = 5000;
+                _serialPort.Open();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            
         }
         public String ReceiveData()
         {
