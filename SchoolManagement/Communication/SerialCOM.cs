@@ -11,7 +11,7 @@ namespace SchoolManagement.Communication
     {
         String port;
         int baudr;
-        SerialPort _serialPort;
+        public SerialPort _serialPort;
         public SerialCOM(String port="COM4",int baudr=9600)
         {
             this.port = port;
