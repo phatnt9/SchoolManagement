@@ -12,7 +12,7 @@ namespace SchoolManagement
     /// </summary>
     public partial class MainWindow : Window
     {
-        MainWindowModel mainModel;
+        public MainWindowModel mainModel;
         public BackgroundWorker workerProfile;
         public BackgroundWorker workerTimeCheck;
         public BackgroundWorker workerDatagridTimeCheck;
@@ -37,7 +37,7 @@ namespace SchoolManagement
 
         private void Registration_Click(object sender, RoutedEventArgs e)
         {
-            RegisterForm regForm = new RegisterForm();
+            RegisterForm regForm = new RegisterForm(this);
             regForm.ShowDialog();
         }
 
@@ -79,6 +79,16 @@ namespace SchoolManagement
             {
                 mainModel.LoadTimeCheck((AccountListData.SelectedItem as structExcel).serialId);
             }
+        }
+
+        private void Btn_requestListTimeCheck_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_sendNewListPerson_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

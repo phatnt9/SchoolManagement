@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="RegisterForm" Height="350" Width="350"
+        Title="RegisterForm" Height="390" Width="340"
         ResizeMode="NoResize">
     <Grid 
         Height="Auto">
@@ -46,16 +46,24 @@
                     </Grid>
                 </Grid>
             </StackPanel>
+            <Separator></Separator>
             <StackPanel>
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="90"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <Label Content="ID:"></Label>
+                    <Grid Grid.Column="0" Grid.Row="0">
+                        <Label Margin="0 7 0 0" Content="ID:"></Label>
                     </Grid>
-                    <Grid Grid.Column="1">
+                    <Grid Grid.Column="0" Grid.Row="1">
+                        <Label Margin="0 7 0 0" Content="COM Port:"></Label>
+                    </Grid>
+                    <Grid Grid.Column="1" Grid.Row="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -79,8 +87,34 @@
                                 Click="Btn_scanId_Click"></Button>
                         </Grid>
                     </Grid>
+                    <Grid Grid.Column="1" Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <TextBox
+                                Name="tb_comport"
+                                IsEnabled="False"
+                                Margin="5 0"
+                                Width="Auto"
+                                VerticalAlignment="Center"
+                                TextAlignment="Left"
+                                Text=""></TextBox>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Button 
+                                Name="btn_edit"
+                                Width="60"
+                                Height="20"
+                                Content="Edit"
+                                Click="Btn_edit_Click"></Button>
+                        </Grid>
+                    </Grid>
+
                 </Grid>
             </StackPanel>
+            <Separator></Separator>
             <StackPanel>
                 <Grid>
                     <Grid.ColumnDefinitions>

@@ -103,8 +103,9 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0">
                                     <Grid Margin="0,5,0,5" Name="profile_image">
-                                        <StackPanel>
-                                            <Viewbox MaxHeight="250">
+                                        <StackPanel HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center">
+                                            <Viewbox MaxHeight="200" MaxWidth="200">
                                                 <Image 
                                                     Width="{Binding ActualWidth, ElementName=profile_image}"
                                                     Height="{Binding ActualHeight, ElementName=profile_image}"
@@ -366,6 +367,20 @@
                 Orientation="Horizontal"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Right">
+                <Button
+                    Name="btn_requestListTimeCheck"
+                    Margin="15 0"
+                    Width="Auto"
+                    Height="23"
+                    Content="Request List TimeCheck"
+                    Click="Btn_requestListTimeCheck_Click"></Button>
+                <Button
+                    Name="btn_sendNewListPerson"
+                    Margin="15 0"
+                    Width="Auto"
+                    Height="23"
+                    Content="Send List Person"
+                    Click="Btn_sendNewListPerson_Click"></Button>
                 <Button
                     Name="registration"
                     Margin="15 0"

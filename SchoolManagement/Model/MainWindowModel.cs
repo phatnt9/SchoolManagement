@@ -276,6 +276,7 @@ namespace SchoolManagement.Model
         {
             try
             {
+                accountsList.Clear();
                 foreach (KeyValuePair<string, structExcel> entry in Constant.listData)
                 {
                     // do something with entry.Value or entry.Key
@@ -458,5 +459,17 @@ namespace SchoolManagement.Model
 
             
         }
+
+        //public bool SignUpNewPerson(structExcel person)
+        //{
+        //    try
+        //    {
+
+        //    }
+        //    catch
+        //    {
+
+        //    }
+        //}
     }
 }

@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,13 +25,25 @@ namespace SchoolManagement.Form
     /// </summary>
     public partial class RegisterForm : Window
     {
+        private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
+        public MainWindow mainWindow;
+
         private BackgroundWorker worker;
         private SerialCOM serial;
         private readonly Stopwatch _stopwatch = new Stopwatch();
 
-        public RegisterForm()
+        public RegisterForm(MainWindow mainWindow)
         {
             InitializeComponent();
+            this.mainWindow = mainWindow;
+            Loaded += RegisterForm_Loaded;
+        }
+
+        private void RegisterForm_Loaded(object sender, RoutedEventArgs e)
+        {
+            tb_comport.Text = Properties.Settings.Default.ComPortName.ToString();
         }
 
         private void Btn_scanId_Click(object sender, RoutedEventArgs e)
@@ -48,7 +61,7 @@ namespace SchoolManagement.Form
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            serial = new SerialCOM("COM4", 9600);
+            serial = new SerialCOM(Properties.Settings.Default.ComPortName.ToString(), Properties.Settings.Default.ComPortBaudrate);
             if (serial.Open())
             {
                 lb_status.Content = "Scanning...";
@@ -139,17 +152,56 @@ namespace SchoolManagement.Form
                 return;
             }
 
-
+            CreateNewPerson();
 
         }
 
-        private void CreateNewPerson ()
+        private void CreateNewPerson()
         {
             structExcel person = new structExcel();
             person.serialId = tb_serialId.Text;
             person.name = tb_name.Text;
+            person.gender = ((bool)cb_gender.IsChecked) ? "Male" : "Female";
+            person.Class = cbb_class.Text;
+            person.birthDate = (DateTime)dp_dateofbirth.SelectedDate;
             person.studentname = tb_studentName.Text;
-            person.gender = ((bool)cb_gender.IsChecked) ? "Male": "Female" ;
+            person.email = tb_email.Text;
+            person.address = tb_address.Text;
+            try
+            {
+                Constant.listData.Add(person.serialId, person);
+                mainWindow.mainModel.CreateListAccount();
+            }
+            catch (Exception ex)
+            {
+                lb_status.Content = "Error add new person";
+                logFile.Error(ex.Message);
+            }
+        }
+
+        private void Btn_edit_Click(object sender, RoutedEventArgs e)
+        {
+            if (!tb_comport.IsEnabled)
+            {
+                tb_comport.IsEnabled = true;
+                btn_scanId.IsEnabled = false;
+                btn_edit.Content = "Save";
+            }
+            else
+            {
+                if (String.IsNullOrEmpty(tb_comport.Text.ToString()) || tb_comport.Text.ToString().Trim() == "")
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_comport", "tb_comport"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tb_comport.Focus();
+                    return;
+                }
+                Properties.Settings.Default.ComPortName = tb_comport.Text;
+                Properties.Settings.Default.Save();
+                tb_comport.Text = Properties.Settings.Default.ComPortName.ToString();
+                tb_comport.IsEnabled = false;
+                btn_scanId.IsEnabled = true;
+                btn_edit.Content = "Edit";
+            }
         }
     }
 }
