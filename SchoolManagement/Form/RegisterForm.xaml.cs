@@ -1,4 +1,5 @@
-﻿using SchoolManagement.Communication;
+﻿using Newtonsoft.Json;
+using SchoolManagement.Communication;
 using SchoolManagement.DTO;
 using System;
 using System.Collections.Generic;
@@ -61,10 +62,17 @@ namespace SchoolManagement.Form
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            serial = new SerialCOM(Properties.Settings.Default.ComPortName.ToString(), Properties.Settings.Default.ComPortBaudrate);
-            if (serial.Open())
+            if (serial == null)
             {
-                lb_status.Content = "Scanning...";
+                serial = new SerialCOM(Properties.Settings.Default.ComPortName.ToString(), Properties.Settings.Default.ComPortBaudrate);
+                serial.Open();
+            }
+            if (serial._serialPort.IsOpen)
+            {
+                Dispatcher.BeginInvoke(new ThreadStart(() =>
+                {
+                    lb_status.Content = "Scanning...";
+                }));
                 e.Result = serial.ReceiveData();
             }
             else
@@ -89,11 +97,14 @@ namespace SchoolManagement.Form
             else
             {
                 // use it on the UI thread
-                tb_serialId.Text = (string)e.Result;
+                string receivedDate = (string)e.Result;
+                dynamic data = JsonConvert.DeserializeObject(receivedDate);
+                tb_serialId.Text = data.serialId;
                 lb_status.Content = "";
             }
             // general cleanup code, runs when there was an error or not.
             serial.Close();
+            serial = null;
             btn_scanId.IsEnabled = true;
             btn_scanId.Content = "Scan";
         }

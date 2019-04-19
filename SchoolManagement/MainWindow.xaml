@@ -150,7 +150,7 @@
                                                             <ColumnDefinition Width="*"></ColumnDefinition>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid Grid.Column="0">
-                                                            <Label Content="Tên phụ huynh:"></Label>
+                                                            <Label FontWeight="Bold" Content="Parents Name:"></Label>
                                                         </Grid>
                                                         <Grid Grid.Column="1">
                                                             <TextBox
@@ -168,7 +168,7 @@
                                                             <ColumnDefinition Width="*"></ColumnDefinition>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid Grid.Column="0">
-                                                            <Label Content="Giới tính:"></Label>
+                                                            <Label FontWeight="Bold" Content="Gender:"></Label>
                                                         </Grid>
                                                         <Grid Grid.Column="1">
                                                             <StackPanel 
@@ -191,7 +191,7 @@
                                                             <ColumnDefinition Width="*"></ColumnDefinition>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid Grid.Column="0">
-                                                            <Label Content="Ngày sinh:"></Label>
+                                                            <Label FontWeight="Bold" Content="Date of Birth:"></Label>
                                                         </Grid>
                                                         <Grid Grid.Column="1">
                                                             <TextBox
@@ -209,7 +209,7 @@
                                                             <ColumnDefinition Width="*"></ColumnDefinition>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid Grid.Column="0">
-                                                            <Label Content="Tên học sinh:"></Label>
+                                                            <Label FontWeight="Bold" Content="Student Name:"></Label>
                                                         </Grid>
                                                         <Grid Grid.Column="1">
                                                             <TextBox
