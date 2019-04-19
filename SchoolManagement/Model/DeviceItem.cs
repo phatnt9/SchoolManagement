@@ -96,14 +96,14 @@ namespace SchoolManagement.Model
                         //dynamic product=new JOb
                         break;
                     case CLIENTCMD.REQUEST_REG_PERSON_LIST:
-                        List<Person> personList = new List<Person>();
+                        List<CheckinData> personList = new List<CheckinData>();
                         JObject dataClient = JObject.Parse(standard.data);
                         JArray results = new JArray(dataClient["data"]);
                         foreach( var result in results)
                         {
                             String serialId = (String)result["serialId"];
                             String tick = (String)result["tick"];
-                            Person person = new Person() { serialId=serialId,tick=tick};
+                            CheckinData person = new CheckinData() { serialId=serialId,tick=tick};
                             personList.Add(person);
                         }
                         if(personList.Count>0)

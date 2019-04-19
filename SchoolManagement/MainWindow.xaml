@@ -132,7 +132,7 @@
                                                             <ColumnDefinition Width="*"></ColumnDefinition>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid Grid.Column="0">
-                                                            <Label Content="ID:"></Label>
+                                                            <Label FontWeight="Bold" Content="ID:"></Label>
                                                         </Grid>
                                                         <Grid Grid.Column="1">
                                                             <TextBox
@@ -174,11 +174,9 @@
                                                             <StackPanel 
                                                                 VerticalAlignment="Center"
                                                                 HorizontalAlignment="Left">
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <CheckBox 
-                                                                        IsChecked="{x:Null}"
-                                                                        VerticalAlignment="Center"></CheckBox>
-                                                                    <Label Content="Male"></Label>
+                                                                <StackPanel Orientation="Horizontal" Margin="5 0">
+                                                                    <RadioButton GroupName="gender" FontWeight="Bold" Content="Male" IsChecked="True"></RadioButton>
+                                                                    <RadioButton GroupName="gender" FontWeight="Bold" Content="Female"></RadioButton>
                                                                 </StackPanel>
                                                             </StackPanel>
                                                         </Grid>
@@ -227,7 +225,7 @@
                                                             <ColumnDefinition Width="*"></ColumnDefinition>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid Grid.Column="0">
-                                                            <Label Content="Email:"></Label>
+                                                            <Label FontWeight="Bold" Content="Email:"></Label>
                                                         </Grid>
                                                         <Grid Grid.Column="1">
                                                             <TextBox
@@ -245,7 +243,7 @@
                                                             <ColumnDefinition Width="*"></ColumnDefinition>
                                                         </Grid.ColumnDefinitions>
                                                         <Grid Grid.Column="0">
-                                                            <Label Content="Địa chỉ:"></Label>
+                                                            <Label FontWeight="Bold" Content="Address:"></Label>
                                                         </Grid>
                                                         <Grid Grid.Column="1">
                                                             <TextBox

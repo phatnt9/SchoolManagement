@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagement.DTO
 {
-    public class Person
+    public class CheckinData
     {
         private string _serialId;
         private string _tick;

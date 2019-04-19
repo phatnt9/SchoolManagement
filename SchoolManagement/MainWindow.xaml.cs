@@ -77,7 +77,7 @@ namespace SchoolManagement
         {
             if (AccountListData.SelectedItem != null)
             {
-                mainModel.LoadTimeCheck((AccountListData.SelectedItem as structExcel).serialId);
+                mainModel.LoadTimeCheck((AccountListData.SelectedItem as AccountRFCard).serialId);
             }
         }
 

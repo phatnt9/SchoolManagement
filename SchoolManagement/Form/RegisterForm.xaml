@@ -148,11 +148,8 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left">
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox 
-                                    Name="cb_gender"
-                                    IsChecked="False"
-                                    VerticalAlignment="Center"></CheckBox>
-                                <Label Content="Male"></Label>
+                                <RadioButton Name="rb_male" GroupName="gender" Content="Male" IsChecked="True"></RadioButton>
+                                <RadioButton Name="rb_female" GroupName="gender" Content="Female"></RadioButton>
                             </StackPanel>
                         </StackPanel>
                     </Grid>

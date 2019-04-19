@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagement.DTO
 {
-    public class structExcel
+    public class AccountRFCard
     {
         private string _serialId;
         private string _name;
@@ -29,7 +29,7 @@ namespace SchoolManagement.DTO
         public string address { get => _address; set => _address = value; }
         public List<DateTime> timeCheck { get => _timeCheck; set => _timeCheck = value; }
 
-        public structExcel()
+        public AccountRFCard()
         {
             timeCheck = new List<DateTime>();
         }

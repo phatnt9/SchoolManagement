@@ -26,6 +26,15 @@ namespace SchoolManagement
         public static string messageTitileError = "Error";
         public static string messageTitileWarning = "Warning";
 
-        public static Dictionary<string, structExcel> listData = new Dictionary<string, structExcel>(); 
+        public static Dictionary<string, AccountRFCard> listData = new Dictionary<string, AccountRFCard>(); 
+        public static Dictionary<string, DeviceRF> listDeviceRF = new Dictionary<string, DeviceRF>(); 
+
+        public enum AccountClass
+        {
+            Teacher = 0,
+            Student = 1,
+            Guess = 2
+
+        }
     }
 }

@@ -107,7 +107,7 @@ namespace SchoolManagement.Form
                 {
                     if (xlRange.Cells[i, 1] != null && xlRange.Cells[i, 1].Value2 != null)
                     {
-                        structExcel structExcel = new structExcel();
+                        AccountRFCard structExcel = new AccountRFCard();
                         if (xlRange.Cells[i, 1] != null && xlRange.Cells[i, 1].Value2 != null)
                         {
                             serialId = xlRange.Cells[i, 1].Value2.ToString();

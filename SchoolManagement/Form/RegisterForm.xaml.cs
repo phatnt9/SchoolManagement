@@ -145,11 +145,11 @@ namespace SchoolManagement.Form
                 this.tb_studentName.Focus();
                 return;
             }
-            if (cb_gender.IsChecked == false)
-            {
-                this.cb_gender.Focus();
-                return;
-            }
+            //if (cb_gender.IsChecked == false)
+            //{
+            //    this.cb_gender.Focus();
+            //    return;
+            //}
             if (String.IsNullOrEmpty(cbb_class.Text.ToString()) || cbb_class.Text.ToString().Trim() == "")
             {
                 System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "cbb_class", "cbb_class"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -169,15 +169,16 @@ namespace SchoolManagement.Form
 
         private void CreateNewPerson()
         {
-            structExcel person = new structExcel();
+            AccountRFCard person = new AccountRFCard();
             person.serialId = tb_serialId.Text;
             person.name = tb_name.Text;
-            person.gender = ((bool)cb_gender.IsChecked) ? "Male" : "Female";
+            person.gender = ((bool)rb_male.IsChecked) ? "Male" : "Female";
             person.Class = cbb_class.Text;
             person.birthDate = (DateTime)dp_dateofbirth.SelectedDate;
             person.studentname = tb_studentName.Text;
             person.email = tb_email.Text;
             person.address = tb_address.Text;
+            person.timeCheck = new List<DateTime>();
             try
             {
                 Constant.listData.Add(person.serialId, person);

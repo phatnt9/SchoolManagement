@@ -21,15 +21,15 @@ namespace SchoolManagement.Model
         private string selectedSerialId;
         public ListCollectionView groupedAccount { get; private set; }
         public ListCollectionView groupedTimeCheck { get; private set; }
-        public List<structExcel> accountsList;
-        public List<Person> timeCheckList;
+        public List<AccountRFCard> accountsList;
+        public List<CheckinData> timeCheckList;
         public List<DateTime> timeCheckDataGrid;
         public DeviceItem deviceItem;
         public MainWindowModel(MainWindow mainW)
         {
             this.mainW = mainW;
-            accountsList = new List<structExcel>();
-            timeCheckList = new List<Person>();
+            accountsList = new List<AccountRFCard>();
+            timeCheckList = new List<CheckinData>();
             timeCheckDataGrid = new List<DateTime>();
             groupedAccount = (ListCollectionView)CollectionViewSource.GetDefaultView(accountsList);
             groupedTimeCheck = (ListCollectionView)CollectionViewSource.GetDefaultView(timeCheckDataGrid);
@@ -121,7 +121,7 @@ namespace SchoolManagement.Model
                 {
                     if (xlRange.Cells[i, 1] != null && xlRange.Cells[i, 1].Value2 != null)
                     {
-                        structExcel structExcel = new structExcel();
+                        AccountRFCard structExcel = new AccountRFCard();
                         if (xlRange.Cells[i, 1] != null && xlRange.Cells[i, 1].Value2 != null)
                         {
                             serialId = xlRange.Cells[i, 1].Value2.ToString();
@@ -186,7 +186,7 @@ namespace SchoolManagement.Model
                 {
                     if (xlRange.Cells[i, 2] != null && xlRange.Cells[i, 2].Value2 != null)
                     {
-                        Person structExcel = new Person();
+                        CheckinData structExcel = new CheckinData();
                         if (xlRange.Cells[i, 2] != null && xlRange.Cells[i, 2].Value2 != null)
                         {
                             serialId = xlRange.Cells[i, 2].Value2.ToString();
@@ -281,7 +281,7 @@ namespace SchoolManagement.Model
             try
             {
                 accountsList.Clear();
-                foreach (KeyValuePair<string, structExcel> entry in Constant.listData)
+                foreach (KeyValuePair<string, AccountRFCard> entry in Constant.listData)
                 {
                     // do something with entry.Value or entry.Key
                     accountsList.Add(entry.Value);
@@ -320,7 +320,7 @@ namespace SchoolManagement.Model
             {
                 try
                 {
-                    foreach (KeyValuePair<string, structExcel> entry in Constant.listData)
+                    foreach (KeyValuePair<string, AccountRFCard> entry in Constant.listData)
                     {
                         // do something with entry.Value or entry.Key
                         listSerial.Add(entry.Key);
@@ -338,7 +338,7 @@ namespace SchoolManagement.Model
         {
             try
             {
-                foreach (Person person in timeCheckList)
+                foreach (CheckinData person in timeCheckList)
                 {
                     if (Constant.listData.ContainsKey(person.serialId))
                     {
@@ -428,11 +428,11 @@ namespace SchoolManagement.Model
             }
         }
 
-        public bool CheckinServer(List<Person> person)
+        public bool CheckinServer(List<CheckinData> person)
         {
             try
             {
-                foreach (Person p in person)
+                foreach (CheckinData p in person)
                 {
                     if (Constant.listData.ContainsKey(p.serialId))
                     {
