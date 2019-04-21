@@ -56,7 +56,7 @@
                         CanUserDeleteRows="False"
                         SelectionMode="Single"
                         SelectionUnit="FullRow"
-                        AutoGenerateColumns="True"
+                        AutoGenerateColumns="False"
                                 AlternatingRowBackground="LightGray"
                         FontSize="14">
                                 <DataGrid.Columns>
@@ -67,7 +67,7 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <!--<DataGridTextColumn 
+                                    <DataGridTextColumn 
                                 Width="*" 
                                 Header="ID"
                                 Visibility="Visible"
@@ -94,7 +94,7 @@
                                 Visibility="Visible"
                                 IsReadOnly="True"
                                 Binding="{Binding Path=GENDER}">
-                                    </DataGridTextColumn>-->
+                                    </DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </GroupBox>

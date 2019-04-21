@@ -31,6 +31,7 @@ namespace SchoolManagement.Model
         //public DeviceItem deviceItem;
         public MainWindowModel(MainWindow mainW)
         {
+            
             this.mainW = mainW;
             accountRFList = new List<ProfileRF>();
             deviceRFList = new List<DeviceRF>();

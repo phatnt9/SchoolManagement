@@ -50,8 +50,15 @@ namespace SchoolManagement
 
         private void test_Click(object sender, RoutedEventArgs e)
         {
-            DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
-            List<string> test = SqliteDataAccess.LoadListProfileRFSerialId(deviceRF.IP);
+            try
+            {
+                DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
+                List<string> test = SqliteDataAccess.LoadListProfileRFSerialId(deviceRF.IP);
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
         }
 
         private void Btn_search_Click(object sender, RoutedEventArgs e)
@@ -118,8 +125,15 @@ namespace SchoolManagement
 
         private void Btn_fakeTimeCheck_Click(object sender, RoutedEventArgs e)
         {
-            ProfileRF profileRF = AccountListData.SelectedItem as ProfileRF;
-            SqliteDataAccess.SaveTimeCheckRF(profileRF.SERIAL_ID, DateTime.Now);
+            try
+            {
+                ProfileRF profileRF = AccountListData.SelectedItem as ProfileRF;
+                SqliteDataAccess.SaveTimeCheckRF(profileRF.SERIAL_ID, DateTime.Now);
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
         }
 
         private void Btn_delete_Click(object sender, RoutedEventArgs e)

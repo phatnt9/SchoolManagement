@@ -94,8 +94,7 @@ namespace SchoolManagement.DTO
                 cnn.Execute("DELETE FROM RF_PROFILE WHERE SERIAL_ID=@SERIAL_ID", profileRF);
             }
         }
-
-
+        
         public static List<string> LoadListProfileRFSerialId(string ip)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
