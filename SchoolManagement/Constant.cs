@@ -26,15 +26,24 @@ namespace SchoolManagement
         public static string messageTitileError = "Error";
         public static string messageTitileWarning = "Warning";
 
-        public static Dictionary<string, AccountRFCard> listData = new Dictionary<string, AccountRFCard>(); 
-        public static Dictionary<string, DeviceRF> listDeviceRF = new Dictionary<string, DeviceRF>(); 
+        //public static SQLiteConnection m_dbConnection;
+
+        public static Dictionary<string, ProfileRF> listData = new Dictionary<string, ProfileRF>();
 
         public enum AccountClass
         {
             Teacher = 0,
             Student = 1,
             Guess = 2
-
         }
+
+        public enum Gender
+        {
+            Male = 0,
+            Female = 1
+        }
+
+
+
     }
 }

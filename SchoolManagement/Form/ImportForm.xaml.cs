@@ -74,7 +74,7 @@ namespace SchoolManagement.Form
                 worker = new BackgroundWorker();
                 worker.WorkerSupportsCancellation = true;
                 worker.WorkerReportsProgress = true;
-                worker.DoWork += Worker_DoWork;
+                //worker.DoWork += Worker_DoWork;
                 worker.ProgressChanged += Worker_ProgressChanged;
                 worker.RunWorkerAsync();
             }
@@ -85,84 +85,84 @@ namespace SchoolManagement.Form
             
         }
 
-        private void Worker_DoWork(object sender, DoWorkEventArgs e)
-        {            
-            Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(directory);
-            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
-            Excel.Range xlRange = xlWorksheet.UsedRange;
+        //private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        //{            
+        //    Excel.Application xlApp = new Excel.Application();
+        //    Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(directory);
+        //    Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
+        //    Excel.Range xlRange = xlWorksheet.UsedRange;
 
-            try
-            {
+        //    try
+        //    {
 
-                this.Dispatcher.Invoke(() =>
-                {
-                    processStatusText.Content = "Loading";
-                    btn_stop.IsEnabled = true;
-                });
-                int rowCount = xlRange.Rows.Count;
-                int colCount = xlRange.Columns.Count;
-                string serialId = "";
-                for (int i = 2; i <= rowCount; i++)
-                {
-                    if (xlRange.Cells[i, 1] != null && xlRange.Cells[i, 1].Value2 != null)
-                    {
-                        AccountRFCard structExcel = new AccountRFCard();
-                        if (xlRange.Cells[i, 1] != null && xlRange.Cells[i, 1].Value2 != null)
-                        {
-                            serialId = xlRange.Cells[i, 1].Value2.ToString();
-                            structExcel.serialId = serialId;
-                        }
-                        structExcel.name = xlRange.Cells[i, 2].Value2.ToString();
-                        structExcel.name = structExcel.name.ToUpper();
-                        structExcel.gender = xlRange.Cells[i, 3].Value2.ToString();
-                        string sDate = xlRange.Cells[i, 4].Value2.ToString();
-                        double date = double.Parse(sDate);
-                        var dateTime = DateTime.FromOADate(date).ToString("MMMM dd, yyyy");
-                        structExcel.birthDate = DateTime.Parse(dateTime);
-                        structExcel.studentname = xlRange.Cells[i, 5].Value2.ToString();
-                        structExcel.email = xlRange.Cells[i, 6].Value2.ToString();
-                        structExcel.address = xlRange.Cells[i, 7].Value2.ToString();
+        //        this.Dispatcher.Invoke(() =>
+        //        {
+        //            processStatusText.Content = "Loading";
+        //            btn_stop.IsEnabled = true;
+        //        });
+        //        int rowCount = xlRange.Rows.Count;
+        //        int colCount = xlRange.Columns.Count;
+        //        string serialId = "";
+        //        for (int i = 2; i <= rowCount; i++)
+        //        {
+        //            if (xlRange.Cells[i, 1] != null && xlRange.Cells[i, 1].Value2 != null)
+        //            {
+        //                AccountRFCard structExcel = new AccountRFCard();
+        //                if (xlRange.Cells[i, 1] != null && xlRange.Cells[i, 1].Value2 != null)
+        //                {
+        //                    serialId = xlRange.Cells[i, 1].Value2.ToString();
+        //                    structExcel.serialId = serialId;
+        //                }
+        //                structExcel.name = xlRange.Cells[i, 2].Value2.ToString();
+        //                structExcel.name = structExcel.name.ToUpper();
+        //                structExcel.gender = xlRange.Cells[i, 3].Value2.ToString();
+        //                string sDate = xlRange.Cells[i, 4].Value2.ToString();
+        //                double date = double.Parse(sDate);
+        //                var dateTime = DateTime.FromOADate(date).ToString("MMMM dd, yyyy");
+        //                structExcel.birthDate = DateTime.Parse(dateTime);
+        //                structExcel.studentname = xlRange.Cells[i, 5].Value2.ToString();
+        //                structExcel.email = xlRange.Cells[i, 6].Value2.ToString();
+        //                structExcel.address = xlRange.Cells[i, 7].Value2.ToString();
 
-                        if (!Constant.listData.ContainsKey(structExcel.serialId))
-                        {
-                            Constant.listData.Add(structExcel.serialId, structExcel);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Duplicated:-"+ structExcel.serialId);
-                        }
-                    }
-                    if (worker.CancellationPending)
-                    {
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            processStatusText.Content = "Stopped";
-                            btn_stop.IsEnabled = false;
-                        });
-                        break;
-                    }
-                    (sender as BackgroundWorker).ReportProgress((i*100)/rowCount);
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show("Lỗi nhập File hãy kiểm tra lại!", Constant.messageTitileError, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                logFile.Error(ex.Message);
-            }
+        //                if (!Constant.listData.ContainsKey(structExcel.serialId))
+        //                {
+        //                    Constant.listData.Add(structExcel.serialId, structExcel);
+        //                }
+        //                else
+        //                {
+        //                    Console.WriteLine("Duplicated:-"+ structExcel.serialId);
+        //                }
+        //            }
+        //            if (worker.CancellationPending)
+        //            {
+        //                this.Dispatcher.Invoke(() =>
+        //                {
+        //                    processStatusText.Content = "Stopped";
+        //                    btn_stop.IsEnabled = false;
+        //                });
+        //                break;
+        //            }
+        //            (sender as BackgroundWorker).ReportProgress((i*100)/rowCount);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        System.Windows.Forms.MessageBox.Show("Lỗi nhập File hãy kiểm tra lại!", Constant.messageTitileError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //        logFile.Error(ex.Message);
+        //    }
 
-            finally
-            {
-                xlWorkbook.Close();
-                xlApp.Quit();
-                this.Dispatcher.Invoke(() =>
-                {
-                    processStatusText.Content = "Finished";
-                    btn_import.IsEnabled = true;
-                    btn_stop.IsEnabled = false;
-                });
-            }
-        }
+        //    finally
+        //    {
+        //        xlWorkbook.Close();
+        //        xlApp.Quit();
+        //        this.Dispatcher.Invoke(() =>
+        //        {
+        //            processStatusText.Content = "Finished";
+        //            btn_import.IsEnabled = true;
+        //            btn_stop.IsEnabled = false;
+        //        });
+        //    }
+        //}
 
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {

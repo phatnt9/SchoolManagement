@@ -97,10 +97,26 @@ namespace SchoolManagement.Form
             else
             {
                 // use it on the UI thread
-                string receivedDate = (string)e.Result;
-                dynamic data = JsonConvert.DeserializeObject(receivedDate);
-                tb_serialId.Text = data.serialId;
-                lb_status.Content = "";
+                try
+                {
+                    string receivedDate = (string)e.Result;
+                    if (receivedDate != "Null")
+                    {
+                        dynamic data = JsonConvert.DeserializeObject(receivedDate);
+                        tb_serialId.Text = data.serialId;
+                        lb_status.Content = "";
+                    }
+                    else
+                    {
+                        lb_status.Content = "Error";
+                        tb_serialId.Text = "";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logFile.Error(ex.Message);
+                }
+
             }
             // general cleanup code, runs when there was an error or not.
             serial.Close();
@@ -113,7 +129,7 @@ namespace SchoolManagement.Form
         {
             if (String.IsNullOrEmpty(tb_serialId.Text.ToString()) || tb_serialId.Text.ToString().Trim() == "")
             {
-                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "ID", "ID"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_serialId", "tb_serialId"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 this.tb_serialId.Focus();
                 return;
             }
@@ -125,10 +141,31 @@ namespace SchoolManagement.Form
                 return;
             }
 
+            if (String.IsNullOrEmpty(cbb_class.Text.ToString()) || cbb_class.Text.ToString().Trim() == "")
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "cbb_class", "cbb_class"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.cbb_class.Focus();
+                return;
+            }
+
+            if (String.IsNullOrEmpty(dp_dateofbirth.Text.ToString()) || dp_dateofbirth.Text.ToString().Trim() == "")
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "dp_dateofbirth", "dp_dateofbirth"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.dp_dateofbirth.Focus();
+                return;
+            }
+
             if (String.IsNullOrEmpty(tb_studentName.Text.ToString()) || tb_studentName.Text.ToString().Trim() == "")
             {
                 System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_studentName", "tb_studentName"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 this.tb_studentName.Focus();
+                return;
+            }
+
+            if (String.IsNullOrEmpty(tb_email.Text.ToString()) || tb_email.Text.ToString().Trim() == "")
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_email", "tb_email"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.tb_email.Focus();
                 return;
             }
 
@@ -139,56 +176,53 @@ namespace SchoolManagement.Form
                 return;
             }
 
-            if (String.IsNullOrEmpty(tb_address.Text.ToString()) || tb_address.Text.ToString().Trim() == "")
+            if (String.IsNullOrEmpty(tb_phone.Text.ToString()) || tb_phone.Text.ToString().Trim() == "")
             {
-                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_studentName", "tb_studentName"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.tb_studentName.Focus();
+                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_phone", "tb_phone"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.tb_phone.Focus();
                 return;
             }
-            //if (cb_gender.IsChecked == false)
-            //{
-            //    this.cb_gender.Focus();
-            //    return;
-            //}
-            if (String.IsNullOrEmpty(cbb_class.Text.ToString()) || cbb_class.Text.ToString().Trim() == "")
-            {
-                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "cbb_class", "cbb_class"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.cbb_class.Focus();
-                return;
-            }
-            if (String.IsNullOrEmpty(dp_dateofbirth.Text.ToString()) || dp_dateofbirth.Text.ToString().Trim() == "")
-            {
-                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "dp_dateofbirth", "dp_dateofbirth"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.dp_dateofbirth.Focus();
-                return;
-            }
+            
+            
 
             CreateNewPerson();
-
         }
 
         private void CreateNewPerson()
         {
-            AccountRFCard person = new AccountRFCard();
-            person.serialId = tb_serialId.Text;
-            person.name = tb_name.Text;
-            person.gender = ((bool)rb_male.IsChecked) ? "Male" : "Female";
-            person.Class = cbb_class.Text;
-            person.birthDate = (DateTime)dp_dateofbirth.SelectedDate;
-            person.studentname = tb_studentName.Text;
-            person.email = tb_email.Text;
-            person.address = tb_address.Text;
-            person.timeCheck = new List<DateTime>();
+            ProfileRF person = new ProfileRF();
+            person.SERIAL_ID = tb_serialId.Text;
+            person.NAME = tb_name.Text;
+            person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
+            person.CLASS = (Constant.AccountClass)cbb_class.SelectedIndex;
+            person.BIRTHDAY = (DateTime)dp_dateofbirth.SelectedDate;
+            person.STUDENT = tb_studentName.Text;
+            person.EMAIL = tb_email.Text;
+            person.ADDRESS = tb_address.Text;
+            person.PHONE = tb_phone.Text;
             try
             {
-                Constant.listData.Add(person.serialId, person);
-                mainWindow.mainModel.CreateListAccount();
+
+                SqliteDataAccess.SaveProfileRF(person);
+                lb_status.Content = "New Profile Added";
+                ClearForm();
             }
             catch (Exception ex)
             {
                 lb_status.Content = "Error add new person";
                 logFile.Error(ex.Message);
             }
+        }
+
+        public void ClearForm()
+        {
+            tb_serialId.Clear();
+            tb_name.Clear();
+            rb_male.IsChecked = true;
+            tb_studentName.Clear();
+            tb_email.Clear();
+            tb_address.Clear();
+            tb_phone.Clear();
         }
 
         private void Btn_edit_Click(object sender, RoutedEventArgs e)

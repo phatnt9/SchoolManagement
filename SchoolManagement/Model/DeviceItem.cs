@@ -15,9 +15,9 @@ namespace SchoolManagement.Model
     {
         public enum CLIENTCMD
         {
-            REQUEST_PROFILE=100,
-            REQUEST_REG_PERSON_LIST=110,
-            REQUEST_CHECKALIVE=120,
+            REQUEST_PROFILE=110,
+            REQUEST_REG_PERSON_LIST=120,
+            REQUEST_CHECKALIVE=130,
 
         }
         public enum SERVERRESPONSE
@@ -72,12 +72,12 @@ namespace SchoolManagement.Model
             publishdata = this.Advertise("ServerPublish", "std_msgs/String");
             int subscription = this.Subscribe("ClientPublish", "std_msgs/String", DataHandler);
         }
-        public void sendProfile()
+        public void sendProfile(string ip)
         {
             JStringProfile Jprofile = new JStringProfile();
             Jprofile.status = (int)SERVERRESPONSE.RESP_PROFILE_SUCCESS;
-            Jprofile.data = mainWindowModel.GetListSerialId();
-            String dataResp = JsonConvert.SerializeObject(Jprofile).ToString();
+            Jprofile.data = mainWindowModel.GetListSerialId(ip);
+            string dataResp = JsonConvert.SerializeObject(Jprofile).ToString();
             StandardString info = new StandardString();
             info.data = dataResp;
             this.Publish(publishdata, info);
@@ -89,21 +89,21 @@ namespace SchoolManagement.Model
             {
                 JObject stuff = JObject.Parse(standard.data);
                 var status = (CLIENTCMD)((int)stuff["status"]);
+                var ip = (string)stuff["ip"];
                 switch (status)
                 {
                     case CLIENTCMD.REQUEST_PROFILE:
-                        sendProfile();
+                        sendProfile(ip);
                         //dynamic product=new JOb
                         break;
                     case CLIENTCMD.REQUEST_REG_PERSON_LIST:
                         List<CheckinData> personList = new List<CheckinData>();
                         JObject dataClient = JObject.Parse(standard.data);
-                        JArray results = new JArray(dataClient["data"]);
-                        foreach( var result in results)
+                        foreach( var result in dataClient["data"])
                         {
-                            String serialId = (String)result["serialId"];
-                            String tick = (String)result["tick"];
-                            CheckinData person = new CheckinData() { serialId=serialId,tick=tick};
+                            string serialId = (string)result["serialId"];
+                            string tick = (string)result["tick"];
+                            CheckinData person = new CheckinData() { SERIAL_ID=serialId,TIMECHECK=tick};
                             personList.Add(person);
                         }
                         if(personList.Count>0)

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="RegisterForm" Height="390" Width="340"
+        Title="RegisterForm" Height="420" Width="340"
         ResizeMode="NoResize">
     <Grid 
         Height="Auto">
@@ -71,7 +71,7 @@
                         <Grid Grid.Column="0">
                             <TextBox
                                 Name="tb_serialId"
-                                IsEnabled="False"
+                                IsEnabled="True"
                                 Margin="5 0"
                                 Width="Auto"
                                 VerticalAlignment="Center"
@@ -243,6 +243,25 @@
                     <Grid Grid.Column="1">
                         <TextBox
                             Name="tb_address"
+                            Margin="5 0"
+                            VerticalAlignment="Center"
+                            TextAlignment="Left"
+                            Text=""></TextBox>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Label Content="Phone:"></Label>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <TextBox
+                            Name="tb_phone"
                             Margin="5 0"
                             VerticalAlignment="Center"
                             TextAlignment="Left"

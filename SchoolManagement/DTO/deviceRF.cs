@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SchoolManagement.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,14 @@ namespace SchoolManagement.DTO
 {
     public class DeviceRF
     {
+        private int _id;
         private string _ip;
         private AccountClass _accountClass;
 
-        public string ip { get => _ip; set => _ip = value; }
-        public AccountClass accountClass { get => _accountClass; set => _accountClass = value; }
+        public int ID { get => _id; set => _id = value; }
+        public string IP { get => _ip; set => _ip = value; }
+        public AccountClass CLASS { get => _accountClass; set => _accountClass = value; }
+
+        public DeviceItem deviceItem;
     }
 }

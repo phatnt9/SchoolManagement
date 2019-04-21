@@ -1,0 +1,94 @@
+﻿<Window x:Class="SchoolManagement.Form.AddDeviceRFForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchoolManagement.Form"
+        mc:Ignorable="d"
+        Title="AddDeviceRFForm" Height="170" Width="340"
+        ResizeMode="NoResize">
+    <Grid 
+        Height="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel 
+            Grid.Row="0"
+            Margin="15 5"
+            Orientation="Vertical">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Label Content="Ip:"></Label>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <TextBox
+                            Name="tb_ip"
+                            Margin="5 0"
+                            VerticalAlignment="Center"
+                            TextAlignment="Left"
+                            Text=""></TextBox>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Label Content="Class:"></Label>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid>
+                            <ComboBox 
+                                Name="cbb_class"
+                                Height="20">
+                                <ComboBoxItem>Teacher</ComboBoxItem>
+                                <ComboBoxItem>Student</ComboBoxItem>
+                                <ComboBoxItem>Guess</ComboBoxItem>
+                            </ComboBox>
+                        </Grid>
+
+                    </Grid>
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <StackPanel 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Button 
+                    Margin="5 0"
+                    Height="30"
+                    Width="70"
+                    Content="Add"
+                    Click="Button_Click"></Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="2">
+            <DockPanel>
+                <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBarItem>
+                        <Grid>
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <Label Name="lb_status" Content=""></Label>
+                            </StackPanel>
+                        </Grid>
+                    </StatusBarItem>
+                </StatusBar>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

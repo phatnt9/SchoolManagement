@@ -36,9 +36,16 @@ namespace SchoolManagement.Communication
         }
         public String ReceiveData()
         {
-            if (!_serialPort.IsOpen)
+            try
+            {
+                if (!_serialPort.IsOpen)
+                    return "Null";
+                return _serialPort.ReadLine();
+            }
+            catch
+            {
                 return "Null";
-            return _serialPort.ReadLine();
+            }
         }
         public void Close()
         {

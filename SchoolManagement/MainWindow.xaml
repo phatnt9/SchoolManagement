@@ -32,7 +32,7 @@
                 FontSize="30"
                 HorizontalContentAlignment="Center" 
                 VerticalContentAlignment="Center">
-                RFID READER
+                DATABASE MANAGEMENT SYSTEM
             </Label>
         </Grid>
         <Grid Grid.Row="2">
@@ -42,10 +42,12 @@
                 <ColumnDefinition Width="6*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
-                <GroupBox 
+                <TabControl Name="MainTabControl" SelectionChanged="MainTabControl_SelectionChanged">
+                    <TabItem Header="Account">
+                        <GroupBox 
                     Header="Account list" 
                     FontSize="16">
-                    <DataGrid 
+                            <DataGrid 
                         Name="AccountListData"
                         ItemsSource="{Binding groupedAccount}"
                         CanUserReorderColumns="False" 
@@ -54,33 +56,107 @@
                         CanUserDeleteRows="False"
                         SelectionMode="Single"
                         SelectionUnit="FullRow"
+                        AutoGenerateColumns="True"
+                                AlternatingRowBackground="LightGray"
+                        FontSize="14">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="DEL">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button IsEnabled="False" Name="btn_delete" Click="Btn_delete_Click">Delele</Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <!--<DataGridTextColumn 
+                                Width="*" 
+                                Header="ID"
+                                Visibility="Visible"
+                                IsReadOnly="True"
+                                Binding="{Binding Path=ID}">
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn 
+                                Width="*" 
+                                Header="SERIAL"
+                                Visibility="Visible"
+                                IsReadOnly="True"
+                                Binding="{Binding Path=SERIAL_ID}">
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn 
+                                Width="*" 
+                                Header="NAME"
+                                Visibility="Visible"
+                                IsReadOnly="True"
+                                Binding="{Binding Path=NAME}">
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn 
+                                Width="*" 
+                                Header="GENDER"
+                                Visibility="Visible"
+                                IsReadOnly="True"
+                                Binding="{Binding Path=GENDER}">
+                                    </DataGridTextColumn>-->
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </GroupBox>
+                    </TabItem>
+                    <TabItem Header="Device">
+                        <GroupBox 
+                    Header="Device list" 
+                    FontSize="16">
+                            <DataGrid 
+                        Name="DeviceRFListData"
+                                ItemsSource="{Binding groupedDevice}"
+                        CanUserReorderColumns="False" 
+                        CanUserAddRows="False"
+                        CanUserResizeRows="False"
+                        CanUserDeleteRows="False"
+                        SelectionMode="Single"
+                        SelectionUnit="FullRow"
                         AutoGenerateColumns="False"
+                                AlternatingRowBackground="LightGray"
                         FontSize="12">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn 
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn 
                                 Width="*" 
                                 Header="Id"
                                 Visibility="Visible"
                                 IsReadOnly="True"
-                                Binding="{Binding Path=serialId}">
-                            </DataGridTextColumn>
-                            <DataGridTextColumn 
+                                Binding="{Binding Path=ID}">
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn 
                                 Width="*" 
-                                Header="Name"
+                                Header="IP"
                                 Visibility="Visible"
                                 IsReadOnly="True"
-                                Binding="{Binding Path=name}">
-                            </DataGridTextColumn>
-                            <DataGridTextColumn 
+                                Binding="{Binding Path=IP}">
+                                    </DataGridTextColumn>
+                                    <DataGridTextColumn 
                                 Width="*" 
-                                Header="Gender"
+                                Header="CLASS"
                                 Visibility="Visible"
                                 IsReadOnly="True"
-                                Binding="{Binding Path=gender}">
-                            </DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </GroupBox>
+                                Binding="{Binding Path=CLASS}">
+                                    </DataGridTextColumn>
+                                    <DataGridTemplateColumn Header="START">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="btn_start" Click="Btn_start_Click">Start</Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="STOP">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Name="btn_stop" Click="Btn_stop_Click">Stop</Button>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </GroupBox>
+                    </TabItem>
+                </TabControl>
+
             </Grid>
             <GridSplitter 
                 Grid.Column="1" 
@@ -98,7 +174,7 @@
                         <TabItem Header="Info">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition Width="0"></ColumnDefinition>
                                     <ColumnDefinition></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0">
@@ -137,6 +213,7 @@
                                                         <Grid Grid.Column="1">
                                                             <TextBox
                                                                 Margin="5 0"
+                                                                IsEnabled="False"
                                                                 VerticalAlignment="Center"
                                                                 TextAlignment="Left"
                                                                 Text=""></TextBox>
@@ -155,6 +232,7 @@
                                                         <Grid Grid.Column="1">
                                                             <TextBox
                                                                 Margin="5 0"
+                                                                IsEnabled="False"
                                                                 VerticalAlignment="Center"
                                                                 TextAlignment="Left"
                                                                 Text=""></TextBox>
@@ -175,8 +253,8 @@
                                                                 VerticalAlignment="Center"
                                                                 HorizontalAlignment="Left">
                                                                 <StackPanel Orientation="Horizontal" Margin="5 0">
-                                                                    <RadioButton GroupName="gender" FontWeight="Bold" Content="Male" IsChecked="True"></RadioButton>
-                                                                    <RadioButton GroupName="gender" FontWeight="Bold" Content="Female"></RadioButton>
+                                                                    <RadioButton Margin="5 0" IsEnabled="False" GroupName="gender" FontWeight="Bold" Content="Male" IsChecked="True"></RadioButton>
+                                                                    <RadioButton Margin="5 0" IsEnabled="False" GroupName="gender" FontWeight="Bold" Content="Female"></RadioButton>
                                                                 </StackPanel>
                                                             </StackPanel>
                                                         </Grid>
@@ -194,6 +272,7 @@
                                                         <Grid Grid.Column="1">
                                                             <TextBox
                                                                 Margin="5 0"
+                                                                IsEnabled="False"
                                                                 VerticalAlignment="Center"
                                                                 TextAlignment="Left"
                                                                 Text=""></TextBox>
@@ -212,6 +291,7 @@
                                                         <Grid Grid.Column="1">
                                                             <TextBox
                                                                 Margin="5 0"
+                                                                IsEnabled="False"
                                                                 VerticalAlignment="Center"
                                                                 TextAlignment="Left"
                                                                 Text=""></TextBox>
@@ -230,6 +310,7 @@
                                                         <Grid Grid.Column="1">
                                                             <TextBox
                                                                 Margin="5 0"
+                                                                IsEnabled="False"
                                                                 VerticalAlignment="Center"
                                                                 TextAlignment="Left"
                                                                 Text=""></TextBox>
@@ -248,6 +329,7 @@
                                                         <Grid Grid.Column="1">
                                                             <TextBox
                                                                 Margin="5 0"
+                                                                IsEnabled="False"
                                                                 VerticalAlignment="Center"
                                                                 TextAlignment="Left"
                                                                 Text=""></TextBox>
@@ -301,11 +383,11 @@
                                                         Margin="0 2"
                                                         Orientation="Horizontal">
                                                         <Label Content="Date "></Label>
-                                                        <DatePicker></DatePicker>
+                                                        <DatePicker Name="dp_search"></DatePicker>
                                                     </StackPanel>
                                                 </StackPanel>
                                             </StackPanel>
-                                            
+
                                         </Grid>
                                         <Grid Grid.Column="1">
                                             <StackPanel>
@@ -325,7 +407,7 @@
                                             </StackPanel>
                                         </Grid>
                                     </Grid>
-                                    
+
                                 </Grid>
                                 <Grid Grid.Row="1">
                                     <DataGrid
@@ -337,24 +419,26 @@
                         CanUserDeleteRows="False"
                         SelectionMode="Single"
                         SelectionUnit="FullRow"
-                        AutoGenerateColumns="False">
+                        AutoGenerateColumns="False"
+                                        FontSize="14">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn 
+                                            <!--<DataGridTextColumn 
                                                 Header="Date"
                                                 Width="*"
                                                 IsReadOnly="True"
-                                Binding="{Binding Path=Date}"
-                                                ></DataGridTextColumn><DataGridTextColumn 
+                                                Binding="{Binding Path=Date}"
+                                                ></DataGridTextColumn>-->
+                                            <DataGridTextColumn 
                                                 Header="Time"
                                                 Width="*"
                                                 IsReadOnly="True"
-                                Binding="{Binding Path=TimeOfDay}"
+                                                Binding="{Binding Path=TimeOfDay}"
                                                 ></DataGridTextColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </Grid>
                             </Grid>
-                            
+
                         </TabItem>
                     </TabControl>
                 </GroupBox>
@@ -365,6 +449,14 @@
                 Orientation="Horizontal"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Right">
+                <Button
+                    Name="btn_fakeTimeCheck"
+                    Margin="15 0"
+                    Width="Auto"
+                    Height="23"
+                    Content="FakeTimeCheck"
+                    Click="Btn_fakeTimeCheck_Click">
+                </Button>
                 <Button
                     Name="btn_requestListTimeCheck"
                     Margin="15 0"
@@ -385,6 +477,12 @@
                     Width="70"
                     Height="23"
                     Click="Registration_Click">Registration</Button>
+                <Button
+                    Name="addDeviceRF"
+                    Margin="15 0"
+                    Width="Auto"
+                    Height="23"
+                    Click="AddDeviceRF_Click">addDeviceRF</Button>
                 <!--<Button
                      Name="import"
                      Margin="15 0"
