@@ -58,7 +58,7 @@
                         SelectionUnit="FullRow"
                         AutoGenerateColumns="False"
                                 AlternatingRowBackground="LightGray"
-                        FontSize="14">
+                        FontSize="12">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="DEL">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -420,7 +420,7 @@
                         SelectionMode="Single"
                         SelectionUnit="FullRow"
                         AutoGenerateColumns="False"
-                                        FontSize="14">
+                                        FontSize="12">
                                         <DataGrid.Columns>
                                             <!--<DataGridTextColumn 
                                                 Header="Date"
@@ -429,7 +429,7 @@
                                                 Binding="{Binding Path=Date}"
                                                 ></DataGridTextColumn>-->
                                             <DataGridTextColumn 
-                                                Header="Time"
+                                                Header="TIME"
                                                 Width="*"
                                                 IsReadOnly="True"
                                                 Binding="{Binding Path=TimeOfDay}"

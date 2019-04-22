@@ -13,6 +13,8 @@ namespace SchoolManagement.Model
 {
    public class DeviceItem:RosSocket
     {
+        private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public enum CLIENTCMD
         {
             REQUEST_PROFILE=110,
@@ -56,9 +58,10 @@ namespace SchoolManagement.Model
             {
                 createRosTerms();
             }
-            catch
+            catch (Exception ex)
             {
                 Console.WriteLine("Robot Control Error Send OnOpenedEvent");
+                logFile.Error(ex.Message);
             }
         }
 
@@ -74,14 +77,40 @@ namespace SchoolManagement.Model
         }
         public void sendProfile(string ip)
         {
-            JStringProfile Jprofile = new JStringProfile();
-            Jprofile.status = (int)SERVERRESPONSE.RESP_PROFILE_SUCCESS;
-            Jprofile.data = mainWindowModel.GetListSerialId(ip);
-            string dataResp = JsonConvert.SerializeObject(Jprofile).ToString();
-            StandardString info = new StandardString();
-            info.data = dataResp;
-            this.Publish(publishdata, info);
+            try
+            {
+                JStringProfile Jprofile = new JStringProfile();
+                Jprofile.status = (int)SERVERRESPONSE.RESP_PROFILE_SUCCESS;
+                Jprofile.data = mainWindowModel.GetListSerialId(ip);
+                string dataResp = JsonConvert.SerializeObject(Jprofile).ToString();
+                StandardString info = new StandardString();
+                info.data = dataResp;
+                this.Publish(publishdata, info);
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+
         }
+
+        public void requestPersonListImmediately()
+        {
+            try
+            {
+                dynamic product = new JObject();
+                product.status = SERVERRESPONSE.RESP_REQ_PERSONLIST_IMMEDIATELY;
+                StandardString msg = new StandardString();
+                msg.data = product.ToString();
+                Publish(publishdata, msg);
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+
+        }
+
         private void DataHandler(Message message)
         {
             StandardString standard = (StandardString)message;
@@ -96,25 +125,61 @@ namespace SchoolManagement.Model
                         sendProfile(ip);
                         //dynamic product=new JOb
                         break;
+
                     case CLIENTCMD.REQUEST_REG_PERSON_LIST:
                         List<CheckinData> personList = new List<CheckinData>();
-                        JObject dataClient = JObject.Parse(standard.data);
-                        foreach( var result in dataClient["data"])
+                        try
                         {
-                            string serialId = (string)result["serialId"];
-                            string tick = (string)result["tick"];
-                            CheckinData person = new CheckinData() { SERIAL_ID=serialId,TIMECHECK=tick};
-                            personList.Add(person);
+                            JObject dataClient = JObject.Parse(standard.data);
+                            if(dataClient["data"].Count()>0)
+                            {
+                                foreach (var result in dataClient["data"])
+                                {
+                                    string serialId = (string)result["serialId"];
+                                    string tick = (string)result["tick"];
+                                    CheckinData person = new CheckinData() { SERIAL_ID = serialId, TIMECHECK = tick };
+                                    personList.Add(person);
+                                }
+                                if (personList.Count > 0)
+                                    mainWindowModel.CheckinServer(personList);
+                            }
+                            try
+                            {
+                                dynamic product = new JObject();
+                                product.status = SERVERRESPONSE.RESP_SUCCESS;
+                                StandardString msg = new StandardString();
+                                msg.data = product.ToString();
+                                Publish(publishdata, msg);
+                            }
+                            catch (Exception ex)
+                            {
+                                logFile.Error(ex.Message);
+                            }
                         }
-                        if(personList.Count>0)
-                            mainWindowModel.CheckinServer(personList);
+                        catch (Exception ex)
+                        {
+                            try
+                            {
+                                dynamic product = new JObject();
+                                product.status = SERVERRESPONSE.RESP_PERSONLIST_ERROR;
+                                StandardString msg = new StandardString();
+                                msg.data = product.ToString();
+                                Publish(publishdata, msg);
+                                logFile.Error(ex.Message);
+                            }
+                            catch (Exception exc)
+                        {
+                            logFile.Error(exc.Message);
+                        }
+                }
+                        
                         break;
 
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                logFile.Error(ex.Message);
             }
         }
     }

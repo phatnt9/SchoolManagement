@@ -33,8 +33,9 @@ namespace SchoolManagement
         public enum AccountClass
         {
             Teacher = 0,
-            Student = 1,
-            Guess = 2
+            Security = 1,
+            Student = 2,
+            Guess = 3
         }
 
         public enum Gender
