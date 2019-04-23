@@ -30,13 +30,13 @@ namespace SchoolManagement
 
         public static Dictionary<string, ProfileRF> listData = new Dictionary<string, ProfileRF>();
 
-        public enum AccountClass
-        {
-            Teacher = 0,
-            Security = 1,
-            Student = 2,
-            Guess = 3
-        }
+        //public enum AccountClass
+        //{
+        //    Teacher = 0,
+        //    Security = 1,
+        //    Student = 2,
+        //    Guess = 3
+        //}
 
         public enum Gender
         {

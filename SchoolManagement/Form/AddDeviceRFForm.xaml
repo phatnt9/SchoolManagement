@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="AddDeviceRFForm" Height="170" Width="340"
+        Title="Add Device" Height="170" Width="340"
         ResizeMode="NoResize">
     <Grid 
         Height="Auto">
@@ -25,12 +25,11 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label Content="Ip:"></Label>
+                        <Label FontWeight="DemiBold" Content="Hostname:"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
                             Name="tb_ip"
-                            Margin="5 0"
                             VerticalAlignment="Center"
                             TextAlignment="Left"
                             Text=""></TextBox>
@@ -44,17 +43,39 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label Content="Class:"></Label>
+                        <Label Margin="0 -5" FontWeight="DemiBold" Content="Class:"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <Grid>
-                            <ComboBox 
+                            <!--<ComboBox 
                                 Name="cbb_class"
                                 Height="20">
                                 <ComboBoxItem>Teacher</ComboBoxItem>
+                                <ComboBoxItem>Security</ComboBoxItem>
                                 <ComboBoxItem>Student</ComboBoxItem>
                                 <ComboBoxItem>Guess</ComboBoxItem>
-                            </ComboBox>
+                            </ComboBox>-->
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="18"></RowDefinition>
+                                <RowDefinition Height="18"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0" Grid.Row="0">
+                                <CheckBox FontWeight="DemiBold" Name="cb_teacher" Content="Teacher"></CheckBox>
+                            </Grid>
+                            <Grid Grid.Column="1" Grid.Row="0">
+                                <CheckBox FontWeight="DemiBold" Name="cb_security" Content="Security"></CheckBox>
+                            </Grid>
+                            <Grid Grid.Column="0" Grid.Row="1">
+                                <CheckBox FontWeight="DemiBold" Name="cb_student" Content="Student"></CheckBox>
+                            </Grid>
+                            <Grid Grid.Column="1" Grid.Row="1">
+                                <CheckBox FontWeight="DemiBold" Name="cb_guest" Content="Guest"></CheckBox>
+                            </Grid>
+
                         </Grid>
 
                     </Grid>
@@ -68,7 +89,8 @@
                 Orientation="Horizontal">
                 <Button 
                     Margin="5 0"
-                    Height="30"
+                    Height="25"
+                    FontWeight="DemiBold"
                     Width="70"
                     Content="Add"
                     Click="Button_Click"></Button>

@@ -12,11 +12,11 @@ namespace SchoolManagement.DTO
     {
         private int _id;
         private string _ip;
-        private AccountClass _accountClass;
+        private string _accountClass;
 
         public int ID { get => _id; set => _id = value; }
         public string IP { get => _ip; set => _ip = value; }
-        public AccountClass CLASS { get => _accountClass; set => _accountClass = value; }
+        public string CLASS { get => _accountClass; set => _accountClass = value; }
 
         public DeviceItem deviceItem;
     }

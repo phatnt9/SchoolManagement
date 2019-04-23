@@ -43,13 +43,15 @@ namespace SchoolManagement.DTO
                 p.Add("@SERIAL_ID", serialID);
                 p.Add("@FROM", time);
                 p.Add("@TO", time.AddDays(1));
-
-
+                
                 var output = cnn.Query<DateTime>("SELECT TIMECHECK FROM RF_TIMECHECK INNER JOIN RF_PROFILE ON " +
                     "RF_PROFILE.SERIAL_ID = RF_TIMECHECK.SERIAL_ID WHERE (TIMECHECK >= @FROM AND TIMECHECK < @TO) AND (RF_PROFILE.SERIAL_ID = @SERIAL_ID)", p);
                 return output.ToList();
             }
         }
+
+
+
 
         public static void SaveDeviceRF(DeviceRF deviceRF)
         {
@@ -78,6 +80,10 @@ namespace SchoolManagement.DTO
                 cnn.Execute("INSERT INTO RF_TIMECHECK (SERIAL_ID,TIMECHECK) VALUES (@SERIAL_ID, @TIMECHECK)", p);
             }
         }
+
+
+        
+
         
         public static void RemoveDeviceRF(DeviceRF deviceRF)
         {
@@ -91,10 +97,14 @@ namespace SchoolManagement.DTO
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
+                cnn.Execute("DELETE FROM RF_TIMECHECK WHERE SERIAl_ID=@SERIAL_ID", profileRF);
                 cnn.Execute("DELETE FROM RF_PROFILE WHERE SERIAL_ID=@SERIAL_ID", profileRF);
             }
         }
-        
+
+
+
+
         public static List<string> LoadListProfileRFSerialId(string ip)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
@@ -102,9 +112,24 @@ namespace SchoolManagement.DTO
                 var p = new DynamicParameters();
                 p.Add("@IP", ip);
 
-                var output = cnn.Query<string>("SELECT SERIAL_ID FROM RF_PROFILE INNER JOIN RF_DEVICE ON " +
-                    "RF_PROFILE.CLASS = RF_DEVICE.CLASS WHERE (RF_DEVICE.IP = @IP)", p);
-                return output.ToList();
+                var output = cnn.Query<string>("SELECT CLASS FROM RF_DEVICE WHERE (RF_DEVICE.IP = @IP)", p);
+                string[] classArray = output.ToList()[0].Split(',');
+                List<string> returnSerialIdList = new List<string>();
+                foreach (string Class in classArray)
+                {
+                    if (Class != "")
+                    {
+                        var filter = new DynamicParameters();
+                        filter.Add("@CLASS", Class);
+                        var outputFilter = cnn.Query<string>("SELECT SERIAL_ID FROM RF_PROFILE WHERE (RF_PROFILE.CLASS = @CLASS)", filter);
+                        outputFilter.ToList();
+                        foreach (string item in outputFilter)
+                        {
+                            returnSerialIdList.Add(item);
+                        }
+                    }
+                }
+                return returnSerialIdList;
             }
         }
 

@@ -5,6 +5,8 @@ using System.ComponentModel;
 using SchoolManagement.DTO;
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace SchoolManagement
 {
@@ -52,8 +54,12 @@ namespace SchoolManagement
         {
             try
             {
-                DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
-                List<string> test = SqliteDataAccess.LoadListProfileRFSerialId(deviceRF.IP);
+                string array = "0";
+                string[] test = array.Split(',');
+                Console.WriteLine(test.Length);
+
+                //DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
+                //List<string> test = SqliteDataAccess.LoadListProfileRFSerialId(deviceRF.IP);
             }
             catch (Exception ex)
             {
@@ -68,12 +74,40 @@ namespace SchoolManagement
 
         private void Btn_requestListTimeCheck_Click(object sender, RoutedEventArgs e)
         {
+            Task.Run(() =>
+            {
+                try
+                {
+                    foreach (DeviceRF device in mainModel.deviceRFList)
+                    {
+                        device.deviceItem.requestPersonListImmediately();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logFile.Error(ex.Message);
+                }
+            });
 
         }
 
         private void Btn_sendNewListPerson_Click(object sender, RoutedEventArgs e)
         {
-
+            //Update profile for each device
+            Task.Run(() =>
+            {
+                try
+                {
+                    foreach (DeviceRF device in mainModel.deviceRFList)
+                    {
+                        device.deviceItem.sendProfile(device.IP);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logFile.Error(ex.Message);
+                }
+            });
         }
 
         private void DataTabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -140,15 +174,26 @@ namespace SchoolManagement
         {
             try
             {
-                ProfileRF profileRF = (sender as System.Windows.Controls.Button).DataContext as ProfileRF;
-                SqliteDataAccess.RemoveProfileRF(profileRF);
-                mainModel.ReloadListProfileRFDGV();
+                if (System.Windows.Forms.MessageBox.Show
+                        (
+                        String.Format(Constant.messageDeleteConfirm, "Profile"),
+                        Constant.messageTitileWarning, MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes
+                        )
+                {
+                    ProfileRF profileRF = AccountListData.SelectedItem as ProfileRF;
+                    if (profileRF != null)
+                    {
+                        SqliteDataAccess.RemoveProfileRF(profileRF);
+                        mainModel.ReloadListProfileRFDGV();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
             }
-            
+
         }
 
         private void Btn_start_Click(object sender, RoutedEventArgs e)
@@ -175,6 +220,60 @@ namespace SchoolManagement
             {
                 logFile.Error(ex.Message);
             }
+        }
+
+        private void Btn_test_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                DeviceRF deviceRF = (sender as System.Windows.Controls.Button).DataContext as DeviceRF;
+                List<string> test = SqliteDataAccess.LoadListProfileRFSerialId(deviceRF.IP);
+                Console.WriteLine("============");
+                foreach (string item in test)
+                {
+                    Console.WriteLine(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+        }
+
+        private void AccountListData_SelectedCellsChanged(object sender, System.Windows.Controls.SelectedCellsChangedEventArgs e)
+        {
+            try
+            {
+                if (AccountListData.SelectedItem != null)
+                {
+                    ProfileRF temp = AccountListData.SelectedItem as ProfileRF;
+                    tb_serialID.Text = temp.SERIAL_ID;
+                    tb_name.Text = temp.NAME;
+                    tb_dateofbirth.Text = temp.BIRTHDAY.ToLongDateString();
+                    tb_student.Text = temp.STUDENT;
+                    tb_class.Text = temp.CLASS;
+                    tb_email.Text = temp.EMAIL;
+                    tb_address.Text = temp.ADDRESS;
+                    tb_phone.Text = temp.PHONE;
+                    if (temp.GENDER == Constant.Gender.Male)
+                    {
+                        rb_male.IsChecked = true;
+                    }
+                    else
+                    {
+                        rb_female.IsChecked = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+        }
+
+        private void Edit_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

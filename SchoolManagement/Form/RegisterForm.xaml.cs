@@ -194,7 +194,7 @@ namespace SchoolManagement.Form
             person.SERIAL_ID = tb_serialId.Text;
             person.NAME = tb_name.Text;
             person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
-            person.CLASS = (Constant.AccountClass)cbb_class.SelectedIndex;
+            person.CLASS = cbb_class.Text;
             person.BIRTHDAY = (DateTime)dp_dateofbirth.SelectedDate;
             person.STUDENT = tb_studentName.Text;
             person.EMAIL = tb_email.Text;

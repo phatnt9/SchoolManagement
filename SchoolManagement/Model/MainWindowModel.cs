@@ -169,7 +169,8 @@ namespace SchoolManagement.Model
         {
             try
             {
-                return SqliteDataAccess.LoadListProfileRFSerialId(ip);
+                List<string> returnSerialId = SqliteDataAccess.LoadListProfileRFSerialId(ip);
+                return returnSerialId;
             }
             catch (Exception ex)
             {

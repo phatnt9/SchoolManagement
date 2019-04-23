@@ -41,16 +41,28 @@ namespace SchoolManagement.Form
                     this.tb_ip.Focus();
                     return;
                 }
-                if (String.IsNullOrEmpty(cbb_class.Text.ToString()) || cbb_class.Text.ToString().Trim() == "")
+                if ((!(bool)cb_teacher.IsChecked) && (!(bool)cb_security.IsChecked) && (!(bool)cb_student.IsChecked) && (!(bool)cb_guest.IsChecked))
                 {
                     System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "cbb_class", "cbb_class"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    this.cbb_class.Focus();
+                    //this.cbb_class.Focus();
                     return;
                 }
 
                 DeviceRF deviceRF = new DeviceRF();
                 deviceRF.IP = tb_ip.Text;
-                deviceRF.CLASS = (AccountClass)cbb_class.SelectedIndex;
+                string classArray = 
+                    ((bool)cb_teacher.IsChecked ? "Teacher" : "") + 
+                    ((bool)cb_security.IsChecked ? ",Security" : "") + 
+                    ((bool)cb_student.IsChecked ? ",Student" : "") + 
+                    ((bool)cb_guest.IsChecked ? ",Guess" : "");
+
+                //Teacher = 0,
+                //Security = 1,
+                //Student = 2,
+                //Guess = 3
+
+                //deviceRF.CLASS = (AccountClass)cbb_class.SelectedIndex;
+                deviceRF.CLASS = classArray;
                 SqliteDataAccess.SaveDeviceRF(deviceRF);
                 lb_status.Content = "New Device Added";
                 ClearForm();
@@ -66,6 +78,7 @@ namespace SchoolManagement.Form
         public void ClearForm()
         {
             tb_ip.Clear();
+            cb_guest.IsChecked = cb_security.IsChecked = cb_student.IsChecked = cb_teacher.IsChecked = false;
         }
     }
 }

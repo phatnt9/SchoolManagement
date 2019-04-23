@@ -11,7 +11,7 @@ namespace SchoolManagement.DTO
         private int _id;
         private string _serialId;
         private string _name;
-        private Constant.AccountClass _class;
+        private string _class;
         private Constant.Gender _gender;
         private DateTime _birthDate;
         private string _studentname;
@@ -23,7 +23,7 @@ namespace SchoolManagement.DTO
         public int ID { get => _id; set => _id = value; }
         public string SERIAL_ID { get => _serialId; set => _serialId = value; }
         public string NAME { get => _name; set => _name = value; }
-        public Constant.AccountClass CLASS { get => _class; set => _class = value; }
+        public string CLASS { get => _class; set => _class = value; }
         public Constant.Gender GENDER { get => _gender; set => _gender = value; }
         public DateTime BIRTHDAY { get => _birthDate; set => _birthDate = value; }
         public string STUDENT { get => _studentname; set => _studentname = value; }
