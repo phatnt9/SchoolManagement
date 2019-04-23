@@ -43,6 +43,13 @@ namespace SchoolManagement
             regForm.ShowDialog();
             mainModel.ReloadListProfileRFDGV();
         }
+        
+        private void AddDeviceRF_Click(object sender, RoutedEventArgs e)
+        {
+            AddDeviceRFForm frm = new AddDeviceRFForm(this);
+            frm.ShowDialog();
+            mainModel.ReloadListDeviceRFDGV();
+        }
 
         private void Import_Click(object sender, RoutedEventArgs e)
         {
@@ -150,12 +157,6 @@ namespace SchoolManagement
             }
         }
 
-        private void AddDeviceRF_Click(object sender, RoutedEventArgs e)
-        {
-            AddDeviceRFForm frm = new AddDeviceRFForm();
-            frm.ShowDialog();
-            mainModel.ReloadListDeviceRFDGV();
-        }
 
         private void Btn_fakeTimeCheck_Click(object sender, RoutedEventArgs e)
         {
@@ -251,7 +252,7 @@ namespace SchoolManagement
                     tb_name.Text = temp.NAME;
                     tb_dateofbirth.Text = temp.BIRTHDAY.ToLongDateString();
                     tb_student.Text = temp.STUDENT;
-                    tb_class.Text = temp.CLASS;
+                    cbb_class.Text = temp.CLASS;
                     tb_email.Text = temp.EMAIL;
                     tb_address.Text = temp.ADDRESS;
                     tb_phone.Text = temp.PHONE;

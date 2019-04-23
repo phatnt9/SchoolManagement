@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="Register" Height="390" Width="340"
+        Title="Register" Height="370" Width="340"
         ResizeMode="NoResize">
     <Grid 
         Height="Auto">
@@ -58,10 +58,10 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0" Grid.Row="0">
-                        <Label FontWeight="DemiBold" Margin="0 7 0 0" Content="ID:"></Label>
+                        <Label  FontFamily="Corsiva" Margin="0 7 0 0" Content="ID:"></Label>
                     </Grid>
                     <Grid Grid.Column="0" Grid.Row="1">
-                        <Label FontWeight="DemiBold" Margin="0 7 0 0" Content="COM Port:"></Label>
+                        <Label FontFamily="Corsiva" Margin="0 7 0 0" Content="COM Port:"></Label>
                     </Grid>
                     <Grid Grid.Column="1" Grid.Row="0">
                         <Grid.ColumnDefinitions>
@@ -81,7 +81,7 @@
                         <Grid Grid.Column="1">
                             <Button 
                                 Name="btn_scanId"
-                                FontWeight="DemiBold"
+                                FontFamily="Corsiva"
                                 Width="60"
                                 Height="20"
                                 Content="Scan"
@@ -106,7 +106,7 @@
                         <Grid Grid.Column="1">
                             <Button 
                                 Name="btn_edit"
-                                FontWeight="DemiBold"
+                                FontFamily="Corsiva"
                                 Width="60"
                                 Height="20"
                                 Content="Edit"
@@ -124,7 +124,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontWeight="DemiBold" Content="Name:"></Label>
+                        <Label FontFamily="Corsiva" Content="Name:"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
@@ -143,7 +143,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontWeight="DemiBold" Content="Gender:"></Label>
+                        <Label FontFamily="Corsiva" Content="Gender:"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <StackPanel 
@@ -152,13 +152,13 @@
                             <StackPanel Orientation="Horizontal">
                                 <RadioButton Name="rb_male" 
                                              Margin="5 0"  
-                                             FontWeight="DemiBold"
+                                             FontFamily="Corsiva"
                                              GroupName="gender" 
                                              Content="Male" 
                                              IsChecked="True"></RadioButton>
                                 <RadioButton Name="rb_female" 
                                              Margin="5 0" 
-                                             FontWeight="DemiBold"
+                                             FontFamily="Corsiva"
                                              GroupName="gender" 
                                              Content="Female"></RadioButton>
                             </StackPanel>
@@ -173,7 +173,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontWeight="DemiBold" Content="Class:"></Label>
+                        <Label FontFamily="Corsiva" Content="Class:"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <Grid>
@@ -197,7 +197,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontWeight="DemiBold" Content="Date of Birth:"></Label>
+                        <Label FontFamily="Corsiva" Content="Date of Birth:"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <DatePicker
@@ -212,7 +212,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontWeight="DemiBold" Content="Student name:"></Label>
+                        <Label FontFamily="Corsiva" Content="Student name:"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
@@ -231,7 +231,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontWeight="DemiBold" Content="Email:"></Label>
+                        <Label FontFamily="Corsiva" Content="Email:"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
@@ -250,7 +250,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontWeight="DemiBold" Content="Address:"></Label>
+                        <Label FontFamily="Corsiva" Content="Address:"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
@@ -269,7 +269,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontWeight="DemiBold" Content="Phone:"></Label>
+                        <Label FontFamily="Corsiva" Content="Phone:"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
@@ -290,7 +290,7 @@
                 <Button 
                     Margin="5 0"
                     Height="20"
-                    FontWeight="DemiBold"
+                    FontFamily="Corsiva"
                     Width="70"
                     Content="Add"
                     Click="Button_Click"></Button>

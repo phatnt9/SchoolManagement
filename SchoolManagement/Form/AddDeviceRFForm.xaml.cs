@@ -26,9 +26,12 @@ namespace SchoolManagement.Form
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 
-        public AddDeviceRFForm()
+        MainWindow mainW;
+
+        public AddDeviceRFForm(MainWindow mainW)
         {
             InitializeComponent();
+            this.mainW = mainW;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -66,6 +69,7 @@ namespace SchoolManagement.Form
                 SqliteDataAccess.SaveDeviceRF(deviceRF);
                 lb_status.Content = "New Device Added";
                 ClearForm();
+                mainW.mainModel.ReloadListDeviceRFDGV();
             }
             catch (Exception ex)
             {

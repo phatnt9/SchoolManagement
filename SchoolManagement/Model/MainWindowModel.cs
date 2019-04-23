@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Threading;
 using SchoolManagement.DTO;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Threading.Tasks;
 
 namespace SchoolManagement.Model
 {
@@ -17,6 +18,7 @@ namespace SchoolManagement.Model
     {
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        public System.Timers.Timer timerSyncTimeSheet;
         public MainWindow mainW;
         
         public ListCollectionView groupedAccount { get; private set; }
@@ -33,6 +35,13 @@ namespace SchoolManagement.Model
         {
             
             this.mainW = mainW;
+
+            timerSyncTimeSheet = new System.Timers.Timer();
+            timerSyncTimeSheet.Interval = 5000;
+            timerSyncTimeSheet.Elapsed += TimerSyncTimeSheet_Elapsed;
+            timerSyncTimeSheet.AutoReset = true;
+            timerSyncTimeSheet.Start();
+
             accountRFList = new List<ProfileRF>();
             deviceRFList = new List<DeviceRF>();
             timeCheckRFList = new List<DateTime>();
@@ -45,7 +54,26 @@ namespace SchoolManagement.Model
             //deviceItem.Start("ws://192.168.1.121:9090");
 
         }
-        
+
+        private void TimerSyncTimeSheet_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            Console.WriteLine("TimerSyncTimeSheet_Elapsed");
+            Task.Run(() =>
+            {
+                try
+                {
+                    foreach (DeviceRF device in deviceRFList)
+                    {
+                        device.deviceItem.requestPersonListImmediately();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logFile.Error(ex.Message);
+                }
+            });
+        }
+
         public void ReloadListProfileRFDGV()
         {
             try
@@ -156,7 +184,6 @@ namespace SchoolManagement.Model
                 logFile.Error(ex.Message);
                 return false;
             }
-
             finally
             {
                 

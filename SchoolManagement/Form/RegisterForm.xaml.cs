@@ -182,9 +182,6 @@ namespace SchoolManagement.Form
                 this.tb_phone.Focus();
                 return;
             }
-            
-            
-
             CreateNewPerson();
         }
 
@@ -206,6 +203,7 @@ namespace SchoolManagement.Form
                 SqliteDataAccess.SaveProfileRF(person);
                 lb_status.Content = "New Profile Added";
                 ClearForm();
+                mainWindow.mainModel.ReloadListProfileRFDGV();
             }
             catch (Exception ex)
             {

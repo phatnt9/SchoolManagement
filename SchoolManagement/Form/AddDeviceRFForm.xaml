@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="Add Device" Height="170" Width="340"
+        Title="Add Device" Height="150" Width="340"
         ResizeMode="NoResize">
     <Grid 
         Height="Auto">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel 
             Grid.Row="0"
@@ -25,7 +25,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontWeight="DemiBold" Content="Hostname:"></Label>
+                        <Label FontFamily="Corsiva" Content="Hostname:"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
@@ -43,7 +43,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label Margin="0 -5" FontWeight="DemiBold" Content="Class:"></Label>
+                        <Label Margin="0 -5" FontFamily="Corsiva" Content="Class:"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <Grid>
@@ -64,16 +64,16 @@
                                 <ColumnDefinition></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid Grid.Column="0" Grid.Row="0">
-                                <CheckBox FontWeight="DemiBold" Name="cb_teacher" Content="Teacher"></CheckBox>
+                                <CheckBox FontFamily="Corsiva" Name="cb_teacher" Content="Teacher"></CheckBox>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="0">
-                                <CheckBox FontWeight="DemiBold" Name="cb_security" Content="Security"></CheckBox>
+                                <CheckBox FontFamily="Corsiva" Name="cb_security" Content="Security"></CheckBox>
                             </Grid>
                             <Grid Grid.Column="0" Grid.Row="1">
-                                <CheckBox FontWeight="DemiBold" Name="cb_student" Content="Student"></CheckBox>
+                                <CheckBox FontFamily="Corsiva" Name="cb_student" Content="Student"></CheckBox>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="1">
-                                <CheckBox FontWeight="DemiBold" Name="cb_guest" Content="Guest"></CheckBox>
+                                <CheckBox FontFamily="Corsiva" Name="cb_guest" Content="Guest"></CheckBox>
                             </Grid>
 
                         </Grid>
@@ -90,7 +90,7 @@
                 <Button 
                     Margin="5 0"
                     Height="25"
-                    FontWeight="DemiBold"
+                    FontFamily="Corsiva"
                     Width="70"
                     Content="Add"
                     Click="Button_Click"></Button>
