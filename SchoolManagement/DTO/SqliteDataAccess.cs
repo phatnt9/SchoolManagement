@@ -82,7 +82,22 @@ namespace SchoolManagement.DTO
         }
 
 
-        
+        public static void UpdateProfileRF(ProfileRF profileRF)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                cnn.Execute("UPDATE RF_PROFILE SET " +
+                    "name = @NAME, " +
+                    "CLASS = @CLASS, " +
+                    "GENDER = @GENDER, " +
+                    "BIRTHDAY = @BIRTHDAY, " +
+                    "STUDENT = @STUDENT, " +
+                    "EMAIL = @EMAIL, " +
+                    "ADDRESS = @ADDRESS, " +
+                    "PHONE = @PHONE " +
+                    "WHERE SERIAL_ID = @SERIAL_ID", profileRF);
+            }
+        }
 
         
         public static void RemoveDeviceRF(DeviceRF deviceRF)

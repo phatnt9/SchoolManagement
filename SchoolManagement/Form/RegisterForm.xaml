@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="Register" Height="370" Width="340"
+        Title="Register" Height="380" Width="340"
         ResizeMode="NoResize">
     <Grid 
         Height="Auto">
@@ -179,6 +179,8 @@
                         <Grid>
                             <ComboBox 
                                 Name="cbb_class"
+                                Width="205"
+                                SelectionChanged="Cbb_class_SelectionChanged"
                                 Height="20">
                                 <ComboBoxItem>Teacher</ComboBoxItem>
                                 <ComboBoxItem>Security</ComboBoxItem>
@@ -200,7 +202,7 @@
                         <Label FontFamily="Corsiva" Content="Date of Birth:"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
-                        <DatePicker
+                        <DatePicker Width="205"
                             Name="dp_dateofbirth"></DatePicker>
                     </Grid>
                 </Grid>

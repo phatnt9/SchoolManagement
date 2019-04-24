@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace SchoolManagement
 {
@@ -175,6 +176,10 @@ namespace SchoolManagement
         {
             try
             {
+                if (AccountListData.SelectedItem == null)
+                {
+                    return;
+                }
                 if (System.Windows.Forms.MessageBox.Show
                         (
                         String.Format(Constant.messageDeleteConfirm, "Profile"),
@@ -250,7 +255,7 @@ namespace SchoolManagement
                     ProfileRF temp = AccountListData.SelectedItem as ProfileRF;
                     tb_serialID.Text = temp.SERIAL_ID;
                     tb_name.Text = temp.NAME;
-                    tb_dateofbirth.Text = temp.BIRTHDAY.ToLongDateString();
+                    dp_dateofbirth.Text = temp.BIRTHDAY.ToLongDateString();
                     tb_student.Text = temp.STUDENT;
                     cbb_class.Text = temp.CLASS;
                     tb_email.Text = temp.EMAIL;
@@ -271,10 +276,235 @@ namespace SchoolManagement
                 logFile.Error(ex.Message);
             }
         }
+        
 
-        private void Edit_Click(object sender, RoutedEventArgs e)
+        private bool DisableEditProfile()
         {
+            try
+            {
+                dp_dateofbirth.IsEnabled = rb_male.IsEnabled = rb_female.IsEnabled = cbb_class.IsEnabled = false;
+                tb_address.IsReadOnly =
+                    tb_email.IsReadOnly =
+                    tb_name.IsReadOnly =
+                    tb_phone.IsReadOnly =
+                    tb_student.IsReadOnly =
+                    cbb_class.IsReadOnly = true;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                return false;
+            }
+        }
 
+        private bool EnableEditProfile()
+        {
+            try
+            {
+                dp_dateofbirth.IsEnabled = rb_male.IsEnabled = rb_female.IsEnabled = cbb_class.IsEnabled = true;
+                tb_address.IsReadOnly = 
+                    tb_email.IsReadOnly = 
+                    tb_name.IsReadOnly = 
+                    tb_phone.IsReadOnly = 
+                    tb_student.IsReadOnly = 
+                    cbb_class.IsReadOnly = false;
+                tb_name.Focus();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DisableEditProfile();
+                logFile.Error(ex.Message);
+                return false;
+            }
+        }
+
+        private void Setting_Click(object sender, RoutedEventArgs e)
+        {
+            SettingForm form = new SettingForm(this);
+            form.ShowDialog();
+        }
+
+        private void Btn_about_Click(object sender, RoutedEventArgs e)
+        {
+            About frm = new About();
+            frm.ShowDialog();
+        }
+
+        private void Btn_edit_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (AccountListData.SelectedItem == null)
+                {
+                    return;
+                }
+                if (EnableEditProfile())
+                {
+                    edit.IsEnabled = false;
+                    save.Visibility = Visibility.Visible;
+                    AccountListData.IsEnabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+        }
+
+        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(tb_name.Text.ToString()) || tb_name.Text.ToString().Trim() == "")
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Name", "Name"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.tb_name.Focus();
+                    return;
+                }
+
+                if (String.IsNullOrEmpty(cbb_class.Text.ToString()) || cbb_class.Text.ToString().Trim() == "")
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "cbb_class", "cbb_class"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.cbb_class.Focus();
+                    return;
+                }
+
+                if (String.IsNullOrEmpty(dp_dateofbirth.Text.ToString()) || dp_dateofbirth.Text.ToString().Trim() == "")
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "dp_dateofbirth", "dp_dateofbirth"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.dp_dateofbirth.Focus();
+                    return;
+                }
+
+                if(cbb_class.Text.ToString() == "Student")
+                {
+                    if (String.IsNullOrEmpty(tb_student.Text.ToString()) || tb_student.Text.ToString().Trim() == "")
+                    {
+                        System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_studentName", "tb_studentName"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        this.tb_student.Focus();
+                        return;
+                    }
+                }
+
+                if (String.IsNullOrEmpty(tb_email.Text.ToString()) || tb_email.Text.ToString().Trim() == "")
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_email", "tb_email"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.tb_email.Focus();
+                    return;
+                }
+
+                if (String.IsNullOrEmpty(tb_address.Text.ToString()) || tb_address.Text.ToString().Trim() == "")
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_address", "tb_address"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.tb_address.Focus();
+                    return;
+                }
+
+                if (String.IsNullOrEmpty(tb_phone.Text.ToString()) || tb_phone.Text.ToString().Trim() == "")
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_phone", "tb_phone"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.tb_phone.Focus();
+                    return;
+                }
+                if (DisableEditProfile())
+                {
+                    ProfileRF person = new ProfileRF();
+                    person.SERIAL_ID = tb_serialID.Text;
+                    person.NAME = tb_name.Text;
+                    person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
+                    person.CLASS = cbb_class.Text;
+                    person.BIRTHDAY = (DateTime)dp_dateofbirth.SelectedDate;
+                    if (person.CLASS == "Student")
+                    {
+                        person.STUDENT = tb_student.Text;
+                    }
+                    else
+                    {
+                        person.STUDENT = "";
+                    }
+                    
+                    person.EMAIL = tb_email.Text;
+                    person.ADDRESS = tb_address.Text;
+                    person.PHONE = tb_phone.Text;
+                    try
+                    {
+                        SqliteDataAccess.UpdateProfileRF(person);
+                        mainModel.ReloadListProfileRFDGV();
+                        edit.IsEnabled = true;
+                        save.Visibility = Visibility.Hidden;
+                        AccountListData.IsEnabled = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        logFile.Error(ex.Message);
+                        edit.IsEnabled = true;
+                        save.Visibility = Visibility.Hidden;
+                        AccountListData.IsEnabled = true;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                edit.IsEnabled = true;
+                save.Visibility = Visibility.Hidden;
+                AccountListData.IsEnabled = true;
+            }
+        }
+
+        private void Cbb_class_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if ((cbb_class.SelectedItem as ComboBoxItem).Content.ToString() != "Student")
+                {
+                    tb_student.Text = "";
+                    tb_student.IsEnabled = false;
+                }
+                else
+                {
+                    tb_student.IsEnabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+            
+        }
+
+        private void DeleleDeviceRF_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (DeviceRFListData.SelectedItem == null)
+                {
+                    return;
+                }
+                if (System.Windows.Forms.MessageBox.Show
+                        (
+                        String.Format(Constant.messageDeleteConfirm, "Device"),
+                        Constant.messageTitileWarning, MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes
+                        )
+                {
+                    DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
+                    if (deviceRF != null)
+                    {
+                        deviceRF.deviceItem.Dispose();
+                        SqliteDataAccess.RemoveDeviceRF(deviceRF);
+                        mainModel.ReloadListDeviceRFDGV(deviceRF);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
         }
     }
 }

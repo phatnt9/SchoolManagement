@@ -22,14 +22,14 @@
             <StackPanel>
                 <DockPanel>
                     <Menu DockPanel.Dock="Top">
-                        <MenuItem Header="Tool">
-                            <MenuItem Header="Registration"></MenuItem>
-                            <MenuItem Header="About"></MenuItem>
+                        <MenuItem Header="Option">
+                            <MenuItem 
+                                Header="Setting"
+                                Click="Setting_Click">
+                            </MenuItem>
                         </MenuItem>
-                        <MenuItem Header="Option"></MenuItem>
                         <MenuItem Header="Help">
-                            <MenuItem Header="Registration"></MenuItem>
-                            <MenuItem Header="About"></MenuItem>
+                            <MenuItem Header="About" Click="Btn_about_Click"></MenuItem>
                         </MenuItem>
                     </Menu>
                 </DockPanel>
@@ -43,19 +43,19 @@
             <Grid Grid.Column="0" Grid.ColumnSpan="2">
                 <Border Background="#F1F1F1">
                     <Label 
-                    FontSize="28"
-                    HorizontalContentAlignment="Center" 
-                    VerticalContentAlignment="Center"
-                    FontWeight="Bold">
+                        FontSize="28"
+                        HorizontalContentAlignment="Center" 
+                        VerticalContentAlignment="Center"
+                        FontWeight="Bold">
                         GATE MANAGEMENT SYSTEM
                     </Label>
                 </Border>
             </Grid>
             <Grid Grid.Column="1" >
                 <!--<StackPanel HorizontalAlignment="Right">
-                    <Image Width="50" Margin="30 0"
-                        Source="pack://siteoforigin:,,,/Resources/LOGO N2 - Copy.jpg"/>
-                </StackPanel>-->
+                     <Image Width="50" Margin="30 0"
+                     Source="pack://siteoforigin:,,,/Resources/LOGO N2 - Copy.jpg"/>
+                     </StackPanel>-->
             </Grid>
             
         </Grid>
@@ -69,8 +69,10 @@
                 <Grid Grid.Column="0" 
                       Background="#F1F1F1">
                     <TabControl 
-                        Background="#F1F1F1"
                         FontFamily="Corsiva"
+                        Padding="1 3"
+                        VerticalContentAlignment="Center"
+                        HorizontalContentAlignment="Right"
                         Name="MainTabControl"
                         SelectionChanged="MainTabControl_SelectionChanged">
                         <TabItem
@@ -78,13 +80,97 @@
                             FontWeight="Normal">
                             <Grid>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"></RowDefinition>
                                     <RowDefinition></RowDefinition>
-                                    <RowDefinition Height="30"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Grid Grid.Row="0"
-                                      Background="#F1F1F1">
+                                <Grid Grid.Row="0">
+                                    <StackPanel 
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center">
+                                        <Button
+                                            Name="registration"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Margin="0 0 0 0"
+                                            Padding="0 0 0 0"
+                                            Width="100"
+                                            Height="25"
+                                            Click="Registration_Click">
+                                            <StackPanel Orientation="Horizontal"
+                                                        HorizontalAlignment="Right">
+                                                <Image 
+                                                    Width="12" 
+                                                    Source="pack://siteoforigin:,,,/Resources/table_add.png"/>
+                                                <Label 
+                                                    FontSize="10"
+                                                    >Add Profile</Label>
+                                            </StackPanel>
+                                            <!--<iconPacks:PackIconMaterial Kind="Plus" Foreground="Green"/>-->
+                                        </Button>
+                                        <Button
+                                            Name="del"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Margin="0 0 0 0"
+                                            Padding="0 0 0 0"
+                                            Width="100"
+                                            Height="25"
+                                            Click="Btn_delete_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image 
+                                                    Width="12" 
+                                                    Source="pack://siteoforigin:,,,/Resources/table_delete.png"/>
+                                                <Label 
+                                                    FontSize="10"
+                                                    >Remove Profile</Label>
+                                            </StackPanel>
+                                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                                        </Button>
+                                        <Button
+                                            Name="edit"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Margin="0 0 0 0"
+                                            Padding="0 0 0 0"
+                                            Width="100"
+                                            Height="25"
+                                            Click="Btn_edit_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image 
+                                                    Width="12" 
+                                                    Source="pack://siteoforigin:,,,/Resources/table_edit.png"/>
+                                                <Label 
+                                                    FontSize="10"
+                                                    >Edit Profile</Label>
+                                            </StackPanel>
+                                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                                        </Button>
+                                        <Button
+                                            Name="sync"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Margin="0 0 0 0"
+                                            Padding="0 0 0 0"
+                                            Width="100"
+                                            Height="25"
+                                            Click="Btn_sendNewListPerson_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image 
+                                                    Width="12" 
+                                                    Source="pack://siteoforigin:,,,/Resources/database_refresh.png"/>
+                                                <Label 
+                                                    FontSize="10"
+                                                    >Sync Profile</Label>
+                                            </StackPanel>
+                                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Row="1">
                                     <DataGrid 
-                                        Margin="5"
+                                        Margin="0 5 0 0"
+                                        Background="White"
                                         Name="AccountListData"
                                         ItemsSource="{Binding groupedAccount}"
                                         CanUserReorderColumns="False" 
@@ -94,7 +180,6 @@
                                         SelectionMode="Single"
                                         SelectionUnit="FullRow"
                                         AutoGenerateColumns="False"
-                                        AlternatingRowBackground="LightGray"
                                         SelectedCellsChanged="AccountListData_SelectedCellsChanged"
                                         FontSize="12">
                                         <DataGrid.Columns>
@@ -143,45 +228,6 @@
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </Grid>
-                                <Grid Grid.Row="1" 
-                                      Background="#F1F1F1">
-                                    <StackPanel 
-                                        Orientation="Horizontal"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
-                                        <!--<Button
-                                             Name="edit"
-                                             Margin="15 0"
-                                             Padding="3 0"
-                                             Width="Auto"
-                                             Height="23"
-                                             Click="Edit_Click">
-                                             <iconPacks:PackIconMaterial Kind="AccountEdit"/>
-                                             </Button>-->
-                                        <Button
-                                            Name="registration"
-                                            BorderThickness="0"
-                                            Background="Transparent"
-                                            Margin="15 0"
-                                            Padding="3 0"
-                                            Width="Auto"
-                                            Height="23"
-                                            Click="Registration_Click">
-                                            <iconPacks:PackIconMaterial Kind="Plus" Foreground="Green"/>
-                                        </Button>
-                                        <Button
-                                            Name="del"
-                                            Margin="15 0"
-                                            BorderThickness="0"
-                                            Background="Transparent"
-                                            Padding="3 0"
-                                            Width="Auto"
-                                            Height="23"
-                                            Click="Btn_delete_Click">
-                                            <iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
                             </Grid>
                         </TabItem>
                         <TabItem 
@@ -189,12 +235,59 @@
                             FontWeight="Normal">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition></RowDefinition>
-                                    <RowDefinition Height="30"></RowDefinition>
+                                    <RowDefinition Height="25"></RowDefinition>
+                                    <RowDefinition ></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid Grid.Row="0">
-                                    <DataGrid 
-                                        Margin="5"
+                                    <StackPanel 
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center">
+                                        <Button
+                                            Name="addDeviceRF"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Margin="0 0 0 0"
+                                            Padding="0 0 0 0"
+                                            Width="100"
+                                            Height="25"
+                                            Click="AddDeviceRF_Click">
+                                            <StackPanel Orientation="Horizontal"
+                                                        HorizontalAlignment="Right">
+                                                <Image 
+                                                    Width="12" 
+                                                    Source="pack://siteoforigin:,,,/Resources/table_add.png"/>
+                                                <Label 
+                                                    FontSize="10"
+                                                    >Add Device</Label>
+                                            </StackPanel>
+                                            <!--<iconPacks:PackIconMaterial Kind="Plus" Foreground="Green"/>-->
+                                        </Button>
+                                        <Button
+                                            Name="deleleDeviceRF"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Margin="0 0 0 0"
+                                            Padding="0 0 0 0"
+                                            Width="100"
+                                            Height="25"
+                                            Click="DeleleDeviceRF_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image 
+                                                    Width="12" 
+                                                    Source="pack://siteoforigin:,,,/Resources/table_delete.png"/>
+                                                <Label 
+                                                    FontSize="10"
+                                                    >Remove Device</Label>
+                                            </StackPanel>
+                                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Row="1">
+                                    <DataGrid
+                                        Margin="0 5 0 0"
+                                        Background="White"
                                         Name="DeviceRFListData"
                                         ItemsSource="{Binding groupedDevice}"
                                         CanUserReorderColumns="False" 
@@ -208,7 +301,7 @@
                                         FontSize="12">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn 
-                                                Width="*" 
+                                                Width="Auto" 
                                                 Header="Id"
                                                 Visibility="Visible"
                                                 IsReadOnly="True"
@@ -242,33 +335,22 @@
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
-                                            <DataGridTemplateColumn Header="Test" Width="40">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <Button Name="btn_test" Click="Btn_test_Click">Test</Button>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
+                                            <!--<DataGridTemplateColumn Header="Test" Width="40">
+                                                 <DataGridTemplateColumn.CellTemplate>
+                                                 <DataTemplate>
+                                                 <Button Name="btn_test" Click="Btn_test_Click">Test</Button>
+                                                 </DataTemplate>
+                                                 </DataGridTemplateColumn.CellTemplate>
+                                                 </DataGridTemplateColumn>-->
+                                            <DataGridTextColumn
+                                                Width="100"
+                                                Header="Status"
+                                                Visibility="Visible"
+                                                IsReadOnly="True"
+                                                Binding="{Binding Path=connectStatus, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                            </DataGridTextColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
-                                </Grid>
-                                <Grid Grid.Row="1">
-                                    <StackPanel 
-                                        Orientation="Horizontal"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center">
-                                        <Button
-                                            Name="addDeviceRF"
-                                            BorderThickness="0"
-                                            Background="Transparent"
-                                            Margin="15 0"
-                                            Padding="3 0"
-                                            Width="Auto"
-                                            Height="23"
-                                            Click="AddDeviceRF_Click">
-                                            <iconPacks:PackIconMaterial Kind="Plus" Foreground="DarkGreen"/>
-                                        </Button>
-                                    </StackPanel>
                                 </Grid>
                             </Grid>
 
@@ -282,14 +364,12 @@
                     HorizontalAlignment="Stretch"
                     ></GridSplitter>
                 <Grid Grid.Column="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" 
-                          Background="#F1F1F1">
+                    <Grid Background="#F1F1F1">
                         <TabControl
                             Name="DataTabControl"
+                            Padding="0"
+                            VerticalContentAlignment="Center"
+                            HorizontalContentAlignment="Right"
                             FontFamily="Corsiva"
                             SelectionChanged="DataTabControl_SelectionChanged"
                             FontSize="12">
@@ -319,220 +399,243 @@
                                             <Grid Height="Auto">
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition></RowDefinition>
-                                                    <RowDefinition Height="50"></RowDefinition>
+                                                    <RowDefinition Height="30"></RowDefinition>
                                                 </Grid.RowDefinitions>
-                                                <StackPanel 
-                                                    Grid.Row="0"
-                                                    Orientation="Vertical">
-                                                    <StackPanel>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="90"></ColumnDefinition>
-                                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Grid Grid.Column="0">
-                                                                <Label FontWeight="Normal" Content="ID:"></Label>
+                                                <Grid Grid.Row="0">
+                                                    <StackPanel
+                                                        Orientation="Vertical">
+                                                        <StackPanel>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0">
+                                                                    <Label FontWeight="Normal" Content="Serial:"></Label>
+                                                                </Grid>
+                                                                <Grid Grid.Column="1">
+                                                                    <TextBox
+                                                                        Name="tb_serialID"
+                                                                        Margin="5 0"
+                                                                        IsReadOnly="True"
+                                                                        VerticalAlignment="Center"
+                                                                        TextAlignment="Left"
+                                                                        Text=""></TextBox>
+                                                                </Grid>
                                                             </Grid>
-                                                            <Grid Grid.Column="1">
-                                                                <TextBox
-                                                                    Name="tb_serialID"
-                                                                    Margin="5 0"
-                                                                    IsReadOnly="True"
-                                                                    VerticalAlignment="Center"
-                                                                    TextAlignment="Left"
-                                                                    Text=""></TextBox>
+                                                        </StackPanel>
+                                                        <StackPanel>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0">
+                                                                    <Label FontWeight="Normal" Content="Name:"></Label>
+                                                                </Grid>
+                                                                <Grid Grid.Column="1">
+                                                                    <TextBox
+                                                                        Name="tb_name"
+                                                                        Margin="5 0"
+                                                                        IsReadOnly="True"
+                                                                        VerticalAlignment="Center"
+                                                                        TextAlignment="Left"
+                                                                        Text=""></TextBox>
+                                                                </Grid>
                                                             </Grid>
-                                                        </Grid>
-                                                    </StackPanel>
-                                                    <StackPanel>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="90"></ColumnDefinition>
-                                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Grid Grid.Column="0">
-                                                                <Label FontWeight="Normal" Content="Name:"></Label>
+                                                        </StackPanel>
+                                                        <StackPanel>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0">
+                                                                    <Label FontWeight="Normal" Content="Class:"></Label>
+                                                                </Grid>
+                                                                <Grid Grid.Column="1">
+                                                                    <ComboBox 
+                                                                        Name="cbb_class"
+                                                                        IsEnabled="False"
+                                                                        Margin="5 0"
+                                                                        Height="20"
+                                                                        SelectionChanged="Cbb_class_SelectionChanged">
+                                                                        <ComboBoxItem>Teacher</ComboBoxItem>
+                                                                        <ComboBoxItem>Security</ComboBoxItem>
+                                                                        <ComboBoxItem>Student</ComboBoxItem>
+                                                                        <ComboBoxItem>Guest</ComboBoxItem>
+                                                                    </ComboBox>
+                                                                </Grid>
                                                             </Grid>
-                                                            <Grid Grid.Column="1">
-                                                                <TextBox
-                                                                    Name="tb_name"
-                                                                    Margin="5 0"
-                                                                    IsReadOnly="True"
-                                                                    VerticalAlignment="Center"
-                                                                    TextAlignment="Left"
-                                                                    Text=""></TextBox>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </StackPanel>
-                                                    <StackPanel>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="90"></ColumnDefinition>
-                                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Grid Grid.Column="0">
-                                                                <Label FontWeight="Normal" Content="Class:"></Label>
-                                                            </Grid>
-                                                            <Grid Grid.Column="1">
-                                                                <ComboBox 
-                                                                    Name="cbb_class"
-                                                                    IsEnabled="False"
-                                                                    Margin="5 0"
-                                                                    Height="20">
-                                                                    <ComboBoxItem>Teacher</ComboBoxItem>
-                                                                    <ComboBoxItem>Security</ComboBoxItem>
-                                                                    <ComboBoxItem>Student</ComboBoxItem>
-                                                                    <ComboBoxItem>Guest</ComboBoxItem>
-                                                                </ComboBox>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </StackPanel>
-                                                    <StackPanel>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="90"></ColumnDefinition>
-                                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Grid Grid.Column="0">
-                                                                <Label FontWeight="Normal" Content="Gender:"></Label>
-                                                            </Grid>
-                                                            <Grid Grid.Column="1">
-                                                                <StackPanel 
-                                                                    VerticalAlignment="Center"
-                                                                    HorizontalAlignment="Left">
-                                                                    <StackPanel Orientation="Horizontal" Margin="5 0">
-                                                                        <RadioButton 
-                                                                            Name="rb_male"
-                                                                            Margin="5 0" 
-                                                                            IsEnabled="False" 
-                                                                            GroupName="gender" 
-                                                                            FontWeight="Normal" 
-                                                                            Content="Male"></RadioButton>
-                                                                        <RadioButton 
-                                                                            Name="rb_female"
-                                                                            Margin="5 0" 
-                                                                            IsEnabled="False" 
-                                                                            GroupName="gender"
-                                                                            FontWeight="Normal" 
-                                                                            Content="Female"></RadioButton>
+                                                        </StackPanel>
+                                                        <StackPanel>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0">
+                                                                    <Label FontWeight="Normal" Content="Gender:"></Label>
+                                                                </Grid>
+                                                                <Grid Grid.Column="1">
+                                                                    <StackPanel 
+                                                                        VerticalAlignment="Center"
+                                                                        HorizontalAlignment="Left">
+                                                                        <StackPanel Orientation="Horizontal" Margin="5 0">
+                                                                            <RadioButton 
+                                                                                Name="rb_male"
+                                                                                Margin="5 0" 
+                                                                                IsEnabled="False" 
+                                                                                GroupName="gender" 
+                                                                                FontWeight="Normal" 
+                                                                                Content="Male"></RadioButton>
+                                                                            <RadioButton 
+                                                                                Name="rb_female"
+                                                                                Margin="5 0" 
+                                                                                IsEnabled="False" 
+                                                                                GroupName="gender"
+                                                                                FontWeight="Normal" 
+                                                                                Content="Female"></RadioButton>
+                                                                        </StackPanel>
                                                                     </StackPanel>
-                                                                </StackPanel>
+                                                                </Grid>
                                                             </Grid>
-                                                        </Grid>
+                                                        </StackPanel>
+                                                        <StackPanel>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0">
+                                                                    <Label FontWeight="Normal" Content="Date of Birth:"></Label>
+                                                                </Grid>
+                                                                <Grid Grid.Column="1">
+                                                                    <DatePicker
+                                                                        Name="dp_dateofbirth"
+                                                                        Margin="5 0"
+                                                                        IsEnabled="False"
+                                                                        VerticalAlignment="Center"
+                                                                        Text=""></DatePicker>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </StackPanel>
+                                                        <StackPanel>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0">
+                                                                    <Label FontWeight="Normal" Content="Student Name:"></Label>
+                                                                </Grid>
+                                                                <Grid Grid.Column="1">
+                                                                    <TextBox
+                                                                        Name="tb_student"
+                                                                        Margin="5 0"
+                                                                        IsReadOnly="True"
+                                                                        VerticalAlignment="Center"
+                                                                        TextAlignment="Left"
+                                                                        Text=""></TextBox>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </StackPanel>
+                                                        <StackPanel>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0">
+                                                                    <Label FontWeight="Normal" Content="Email:"></Label>
+                                                                </Grid>
+                                                                <Grid Grid.Column="1">
+                                                                    <TextBox
+                                                                        Name="tb_email"
+                                                                        Margin="5 0"
+                                                                        IsReadOnly="True"
+                                                                        VerticalAlignment="Center"
+                                                                        TextAlignment="Left"
+                                                                        Text=""></TextBox>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </StackPanel>
+                                                        <StackPanel>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0">
+                                                                    <Label FontWeight="Normal" Content="Address:"></Label>
+                                                                </Grid>
+                                                                <Grid Grid.Column="1">
+                                                                    <TextBox
+                                                                        Name="tb_address"
+                                                                        Margin="5 0"
+                                                                        IsReadOnly="True"
+                                                                        VerticalAlignment="Center"
+                                                                        TextAlignment="Left"
+                                                                        Text=""></TextBox>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </StackPanel>
+                                                        <StackPanel>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0">
+                                                                    <Label FontWeight="Normal" Content="Phone:"></Label>
+                                                                </Grid>
+                                                                <Grid Grid.Column="1">
+                                                                    <TextBox
+                                                                        Name="tb_phone"
+                                                                        Margin="5 0"
+                                                                        IsReadOnly="True"
+                                                                        VerticalAlignment="Center"
+                                                                        TextAlignment="Left"
+                                                                        Text=""></TextBox>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </StackPanel>
                                                     </StackPanel>
-                                                    <StackPanel>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="90"></ColumnDefinition>
-                                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Grid Grid.Column="0">
-                                                                <Label FontWeight="Normal" Content="Date of Birth:"></Label>
-                                                            </Grid>
-                                                            <Grid Grid.Column="1">
-                                                                <TextBox
-                                                                    Name="tb_dateofbirth"
-                                                                    Margin="5 0"
-                                                                    IsReadOnly="True"
-                                                                    VerticalAlignment="Center"
-                                                                    TextAlignment="Left"
-                                                                    Text=""></TextBox>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </StackPanel>
-                                                    <StackPanel>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="90"></ColumnDefinition>
-                                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Grid Grid.Column="0">
-                                                                <Label FontWeight="Normal" Content="Student Name:"></Label>
-                                                            </Grid>
-                                                            <Grid Grid.Column="1">
-                                                                <TextBox
-                                                                    Name="tb_student"
-                                                                    Margin="5 0"
-                                                                    IsReadOnly="True"
-                                                                    VerticalAlignment="Center"
-                                                                    TextAlignment="Left"
-                                                                    Text=""></TextBox>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </StackPanel>
-                                                    <StackPanel>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="90"></ColumnDefinition>
-                                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Grid Grid.Column="0">
-                                                                <Label FontWeight="Normal" Content="Email:"></Label>
-                                                            </Grid>
-                                                            <Grid Grid.Column="1">
-                                                                <TextBox
-                                                                    Name="tb_email"
-                                                                    Margin="5 0"
-                                                                    IsReadOnly="True"
-                                                                    VerticalAlignment="Center"
-                                                                    TextAlignment="Left"
-                                                                    Text=""></TextBox>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </StackPanel>
-                                                    <StackPanel>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="90"></ColumnDefinition>
-                                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Grid Grid.Column="0">
-                                                                <Label FontWeight="Normal" Content="Address:"></Label>
-                                                            </Grid>
-                                                            <Grid Grid.Column="1">
-                                                                <TextBox
-                                                                    Name="tb_address"
-                                                                    Margin="5 0"
-                                                                    IsReadOnly="True"
-                                                                    VerticalAlignment="Center"
-                                                                    TextAlignment="Left"
-                                                                    Text=""></TextBox>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </StackPanel>
-                                                    <StackPanel>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="90"></ColumnDefinition>
-                                                                <ColumnDefinition Width="*"></ColumnDefinition>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Grid Grid.Column="0">
-                                                                <Label FontWeight="Normal" Content="Phone:"></Label>
-                                                            </Grid>
-                                                            <Grid Grid.Column="1">
-                                                                <TextBox
-                                                                    Name="tb_phone"
-                                                                    Margin="5 0"
-                                                                    IsReadOnly="True"
-                                                                    VerticalAlignment="Center"
-                                                                    TextAlignment="Left"
-                                                                    Text=""></TextBox>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                                <Grid Grid.Row="1">
+                                                </Grid>
+                                                <Grid Grid.Row="1" Background="#f1f1f1">
                                                     <StackPanel 
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center"
                                                         Orientation="Horizontal">
-                                                        <Button 
-                                                            Margin="5 0"
-                                                            BorderBrush="#a9a9a9"
-                                                            FontWeight="Normal"
-                                                            Height="20"
-                                                            Width="70"
-                                                            Content="Edit"></Button>
+                                                        <Button
+                                                            Name="save"
+                                                            BorderThickness="0"
+                                                            Background="Transparent"
+                                                            Margin="0 0 0 0"
+                                                            Padding="0 0 0 0"
+                                                            Width="100"
+                                                            Visibility="Hidden"
+                                                            Height="25"
+                                                            Click="Btn_save_Click">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Image 
+                                                                    Width="12" 
+                                                                    Source="pack://siteoforigin:,,,/Resources/table_edit.png"/>
+                                                                <Label 
+                                                                    FontSize="10"
+                                                                    >Save Profile</Label>
+                                                            </StackPanel>
+                                                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                                                        </Button>
+                                                        <!--<Button 
+                                                             Name="btn_editProfile"
+                                                             Margin="5 0"
+                                                             BorderBrush="#a9a9a9"
+                                                             FontWeight="Normal"
+                                                             Height="20"
+                                                             Width="70"
+                                                             Content="Edit"
+                                                             Click="Edit_Click"></Button>-->
                                                         <!--<Button 
                                                              Margin="5 0"
                                                              BorderBrush="#a9a9a9"
@@ -649,59 +752,6 @@
                             </TabItem>
                         </TabControl>
                     </Grid>
-                    <Border Grid.Row="1"
-                            BorderThickness="1 0 1 1"
-                            BorderBrush="#A9A9A9"
-                            Background="#F1F1F1">
-                        <StackPanel 
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center">
-                            <!--<Button
-                                Name="btn_requestListTimeCheck"
-                                BorderBrush="#a9a9a9"
-                                FontFamily="Corsiva"
-                                FontWeight="Normal"
-                                Margin="5 0"
-                                Padding="15 0"
-                                Width="Auto"
-                                Height="20"
-                                Content="Get Timesheet"
-                                Click="Btn_requestListTimeCheck_Click"></Button>-->
-                            <Button
-                                Name="btn_sendNewListPerson"
-                                BorderBrush="#a9a9a9"
-                                FontFamily="Corsiva"
-                                Margin="5 0"
-                                Padding="15 0"
-                                FontWeight="Normal"
-                                Width="Auto"
-                                Height="20"
-                                Content="Sync Profile"
-                                Click="Btn_sendNewListPerson_Click"></Button>
-                            <!--<Button
-                                 Name="import"
-                                 Margin="15 0"
-                                 Width="70"
-                                 Height="23"
-                                 Click="Import_Click">Import</Button>-->
-                            <!--<Button
-                                 Name="test"
-                                 Margin="15 0"
-                                 Width="70"
-                                 Height="23"
-                                 Click="test_Click">test</Button>-->
-                            <Button
-                                Name="cancel"
-                                BorderBrush="#a9a9a9"
-                                FontFamily="Corsiva"
-                                Margin="5 0"
-                                Padding="15 0"
-                                Width="70"
-                                Height="20"
-                                Click="Cancel_Click">Cancel</Button>
-                        </StackPanel>
-                    </Border>
                 </Grid>
             </Grid>
             

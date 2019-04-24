@@ -37,7 +37,7 @@ namespace SchoolManagement.Model
             this.mainW = mainW;
 
             timerSyncTimeSheet = new System.Timers.Timer();
-            timerSyncTimeSheet.Interval = 5000;
+            timerSyncTimeSheet.Interval = Properties.Settings.Default.RequestTimeCheckInterval;
             timerSyncTimeSheet.Elapsed += TimerSyncTimeSheet_Elapsed;
             timerSyncTimeSheet.AutoReset = true;
             timerSyncTimeSheet.Start();
@@ -109,7 +109,7 @@ namespace SchoolManagement.Model
             return false;
         }
 
-        public void ReloadListDeviceRFDGV()
+        public void ReloadListDeviceRFDGV(DeviceRF removedDevice = null)
         {
             try
             {
@@ -123,6 +123,12 @@ namespace SchoolManagement.Model
                         deviceRFList.Add(item);
                     }
                 }
+                if(removedDevice != null)
+                {
+                    deviceRFList.Remove(removedDevice);
+                }
+
+
                 if (groupedDevice.IsEditingItem)
                     groupedDevice.CommitEdit();
                 if (groupedDevice.IsAddingNew)

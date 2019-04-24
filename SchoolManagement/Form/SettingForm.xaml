@@ -1,0 +1,82 @@
+﻿<Window x:Class="SchoolManagement.Form.SettingForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchoolManagement.Form"
+        mc:Ignorable="d"
+        Title="Edit setting definition" Height="200" Width="350"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="#f1f1f1">
+            <GroupBox 
+                Name="gb_setting"
+                FontFamily="Corsiva"
+                BorderBrush="#a9a9a9"
+                Header="Setting"
+                Margin="5 10">
+                <Grid>
+                    <StackPanel 
+                        Orientation="Vertical"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Label Name="lb_requestProfile"
+                                       Content="Request profile interval: "></Label>
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <TextBox 
+                                    Height="20"
+                                    Padding="1 3"
+                                    VerticalContentAlignment="Center"
+                                    HorizontalContentAlignment="Right"
+                                    Name="tb_requestProfileInterval"
+                                    Text="0"
+                                    PreviewTextInput="Tb_requestProfileInterval_PreviewTextInput"></TextBox>
+                            </Grid>
+                            <Grid Grid.Column="2">
+                                <Label Content="minutes">
+                                </Label>
+                            </Grid>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0"></Grid>
+                            <Grid Grid.Column="1"></Grid>
+                            <Grid Grid.Column="2"></Grid>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <Grid Grid.Row="1" 
+                Background="#f1f1f1">
+            <StackPanel
+                Orientation="Horizontal"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <Button
+                    Name="btn_save"
+                    FontFamily="Corsiva"
+                    Width="70"
+                    Height="20"
+                    Content="Save"
+                    Click="Btn_save_Click"></Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

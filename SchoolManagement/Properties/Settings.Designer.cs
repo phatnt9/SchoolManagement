@@ -46,5 +46,17 @@ namespace SchoolManagement.Properties {
                 this["ComPortBaudrate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
+        public int RequestTimeCheckInterval {
+            get {
+                return ((int)(this["RequestTimeCheckInterval"]));
+            }
+            set {
+                this["RequestTimeCheckInterval"] = value;
+            }
+        }
     }
 }

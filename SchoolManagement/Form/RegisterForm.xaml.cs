@@ -155,11 +155,14 @@ namespace SchoolManagement.Form
                 return;
             }
 
-            if (String.IsNullOrEmpty(tb_studentName.Text.ToString()) || tb_studentName.Text.ToString().Trim() == "")
+            if (cbb_class.Text.ToString() == "Student")
             {
-                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_studentName", "tb_studentName"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.tb_studentName.Focus();
-                return;
+                if (String.IsNullOrEmpty(tb_studentName.Text.ToString()) || tb_studentName.Text.ToString().Trim() == "")
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_studentName", "tb_studentName"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.tb_studentName.Focus();
+                    return;
+                }
             }
 
             if (String.IsNullOrEmpty(tb_email.Text.ToString()) || tb_email.Text.ToString().Trim() == "")
@@ -193,13 +196,19 @@ namespace SchoolManagement.Form
             person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
             person.CLASS = cbb_class.Text;
             person.BIRTHDAY = (DateTime)dp_dateofbirth.SelectedDate;
-            person.STUDENT = tb_studentName.Text;
+            if (person.CLASS == "Student")
+            {
+                person.STUDENT = tb_studentName.Text;
+            }
+            else
+            {
+                person.STUDENT = "";
+            }
             person.EMAIL = tb_email.Text;
             person.ADDRESS = tb_address.Text;
             person.PHONE = tb_phone.Text;
             try
             {
-
                 SqliteDataAccess.SaveProfileRF(person);
                 lb_status.Content = "New Profile Added";
                 ClearForm();
@@ -246,6 +255,27 @@ namespace SchoolManagement.Form
                 btn_scanId.IsEnabled = true;
                 btn_edit.Content = "Edit";
             }
+        }
+
+        private void Cbb_class_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if ((cbb_class.SelectedItem as ComboBoxItem).Content.ToString() != "Student")
+                {
+                    tb_studentName.Text = "";
+                    tb_studentName.IsEnabled = false;
+                }
+                else
+                {
+                    tb_studentName.IsEnabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+
         }
     }
 }
