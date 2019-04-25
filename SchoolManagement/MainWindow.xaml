@@ -6,7 +6,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:SchoolManagement"
         mc:Ignorable="d"
-        Title="ATEK4U" 
+        Title="ATEK  Gate Management System" 
         Height="500" 
         Width="800"
         MinHeight="500"
@@ -14,9 +14,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel>
@@ -36,31 +35,112 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" Grid.ColumnSpan="2">
-                <Border Background="#F1F1F1">
-                    <Label 
-                        FontSize="28"
-                        HorizontalContentAlignment="Center" 
-                        VerticalContentAlignment="Center"
-                        FontWeight="Bold">
-                        GATE MANAGEMENT SYSTEM
-                    </Label>
-                </Border>
-            </Grid>
-            <Grid Grid.Column="1" >
-                <!--<StackPanel HorizontalAlignment="Right">
-                     <Image Width="50" Margin="30 0"
-                     Source="pack://siteoforigin:,,,/Resources/LOGO N2 - Copy.jpg"/>
-                     </StackPanel>-->
-            </Grid>
-            
+            <Border Background="#F1F1F1">
+                <ToolBarTray Background="#F1F1F1">
+                    <ToolBar>
+                        <Button
+                            Name="a"
+                            BorderThickness="0"
+                            Background="#F1F1F1"
+                            Margin="0 0 0 0"
+                            Padding="0 0 0 0"
+                            Width="90"
+                            Height="25"
+                            Click="Registration_Click">
+                            <StackPanel 
+                                Orientation="Horizontal">
+                                <Image 
+                                    Width="12" 
+                                    Source="pack://siteoforigin:,,,/Resources/table_add.png"/>
+                                <Label 
+                                    FontSize="10"
+                                    >Add Profile</Label>
+                            </StackPanel>
+                            <!--<iconPacks:PackIconMaterial Kind="Plus" Foreground="Green"/>-->
+                        </Button>
+                        <Button
+                            Name="b"
+                            BorderThickness="0"
+                            Background="#F1F1F1"
+                            Margin="0 0 0 0"
+                            Padding="0 0 0 0"
+                            Width="90"
+                            Height="25"
+                            Click="Btn_delete_Click">
+                            <StackPanel 
+                                Orientation="Horizontal">
+                                <Image 
+                                    Width="12" 
+                                    Source="pack://siteoforigin:,,,/Resources/table_delete.png"/>
+                                <Label 
+                                    FontSize="10"
+                                    >Remove Profile</Label>
+                            </StackPanel>
+                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                        </Button>
+                        <Button
+                            Name="c"
+                            BorderThickness="0"
+                            Background="#F1F1F1"
+                            Margin="0 0 0 0"
+                            Padding="0 0 0 0"
+                            Width="90"
+                            Height="25"
+                            Click="Btn_edit_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image 
+                                    Width="12" 
+                                    Source="pack://siteoforigin:,,,/Resources/table_edit.png"/>
+                                <Label 
+                                    FontSize="10"
+                                    >Edit Profile</Label>
+                            </StackPanel>
+                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                        </Button>
+                        <Button
+                            Name="d"
+                            BorderThickness="0"
+                            Background="#F1F1F1"
+                            Margin="0 0 0 0"
+                            Padding="0 0 0 0"
+                            Width="90"
+                            Height="25"
+                            Click="Btn_sendNewListPerson_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image 
+                                    Width="12" 
+                                    Source="pack://siteoforigin:,,,/Resources/database_refresh.png"/>
+                                <Label 
+                                    FontSize="10"
+                                    >Sync Profile</Label>
+                            </StackPanel>
+                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                        </Button>
+                        <Button
+                            Name="e"
+                            BorderThickness="0"
+                            Background="#F1F1F1"
+                            Margin="0 0 0 0"
+                            Padding="0 0 0 0"
+                            Width="90"
+                            Height="25"
+                            Click="Btn_export_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <Image 
+                                    Width="12" 
+                                    Source="pack://siteoforigin:,,,/Resources/script.png"/>
+                                <Label 
+                                    FontSize="10"
+                                    >Export</Label>
+                            </StackPanel>
+                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                        </Button>
+                    </ToolBar>
+                </ToolBarTray>
+            </Border>
         </Grid>
         <Grid Grid.Row="2" Background="#F1F1F1">
-            <Grid Margin="10 0">
+            <Grid Margin="10 0 10 20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="6*"></ColumnDefinition>
                     <ColumnDefinition Width="3"></ColumnDefinition>
@@ -80,11 +160,16 @@
                             FontWeight="Normal">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="25"></RowDefinition>
+                                    <RowDefinition Height="50"></RowDefinition>
                                     <RowDefinition></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid Grid.Row="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
                                     <StackPanel 
+                                        Grid.Row="0"
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center">
@@ -94,7 +179,7 @@
                                             Background="Transparent"
                                             Margin="0 0 0 0"
                                             Padding="0 0 0 0"
-                                            Width="100"
+                                            Width="90"
                                             Height="25"
                                             Click="Registration_Click">
                                             <StackPanel Orientation="Horizontal"
@@ -114,7 +199,7 @@
                                             Background="Transparent"
                                             Margin="0 0 0 0"
                                             Padding="0 0 0 0"
-                                            Width="100"
+                                            Width="90"
                                             Height="25"
                                             Click="Btn_delete_Click">
                                             <StackPanel Orientation="Horizontal">
@@ -133,7 +218,7 @@
                                             Background="Transparent"
                                             Margin="0 0 0 0"
                                             Padding="0 0 0 0"
-                                            Width="100"
+                                            Width="90"
                                             Height="25"
                                             Click="Btn_edit_Click">
                                             <StackPanel Orientation="Horizontal">
@@ -152,7 +237,7 @@
                                             Background="Transparent"
                                             Margin="0 0 0 0"
                                             Padding="0 0 0 0"
-                                            Width="100"
+                                            Width="90"
                                             Height="25"
                                             Click="Btn_sendNewListPerson_Click">
                                             <StackPanel Orientation="Horizontal">
@@ -165,11 +250,37 @@
                                             </StackPanel>
                                             <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
                                         </Button>
+                                        <Button
+                                            Name="export"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Margin="0 0 0 0"
+                                            Padding="0 0 0 0"
+                                            Width="90"
+                                            Height="25"
+                                            Click="Btn_export_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image 
+                                                    Width="12" 
+                                                    Source="pack://siteoforigin:,,,/Resources/script.png"/>
+                                                <Label 
+                                                    FontSize="10"
+                                                    >Export</Label>
+                                            </StackPanel>
+                                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                                        </Button>
+                                    </StackPanel>
+                                    <StackPanel
+                                        Grid.Row="1"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center">
+
                                     </StackPanel>
                                 </Grid>
                                 <Grid Grid.Row="1">
                                     <DataGrid 
-                                        Margin="0 5 0 0"
+                                        Margin="0 5 0 -3"
                                         Background="White"
                                         Name="AccountListData"
                                         ItemsSource="{Binding groupedAccount}"
@@ -286,7 +397,7 @@
                                 </Grid>
                                 <Grid Grid.Row="1">
                                     <DataGrid
-                                        Margin="0 5 0 0"
+                                        Margin="0 5 0 -3"
                                         Background="White"
                                         Name="DeviceRFListData"
                                         ItemsSource="{Binding groupedDevice}"
@@ -602,7 +713,7 @@
                                                         </StackPanel>
                                                     </StackPanel>
                                                 </Grid>
-                                                <Grid Grid.Row="1" Background="#f1f1f1">
+                                                <Grid Grid.Row="1" Background="White">
                                                     <StackPanel 
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center"
@@ -754,9 +865,9 @@
                     </Grid>
                 </Grid>
             </Grid>
-            
+
         </Grid>
-        <Grid Grid.Row="3">
+        <!--<Grid Grid.Row="3">
             <DockPanel>
                 <StatusBar DockPanel.Dock="Bottom">
                     <StatusBarItem>
@@ -782,7 +893,8 @@
                     </StatusBarItem>
                     <Separator></Separator>
                     <StatusBarItem>
-                        <!--<Grid>
+                        -->
+        <!--<Grid>
                              <StackPanel
                              HorizontalAlignment="Center"
                              VerticalAlignment="Center"
@@ -790,6 +902,7 @@
                              <Label Name="processStatusText" Margin="0 -1" Content="Ready"></Label>
                              </StackPanel>
                              </Grid>-->
+        <!--
                     </StatusBarItem>
                     <StatusBarItem>
                         <Grid>
@@ -810,6 +923,6 @@
                     </StatusBarItem>
                 </StatusBar>
             </DockPanel>
-        </Grid>
+        </Grid>-->
     </Grid>
 </Window>
