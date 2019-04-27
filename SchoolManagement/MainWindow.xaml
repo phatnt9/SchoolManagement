@@ -16,7 +16,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="0"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel>
@@ -60,7 +60,7 @@
             
         </Grid>
         <Grid Grid.Row="2" Background="#F1F1F1">
-            <Grid Margin="10 0">
+            <Grid Margin="10 0 10 20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="6*"></ColumnDefinition>
                     <ColumnDefinition Width="3"></ColumnDefinition>
@@ -169,7 +169,7 @@
                                 </Grid>
                                 <Grid Grid.Row="1">
                                     <DataGrid 
-                                        Margin="0 5 0 0"
+                                        Margin="0 5 0 -3"
                                         Background="White"
                                         Name="AccountListData"
                                         ItemsSource="{Binding groupedAccount}"
@@ -286,7 +286,7 @@
                                 </Grid>
                                 <Grid Grid.Row="1">
                                     <DataGrid
-                                        Margin="0 5 0 0"
+                                        Margin="0 5 0 -3"
                                         Background="White"
                                         Name="DeviceRFListData"
                                         ItemsSource="{Binding groupedDevice}"
@@ -602,7 +602,7 @@
                                                         </StackPanel>
                                                     </StackPanel>
                                                 </Grid>
-                                                <Grid Grid.Row="1" Background="#f1f1f1">
+                                                <Grid Grid.Row="1" Background="White">
                                                     <StackPanel 
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center"
@@ -615,7 +615,6 @@
                                                             Padding="0 0 0 0"
                                                             Width="100"
                                                             Visibility="Hidden"
-                                                            Height="25"
                                                             Click="Btn_save_Click">
                                                             <StackPanel Orientation="Horizontal">
                                                                 <Image 
@@ -756,7 +755,7 @@
             </Grid>
             
         </Grid>
-        <Grid Grid.Row="3">
+        <!--<Grid Grid.Row="3">
             <DockPanel>
                 <StatusBar DockPanel.Dock="Bottom">
                     <StatusBarItem>
@@ -782,14 +781,14 @@
                     </StatusBarItem>
                     <Separator></Separator>
                     <StatusBarItem>
-                        <!--<Grid>
+                        --><!--<Grid>
                              <StackPanel
                              HorizontalAlignment="Center"
                              VerticalAlignment="Center"
                              Orientation="Horizontal">
                              <Label Name="processStatusText" Margin="0 -1" Content="Ready"></Label>
                              </StackPanel>
-                             </Grid>-->
+                             </Grid>--><!--
                     </StatusBarItem>
                     <StatusBarItem>
                         <Grid>
@@ -810,6 +809,6 @@
                     </StatusBarItem>
                 </StatusBar>
             </DockPanel>
-        </Grid>
+        </Grid>-->
     </Grid>
 </Window>
