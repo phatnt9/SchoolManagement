@@ -506,5 +506,10 @@ namespace SchoolManagement
                 logFile.Error(ex.Message);
             }
         }
+
+        private void Btn_export_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
