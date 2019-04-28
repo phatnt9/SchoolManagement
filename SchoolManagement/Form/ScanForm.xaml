@@ -1,0 +1,25 @@
+﻿<Window x:Class="SchoolManagement.Form.ScanForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchoolManagement.Form"
+        mc:Ignorable="d"
+        Title="ScanForm" Height="110" Width="250" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+    <Grid Background="#f1f1f1">
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBox 
+                Name="tb_pinno"
+                Width="150"
+                PreviewKeyDown="Tb_pinno_PreviewKeyDown"
+                PreviewTextInput="Tb_pinno_PreviewTextInput">
+                
+            </TextBox>
+            <Label Margin="5" HorizontalContentAlignment="Center">
+                Scaning...
+            </Label>
+        </StackPanel>
+    </Grid>
+</Window>

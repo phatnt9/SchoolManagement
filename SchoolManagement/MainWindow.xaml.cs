@@ -54,8 +54,9 @@ namespace SchoolManagement
 
         private void Import_Click(object sender, RoutedEventArgs e)
         {
-            ImportForm importForm = new ImportForm();
+            ImportForm importForm = new ImportForm(this);
             importForm.ShowDialog();
+            mainModel.ReloadListProfileRFDGV();
         }
 
         private void test_Click(object sender, RoutedEventArgs e)
@@ -164,7 +165,7 @@ namespace SchoolManagement
             try
             {
                 ProfileRF profileRF = AccountListData.SelectedItem as ProfileRF;
-                SqliteDataAccess.SaveTimeCheckRF(profileRF.SERIAL_ID, DateTime.Now);
+                SqliteDataAccess.SaveTimeCheckRF(profileRF.PIN_NO, DateTime.Now);
             }
             catch (Exception ex)
             {
@@ -253,11 +254,14 @@ namespace SchoolManagement
                 if (AccountListData.SelectedItem != null)
                 {
                     ProfileRF temp = AccountListData.SelectedItem as ProfileRF;
-                    tb_serialID.Text = temp.SERIAL_ID;
+                    tb_serialID.Text = temp.PIN_NO;
+                    tb_adno.Text = temp.ADNO;
                     tb_name.Text = temp.NAME;
-                    dp_dateofbirth.Text = temp.BIRTHDAY.ToLongDateString();
+                    dp_dateofbirth.Text = temp.DOB.ToLongDateString();
+                    dp_disu.Text = temp.DISU.ToLongDateString();
                     tb_student.Text = temp.STUDENT;
                     cbb_class.Text = temp.CLASS;
+                    cbb_status.Text = temp.STATUS;
                     tb_email.Text = temp.EMAIL;
                     tb_address.Text = temp.ADDRESS;
                     tb_phone.Text = temp.PHONE;
@@ -282,12 +286,20 @@ namespace SchoolManagement
         {
             try
             {
-                dp_dateofbirth.IsEnabled = rb_male.IsEnabled = rb_female.IsEnabled = cbb_class.IsEnabled = false;
+                dp_dateofbirth.IsEnabled = 
+                    dp_disu.IsEnabled = 
+                    rb_male.IsEnabled = 
+                    rb_female.IsEnabled =
+                    cbb_status.IsEnabled = 
+                    cbb_class.IsEnabled = false;
+                
                 tb_address.IsReadOnly =
                     tb_email.IsReadOnly =
+                    tb_adno.IsReadOnly =
                     tb_name.IsReadOnly =
                     tb_phone.IsReadOnly =
                     tb_student.IsReadOnly =
+                    cbb_status.IsReadOnly =
                     cbb_class.IsReadOnly = true;
                 return true;
             }
@@ -302,12 +314,19 @@ namespace SchoolManagement
         {
             try
             {
-                dp_dateofbirth.IsEnabled = rb_male.IsEnabled = rb_female.IsEnabled = cbb_class.IsEnabled = true;
+                dp_dateofbirth.IsEnabled = 
+                    dp_disu.IsEnabled = 
+                    rb_male.IsEnabled = 
+                    rb_female.IsEnabled = 
+                    cbb_status.IsEnabled = 
+                    cbb_class.IsEnabled = true;
                 tb_address.IsReadOnly = 
                     tb_email.IsReadOnly = 
+                    tb_adno.IsReadOnly = 
                     tb_name.IsReadOnly = 
                     tb_phone.IsReadOnly = 
                     tb_student.IsReadOnly = 
+                    cbb_status.IsReadOnly = 
                     cbb_class.IsReadOnly = false;
                 tb_name.Focus();
                 return true;
@@ -342,7 +361,8 @@ namespace SchoolManagement
                 }
                 if (EnableEditProfile())
                 {
-                    edit.IsEnabled = false;
+                    editProfile.IsEnabled = false;
+                    MainTabControl.IsEnabled = false;
                     save.Visibility = Visibility.Visible;
                     AccountListData.IsEnabled = false;
                 }
@@ -411,11 +431,14 @@ namespace SchoolManagement
                 if (DisableEditProfile())
                 {
                     ProfileRF person = new ProfileRF();
-                    person.SERIAL_ID = tb_serialID.Text;
+                    person.PIN_NO = tb_serialID.Text;
+                    person.ADNO = tb_adno.Text;
                     person.NAME = tb_name.Text;
                     person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
                     person.CLASS = cbb_class.Text;
-                    person.BIRTHDAY = (DateTime)dp_dateofbirth.SelectedDate;
+                    person.STATUS = cbb_status.Text;
+                    person.DOB = (DateTime)dp_dateofbirth.SelectedDate;
+                    person.DISU = (DateTime)dp_disu.SelectedDate;
                     if (person.CLASS == "Student")
                     {
                         person.STUDENT = tb_student.Text;
@@ -432,14 +455,16 @@ namespace SchoolManagement
                     {
                         SqliteDataAccess.UpdateProfileRF(person);
                         mainModel.ReloadListProfileRFDGV();
-                        edit.IsEnabled = true;
+                        editProfile.IsEnabled = true;
+                        MainTabControl.IsEnabled = true;
                         save.Visibility = Visibility.Hidden;
                         AccountListData.IsEnabled = true;
                     }
                     catch (Exception ex)
                     {
                         logFile.Error(ex.Message);
-                        edit.IsEnabled = true;
+                        editProfile.IsEnabled = true;
+                        MainTabControl.IsEnabled = true;
                         save.Visibility = Visibility.Hidden;
                         AccountListData.IsEnabled = true;
                     }
@@ -449,7 +474,8 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
-                edit.IsEnabled = true;
+                editProfile.IsEnabled = true;
+                MainTabControl.IsEnabled = true;
                 save.Visibility = Visibility.Hidden;
                 AccountListData.IsEnabled = true;
             }
@@ -508,6 +534,16 @@ namespace SchoolManagement
         }
 
         private void Btn_export_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Export_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Cbb_status_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

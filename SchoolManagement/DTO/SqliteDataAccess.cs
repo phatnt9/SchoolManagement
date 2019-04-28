@@ -35,17 +35,17 @@ namespace SchoolManagement.DTO
             }
         }
 
-        public static List<DateTime> LoadTimeCheckRF(string serialID, DateTime time)
+        public static List<DateTime> LoadTimeCheckRF(string PIN_NO, DateTime time)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 var p = new DynamicParameters();
-                p.Add("@SERIAL_ID", serialID);
+                p.Add("@PIN_NO", PIN_NO);
                 p.Add("@FROM", time);
                 p.Add("@TO", time.AddDays(1));
                 
-                var output = cnn.Query<DateTime>("SELECT TIMECHECK FROM RF_TIMECHECK INNER JOIN RF_PROFILE ON " +
-                    "RF_PROFILE.SERIAL_ID = RF_TIMECHECK.SERIAL_ID WHERE (TIMECHECK >= @FROM AND TIMECHECK < @TO) AND (RF_PROFILE.SERIAL_ID = @SERIAL_ID)", p);
+                var output = cnn.Query<DateTime>("SELECT TIME_CHECK FROM RF_TIMECHECK INNER JOIN RF_PROFILE ON " +
+                    "RF_PROFILE.PIN_NO = RF_TIMECHECK.PIN_NO WHERE (TIME_CHECK >= @FROM AND TIME_CHECK < @TO) AND (RF_PROFILE.PIN_NO = @PIN_NO)", p);
                 return output.ToList();
             }
         }
@@ -57,7 +57,7 @@ namespace SchoolManagement.DTO
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("INSERT INTO RF_DEVICE (IP,CLASS) VALUES (@IP, @CLASS)", deviceRF);
+                cnn.Execute("INSERT INTO RF_DEVICE (IP,GATE,CLASS) VALUES (@IP, @GATE, @CLASS)", deviceRF);
             }
         }
 
@@ -65,19 +65,19 @@ namespace SchoolManagement.DTO
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("INSERT INTO RF_PROFILE (SERIAL_ID,NAME,CLASS,GENDER,BIRTHDAY,STUDENT,EMAIL,ADDRESS,PHONE) " +
-                    "VALUES (@SERIAL_ID,@NAME,@CLASS,@GENDER,@BIRTHDAY,@STUDENT,@EMAIL,@ADDRESS,@PHONE)", accountRFCard);
+                cnn.Execute("INSERT INTO RF_PROFILE (PIN_NO,NAME,CLASS,GENDER,DOB,STUDENT,EMAIL,ADDRESS,PHONE,ADNO,DISU,STATUS) " +
+                    "VALUES (@PIN_NO,@NAME,@CLASS,@GENDER,@DOB,@STUDENT,@EMAIL,@ADDRESS,@PHONE,@ADNO,@DISU,@STATUS)", accountRFCard);
             }
         }
 
-        public static void SaveTimeCheckRF(string SERIAL_ID, DateTime TIMECHECK)
+        public static void SaveTimeCheckRF(string PIN_NO, DateTime TIME_CHECK)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 var p = new DynamicParameters();
-                p.Add("@SERIAL_ID", SERIAL_ID);
-                p.Add("@TIMECHECK", TIMECHECK);
-                cnn.Execute("INSERT INTO RF_TIMECHECK (SERIAL_ID,TIMECHECK) VALUES (@SERIAL_ID, @TIMECHECK)", p);
+                p.Add("@SERIAL_ID", PIN_NO);
+                p.Add("@TIME_CHECK", TIME_CHECK);
+                cnn.Execute("INSERT INTO RF_TIMECHECK (PIN_NO,TIME_CHECK) VALUES (@PIN_NO, @TIME_CHECK)", p);
             }
         }
 
@@ -90,12 +90,15 @@ namespace SchoolManagement.DTO
                     "name = @NAME, " +
                     "CLASS = @CLASS, " +
                     "GENDER = @GENDER, " +
-                    "BIRTHDAY = @BIRTHDAY, " +
+                    "DOB = @DOB, " +
                     "STUDENT = @STUDENT, " +
                     "EMAIL = @EMAIL, " +
                     "ADDRESS = @ADDRESS, " +
-                    "PHONE = @PHONE " +
-                    "WHERE SERIAL_ID = @SERIAL_ID", profileRF);
+                    "PHONE = @PHONE, " +
+                    "ADNO = @ADNO, " +
+                    "DISU = @DISU, " +
+                    "STATUS = @STATUS " +
+                    "WHERE PIN_NO = @PIN_NO", profileRF);
             }
         }
 
@@ -112,8 +115,8 @@ namespace SchoolManagement.DTO
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("DELETE FROM RF_TIMECHECK WHERE SERIAl_ID=@SERIAL_ID", profileRF);
-                cnn.Execute("DELETE FROM RF_PROFILE WHERE SERIAL_ID=@SERIAL_ID", profileRF);
+                cnn.Execute("DELETE FROM RF_TIMECHECK WHERE PIN_NO=@PIN_NO", profileRF);
+                cnn.Execute("DELETE FROM RF_PROFILE WHERE PIN_NO=@PIN_NO", profileRF);
             }
         }
 
@@ -136,7 +139,7 @@ namespace SchoolManagement.DTO
                     {
                         var filter = new DynamicParameters();
                         filter.Add("@CLASS", Class);
-                        var outputFilter = cnn.Query<string>("SELECT SERIAL_ID FROM RF_PROFILE WHERE (RF_PROFILE.CLASS = @CLASS)", filter);
+                        var outputFilter = cnn.Query<string>("SELECT PIN_NO FROM RF_PROFILE WHERE (RF_PROFILE.CLASS = @CLASS)", filter);
                         outputFilter.ToList();
                         foreach (string item in outputFilter)
                         {

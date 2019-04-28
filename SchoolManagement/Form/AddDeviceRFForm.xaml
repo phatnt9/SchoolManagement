@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="Add Device" Height="160" Width="340"
+        Title="Add Device" Height="180" Width="340"
         ResizeMode="NoResize">
     <Grid 
         Height="Auto">
@@ -25,7 +25,25 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontFamily="Corsiva" Content="Hostname:"></Label>
+                        <Label FontFamily="Corsiva" Content="Gate"></Label>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <TextBox
+                            Name="tb_gate"
+                            VerticalAlignment="Center"
+                            TextAlignment="Left"
+                            Text=""></TextBox>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Label FontFamily="Corsiva" Content="Hostname"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
@@ -43,7 +61,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label Margin="0 -5" FontFamily="Corsiva" Content="Class:"></Label>
+                        <Label Margin="0 -5" FontFamily="Corsiva" Content="Class"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <Grid>

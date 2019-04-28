@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="Register" Height="380" Width="340"
-        ResizeMode="NoResize">
+        Title="Register" Height="450" Width="340"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
     <Grid 
         Height="Auto">
         <Grid.RowDefinitions>
@@ -47,7 +48,7 @@
                 </Grid>
             </StackPanel>-->
             <Separator></Separator>
-            <StackPanel>
+            <StackPanel Margin="0 2">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
@@ -58,11 +59,11 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0" Grid.Row="0">
-                        <Label  FontFamily="Corsiva" Margin="0 7 0 0" Content="ID:"></Label>
+                        <Label  FontFamily="Corsiva" Margin="0 7 0 0" Content="PIN No."></Label>
                     </Grid>
-                    <Grid Grid.Column="0" Grid.Row="1">
+                    <!--<Grid Grid.Column="0" Grid.Row="1">
                         <Label FontFamily="Corsiva" Margin="0 7 0 0" Content="COM Port:"></Label>
-                    </Grid>
+                    </Grid>-->
                     <Grid Grid.Column="1" Grid.Row="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -71,7 +72,7 @@
                         <Grid Grid.Column="0">
                             <TextBox
                                 Name="tb_serialId"
-                                IsEnabled="True"
+                                IsEnabled="False"
                                 Margin="5 0"
                                 Width="Auto"
                                 VerticalAlignment="Center"
@@ -88,7 +89,7 @@
                                 Click="Btn_scanId_Click"></Button>
                         </Grid>
                     </Grid>
-                    <Grid Grid.Column="1" Grid.Row="1">
+                    <!--<Grid Grid.Column="1" Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="70"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -112,19 +113,38 @@
                                 Content="Edit"
                                 Click="Btn_edit_Click"></Button>
                         </Grid>
-                    </Grid>
+                    </Grid>-->
 
                 </Grid>
             </StackPanel>
             <Separator></Separator>
-            <StackPanel>
+            <StackPanel  Margin="0 2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="90"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontFamily="Corsiva" Content="Name:"></Label>
+                        <Label FontFamily="Corsiva" Content="Adno"></Label>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <TextBox
+                            Name="tb_adno"
+                            Margin="5 0"
+                            VerticalAlignment="Center"
+                            TextAlignment="Left"
+                            Text=""></TextBox>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+            <StackPanel  Margin="0 2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Label FontFamily="Corsiva" Content="Name"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
@@ -136,14 +156,14 @@
                     </Grid>
                 </Grid>
             </StackPanel>
-            <StackPanel>
+            <StackPanel  Margin="0 2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="90"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontFamily="Corsiva" Content="Gender:"></Label>
+                        <Label FontFamily="Corsiva" Content="Gender"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <StackPanel 
@@ -166,14 +186,14 @@
                     </Grid>
                 </Grid>
             </StackPanel>
-            <StackPanel>
+            <StackPanel  Margin="0 2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="90"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontFamily="Corsiva" Content="Class:"></Label>
+                        <Label FontFamily="Corsiva" Content="Class"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <Grid>
@@ -192,14 +212,14 @@
                     </Grid>
                 </Grid>
             </StackPanel>
-            <StackPanel>
+            <StackPanel  Margin="0 2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="90"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontFamily="Corsiva" Content="Date of Birth:"></Label>
+                        <Label FontFamily="Corsiva" Content="Date of Birth"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <DatePicker Width="205"
@@ -207,14 +227,29 @@
                     </Grid>
                 </Grid>
             </StackPanel>
-            <StackPanel>
+            <StackPanel  Margin="0 2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="90"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontFamily="Corsiva" Content="Student name:"></Label>
+                        <Label FontFamily="Corsiva" Content="Disu"></Label>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <DatePicker Width="205"
+                            Name="dp_disu"></DatePicker>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+            <StackPanel  Margin="0 2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Label FontFamily="Corsiva" Content="Student name"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
@@ -226,14 +261,14 @@
                     </Grid>
                 </Grid>
             </StackPanel>
-            <StackPanel>
+            <StackPanel  Margin="0 2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="90"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontFamily="Corsiva" Content="Email:"></Label>
+                        <Label FontFamily="Corsiva" Content="Email"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
@@ -245,14 +280,14 @@
                     </Grid>
                 </Grid>
             </StackPanel>
-            <StackPanel>
+            <StackPanel  Margin="0 2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="90"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontFamily="Corsiva" Content="Address:"></Label>
+                        <Label FontFamily="Corsiva" Content="Address"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
@@ -264,14 +299,14 @@
                     </Grid>
                 </Grid>
             </StackPanel>
-            <StackPanel>
+            <StackPanel  Margin="0 2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="90"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontFamily="Corsiva" Content="Phone:"></Label>
+                        <Label FontFamily="Corsiva" Content="Phone"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox

@@ -109,6 +109,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Form\ScanForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Form\SettingForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -147,6 +151,9 @@
     <Compile Include="Form\RegisterForm.xaml.cs">
       <DependentUpon>RegisterForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Form\ScanForm.xaml.cs">
+      <DependentUpon>ScanForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Form\SettingForm.xaml.cs">
       <DependentUpon>SettingForm.xaml</DependentUpon>
     </Compile>
@@ -171,6 +178,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\document-open.png" />
     <None Include="Resources\script.png" />
     <None Include="Resources\database-export.png" />
     <None Include="Resources\table_save.png" />

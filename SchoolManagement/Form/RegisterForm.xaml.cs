@@ -44,20 +44,30 @@ namespace SchoolManagement.Form
 
         private void RegisterForm_Loaded(object sender, RoutedEventArgs e)
         {
-            tb_comport.Text = Properties.Settings.Default.ComPortName.ToString();
         }
 
         private void Btn_scanId_Click(object sender, RoutedEventArgs e)
         {
-            btn_scanId.IsEnabled = false;
-            btn_scanId.Content = "Waitting";
-            lb_status.Content = "Initializing";
+            try
+            {
+                btn_scanId.IsEnabled = false;
+                //btn_scanId.Content = "Waitting";
+                //lb_status.Content = "Initializing";
 
-            worker = new BackgroundWorker();
-            worker.WorkerSupportsCancellation = true;
-            worker.DoWork += Worker_DoWork;
-            worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
-            worker.RunWorkerAsync();
+                ScanForm scanForm = new ScanForm(this);
+                scanForm.ShowDialog();
+                btn_scanId.IsEnabled = true;
+                //worker = new BackgroundWorker();
+                //worker.WorkerSupportsCancellation = true;
+                //worker.DoWork += Worker_DoWork;
+                //worker.RunWorkerCompleted += Worker_RunWorkerCompleted;
+                //worker.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+            
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
@@ -155,6 +165,13 @@ namespace SchoolManagement.Form
                 return;
             }
 
+            if (String.IsNullOrEmpty(dp_disu.Text.ToString()) || dp_disu.Text.ToString().Trim() == "")
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "dp_disu", "dp_disu"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.dp_disu.Focus();
+                return;
+            }
+
             if (cbb_class.Text.ToString() == "Student")
             {
                 if (String.IsNullOrEmpty(tb_studentName.Text.ToString()) || tb_studentName.Text.ToString().Trim() == "")
@@ -185,17 +202,24 @@ namespace SchoolManagement.Form
                 this.tb_phone.Focus();
                 return;
             }
+
+            if (String.IsNullOrEmpty(tb_adno.Text.ToString()) || tb_adno.Text.ToString().Trim() == "")
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_adno", "tb_adno"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.tb_adno.Focus();
+                return;
+            }
             CreateNewPerson();
         }
 
         private void CreateNewPerson()
         {
             ProfileRF person = new ProfileRF();
-            person.SERIAL_ID = tb_serialId.Text;
+            person.PIN_NO = tb_serialId.Text;
             person.NAME = tb_name.Text;
-            person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
             person.CLASS = cbb_class.Text;
-            person.BIRTHDAY = (DateTime)dp_dateofbirth.SelectedDate;
+            person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
+            person.DOB = (DateTime)dp_dateofbirth.SelectedDate;
             if (person.CLASS == "Student")
             {
                 person.STUDENT = tb_studentName.Text;
@@ -207,6 +231,9 @@ namespace SchoolManagement.Form
             person.EMAIL = tb_email.Text;
             person.ADDRESS = tb_address.Text;
             person.PHONE = tb_phone.Text;
+            person.ADNO = tb_adno.Text;
+            person.DISU = (DateTime)dp_disu.SelectedDate;
+            person.STATUS = "Active";
             try
             {
                 SqliteDataAccess.SaveProfileRF(person);
@@ -225,6 +252,7 @@ namespace SchoolManagement.Form
         {
             tb_serialId.Clear();
             tb_name.Clear();
+            tb_adno.Clear();
             rb_male.IsChecked = true;
             tb_studentName.Clear();
             tb_email.Clear();
@@ -232,30 +260,30 @@ namespace SchoolManagement.Form
             tb_phone.Clear();
         }
 
-        private void Btn_edit_Click(object sender, RoutedEventArgs e)
-        {
-            if (!tb_comport.IsEnabled)
-            {
-                tb_comport.IsEnabled = true;
-                btn_scanId.IsEnabled = false;
-                btn_edit.Content = "Save";
-            }
-            else
-            {
-                if (String.IsNullOrEmpty(tb_comport.Text.ToString()) || tb_comport.Text.ToString().Trim() == "")
-                {
-                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_comport", "tb_comport"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    tb_comport.Focus();
-                    return;
-                }
-                Properties.Settings.Default.ComPortName = tb_comport.Text;
-                Properties.Settings.Default.Save();
-                tb_comport.Text = Properties.Settings.Default.ComPortName.ToString();
-                tb_comport.IsEnabled = false;
-                btn_scanId.IsEnabled = true;
-                btn_edit.Content = "Edit";
-            }
-        }
+        //private void Btn_edit_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (!tb_comport.IsEnabled)
+        //    {
+        //        tb_comport.IsEnabled = true;
+        //        btn_scanId.IsEnabled = false;
+        //        btn_edit.Content = "Save";
+        //    }
+        //    else
+        //    {
+        //        if (String.IsNullOrEmpty(tb_comport.Text.ToString()) || tb_comport.Text.ToString().Trim() == "")
+        //        {
+        //            System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_comport", "tb_comport"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //            tb_comport.Focus();
+        //            return;
+        //        }
+        //        Properties.Settings.Default.ComPortName = tb_comport.Text;
+        //        Properties.Settings.Default.Save();
+        //        tb_comport.Text = Properties.Settings.Default.ComPortName.ToString();
+        //        tb_comport.IsEnabled = false;
+        //        btn_scanId.IsEnabled = true;
+        //        btn_edit.Content = "Edit";
+        //    }
+        //}
 
         private void Cbb_class_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

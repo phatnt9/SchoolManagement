@@ -7,10 +7,11 @@
         xmlns:local="clr-namespace:SchoolManagement"
         mc:Ignorable="d"
         Title="ATEK  Gate Management System" 
-        Height="500" 
+        Height="700" 
         Width="800"
         MinHeight="500"
-        MinWidth="800">
+        MinWidth="800"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -39,108 +40,51 @@
                 <ToolBarTray Background="#F1F1F1">
                     <ToolBar>
                         <Button
-                            Name="a"
+                            Name="import"
                             BorderThickness="0"
                             Background="#F1F1F1"
                             Margin="0 0 0 0"
                             Padding="0 0 0 0"
                             Width="90"
                             Height="25"
-                            Click="Registration_Click">
+                            Click="Import_Click">
                             <StackPanel 
                                 Orientation="Horizontal">
                                 <Image 
                                     Width="12" 
-                                    Source="pack://siteoforigin:,,,/Resources/table_add.png"/>
+                                    Source="pack://siteoforigin:,,,/Resources/document-open.png"/>
                                 <Label 
                                     FontSize="10"
-                                    >Add Profile</Label>
+                                    >Import</Label>
                             </StackPanel>
                             <!--<iconPacks:PackIconMaterial Kind="Plus" Foreground="Green"/>-->
                         </Button>
                         <Button
-                            Name="b"
+                            Name="export"
                             BorderThickness="0"
                             Background="#F1F1F1"
                             Margin="0 0 0 0"
                             Padding="0 0 0 0"
                             Width="90"
                             Height="25"
-                            Click="Btn_delete_Click">
+                            Click="Export_Click">
                             <StackPanel 
                                 Orientation="Horizontal">
                                 <Image 
                                     Width="12" 
-                                    Source="pack://siteoforigin:,,,/Resources/table_delete.png"/>
-                                <Label 
-                                    FontSize="10"
-                                    >Remove Profile</Label>
-                            </StackPanel>
-                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
-                        </Button>
-                        <Button
-                            Name="c"
-                            BorderThickness="0"
-                            Background="#F1F1F1"
-                            Margin="0 0 0 0"
-                            Padding="0 0 0 0"
-                            Width="90"
-                            Height="25"
-                            Click="Btn_edit_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <Image 
-                                    Width="12" 
-                                    Source="pack://siteoforigin:,,,/Resources/table_edit.png"/>
-                                <Label 
-                                    FontSize="10"
-                                    >Edit Profile</Label>
-                            </StackPanel>
-                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
-                        </Button>
-                        <Button
-                            Name="d"
-                            BorderThickness="0"
-                            Background="#F1F1F1"
-                            Margin="0 0 0 0"
-                            Padding="0 0 0 0"
-                            Width="90"
-                            Height="25"
-                            Click="Btn_sendNewListPerson_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <Image 
-                                    Width="12" 
-                                    Source="pack://siteoforigin:,,,/Resources/database_refresh.png"/>
-                                <Label 
-                                    FontSize="10"
-                                    >Sync Profile</Label>
-                            </StackPanel>
-                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
-                        </Button>
-                        <Button
-                            Name="e"
-                            BorderThickness="0"
-                            Background="#F1F1F1"
-                            Margin="0 0 0 0"
-                            Padding="0 0 0 0"
-                            Width="90"
-                            Height="25"
-                            Click="Btn_export_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <Image 
-                                    Width="12" 
-                                    Source="pack://siteoforigin:,,,/Resources/script.png"/>
+                                    Source="pack://siteoforigin:,,,/Resources/document-open.png"/>
                                 <Label 
                                     FontSize="10"
                                     >Export</Label>
                             </StackPanel>
-                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                            <!--<iconPacks:PackIconMaterial Kind="Plus" Foreground="Green"/>-->
                         </Button>
                     </ToolBar>
                 </ToolBarTray>
             </Border>
         </Grid>
         <Grid Grid.Row="2" Background="#F1F1F1">
-            <Grid Margin="10 0 10 20">
+            <Grid Margin="10 0 10 10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="6*"></ColumnDefinition>
                     <ColumnDefinition Width="3"></ColumnDefinition>
@@ -174,7 +118,7 @@
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center">
                                         <Button
-                                            Name="registration"
+                                            Name="registrationProfile"
                                             BorderThickness="0"
                                             Background="Transparent"
                                             Margin="0 0 0 0"
@@ -194,7 +138,7 @@
                                             <!--<iconPacks:PackIconMaterial Kind="Plus" Foreground="Green"/>-->
                                         </Button>
                                         <Button
-                                            Name="del"
+                                            Name="delProfile"
                                             BorderThickness="0"
                                             Background="Transparent"
                                             Margin="0 0 0 0"
@@ -213,7 +157,7 @@
                                             <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
                                         </Button>
                                         <Button
-                                            Name="edit"
+                                            Name="editProfile"
                                             BorderThickness="0"
                                             Background="Transparent"
                                             Margin="0 0 0 0"
@@ -232,7 +176,7 @@
                                             <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
                                         </Button>
                                         <Button
-                                            Name="sync"
+                                            Name="syncProfile"
                                             BorderThickness="0"
                                             Background="Transparent"
                                             Margin="0 0 0 0"
@@ -251,7 +195,7 @@
                                             <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
                                         </Button>
                                         <Button
-                                            Name="export"
+                                            Name="exportProfile"
                                             BorderThickness="0"
                                             Background="Transparent"
                                             Margin="0 0 0 0"
@@ -265,7 +209,7 @@
                                                     Source="pack://siteoforigin:,,,/Resources/script.png"/>
                                                 <Label 
                                                     FontSize="10"
-                                                    >Export</Label>
+                                                    >Export Profile</Label>
                                             </StackPanel>
                                             <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
                                         </Button>
@@ -290,11 +234,11 @@
                                         CanUserDeleteRows="False"
                                         SelectionMode="Single"
                                         SelectionUnit="FullRow"
-                                        AutoGenerateColumns="False"
+                                        AutoGenerateColumns="True"
                                         SelectedCellsChanged="AccountListData_SelectedCellsChanged"
                                         FontSize="12">
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn 
+                                            <!--<DataGridTextColumn 
                                                 Width="*" 
                                                 Header="Id"
                                                 Visibility="Hidden"
@@ -306,7 +250,7 @@
                                                 Header="Serial"
                                                 Visibility="Visible"
                                                 IsReadOnly="True"
-                                                Binding="{Binding Path=SERIAL_ID}">
+                                                Binding="{Binding Path=PIN_NO}">
                                             </DataGridTextColumn>
                                             <DataGridTextColumn 
                                                 Width="*" 
@@ -328,7 +272,7 @@
                                                 Visibility="Visible"
                                                 IsReadOnly="True"
                                                 Binding="{Binding Path=GENDER}">
-                                            </DataGridTextColumn>
+                                            </DataGridTextColumn>-->
                                             <!--<DataGridTemplateColumn Header="DEL">
                                                  <DataGridTemplateColumn.CellTemplate>
                                                  <DataTemplate>
@@ -417,6 +361,13 @@
                                                 Visibility="Visible"
                                                 IsReadOnly="True"
                                                 Binding="{Binding Path=ID}">
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn 
+                                                Width="Auto" 
+                                                Header="Gate"
+                                                Visibility="Visible"
+                                                IsReadOnly="True"
+                                                Binding="{Binding Path=GATE}">
                                             </DataGridTextColumn>
                                             <DataGridTextColumn 
                                                 Width="*" 
@@ -516,13 +467,13 @@
                                                     <StackPanel
                                                         Orientation="Vertical">
                                                         <StackPanel>
-                                                            <Grid>
+                                                            <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="90"></ColumnDefinition>
                                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="Serial:"></Label>
+                                                                    <Label FontWeight="Normal" Content="PIN No"></Label>
                                                                 </Grid>
                                                                 <Grid Grid.Column="1">
                                                                     <TextBox
@@ -536,13 +487,33 @@
                                                             </Grid>
                                                         </StackPanel>
                                                         <StackPanel>
-                                                            <Grid>
+                                                            <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="90"></ColumnDefinition>
                                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="Name:"></Label>
+                                                                    <Label FontWeight="Normal" Content="ADNO"></Label>
+                                                                </Grid>
+                                                                <Grid Grid.Column="1">
+                                                                    <TextBox
+                                                                        Name="tb_adno"
+                                                                        Margin="5 0"
+                                                                        IsReadOnly="True"
+                                                                        VerticalAlignment="Center"
+                                                                        TextAlignment="Left"
+                                                                        Text=""></TextBox>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </StackPanel>
+                                                        <StackPanel>
+                                                            <Grid Margin="0 5">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0">
+                                                                    <Label FontWeight="Normal" Content="Name"></Label>
                                                                 </Grid>
                                                                 <Grid Grid.Column="1">
                                                                     <TextBox
@@ -556,13 +527,13 @@
                                                             </Grid>
                                                         </StackPanel>
                                                         <StackPanel>
-                                                            <Grid>
+                                                            <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="90"></ColumnDefinition>
                                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="Class:"></Label>
+                                                                    <Label FontWeight="Normal" Content="Class"></Label>
                                                                 </Grid>
                                                                 <Grid Grid.Column="1">
                                                                     <ComboBox 
@@ -580,13 +551,13 @@
                                                             </Grid>
                                                         </StackPanel>
                                                         <StackPanel>
-                                                            <Grid>
+                                                            <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="90"></ColumnDefinition>
                                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="Gender:"></Label>
+                                                                    <Label FontWeight="Normal" Content="Gender"></Label>
                                                                 </Grid>
                                                                 <Grid Grid.Column="1">
                                                                     <StackPanel 
@@ -613,13 +584,13 @@
                                                             </Grid>
                                                         </StackPanel>
                                                         <StackPanel>
-                                                            <Grid>
+                                                            <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="90"></ColumnDefinition>
                                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="Date of Birth:"></Label>
+                                                                    <Label FontWeight="Normal" Content="DOB"></Label>
                                                                 </Grid>
                                                                 <Grid Grid.Column="1">
                                                                     <DatePicker
@@ -632,13 +603,32 @@
                                                             </Grid>
                                                         </StackPanel>
                                                         <StackPanel>
-                                                            <Grid>
+                                                            <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="90"></ColumnDefinition>
                                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="Student Name:"></Label>
+                                                                    <Label FontWeight="Normal" Content="DISU"></Label>
+                                                                </Grid>
+                                                                <Grid Grid.Column="1">
+                                                                    <DatePicker
+                                                                        Name="dp_disu"
+                                                                        Margin="5 0"
+                                                                        IsEnabled="False"
+                                                                        VerticalAlignment="Center"
+                                                                        Text=""></DatePicker>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </StackPanel>
+                                                        <StackPanel>
+                                                            <Grid Margin="0 5">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0">
+                                                                    <Label FontWeight="Normal" Content="Student"></Label>
                                                                 </Grid>
                                                                 <Grid Grid.Column="1">
                                                                     <TextBox
@@ -652,13 +642,13 @@
                                                             </Grid>
                                                         </StackPanel>
                                                         <StackPanel>
-                                                            <Grid>
+                                                            <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="90"></ColumnDefinition>
                                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="Email:"></Label>
+                                                                    <Label FontWeight="Normal" Content="Email"></Label>
                                                                 </Grid>
                                                                 <Grid Grid.Column="1">
                                                                     <TextBox
@@ -672,13 +662,13 @@
                                                             </Grid>
                                                         </StackPanel>
                                                         <StackPanel>
-                                                            <Grid>
+                                                            <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="90"></ColumnDefinition>
                                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="Address:"></Label>
+                                                                    <Label FontWeight="Normal" Content="Address"></Label>
                                                                 </Grid>
                                                                 <Grid Grid.Column="1">
                                                                     <TextBox
@@ -692,13 +682,13 @@
                                                             </Grid>
                                                         </StackPanel>
                                                         <StackPanel>
-                                                            <Grid>
+                                                            <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="90"></ColumnDefinition>
                                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="Phone:"></Label>
+                                                                    <Label FontWeight="Normal" Content="Phone"></Label>
                                                                 </Grid>
                                                                 <Grid Grid.Column="1">
                                                                     <TextBox
@@ -708,6 +698,28 @@
                                                                         VerticalAlignment="Center"
                                                                         TextAlignment="Left"
                                                                         Text=""></TextBox>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </StackPanel>
+                                                        <StackPanel>
+                                                            <Grid Margin="0 5">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0">
+                                                                    <Label FontWeight="Normal" Content="Status"></Label>
+                                                                </Grid>
+                                                                <Grid Grid.Column="1">
+                                                                    <ComboBox 
+                                                                        Name="cbb_status"
+                                                                        IsEnabled="False"
+                                                                        Margin="5 0"
+                                                                        Height="20"
+                                                                        SelectionChanged="Cbb_status_SelectionChanged">
+                                                                        <ComboBoxItem>Active</ComboBoxItem>
+                                                                        <ComboBoxItem>Suspended</ComboBoxItem>
+                                                                    </ComboBox>
                                                                 </Grid>
                                                             </Grid>
                                                         </StackPanel>

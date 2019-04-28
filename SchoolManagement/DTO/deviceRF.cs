@@ -13,10 +13,12 @@ namespace SchoolManagement.DTO
         private int _id;
         private string _ip;
         private string _accountClass;
+        private string _gate;
         private string _connectStatus;
 
         public int ID { get => _id; set => _id = value; }
         public string IP { get => _ip; set => _ip = value; }
+        public string GATE { get => _gate; set => _gate = value; }
         public string CLASS { get => _accountClass; set => _accountClass = value; }
         public string connectStatus { get => _connectStatus; set { _connectStatus = value; RaisePropertyChanged("connectStatus"); } }
 

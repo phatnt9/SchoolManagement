@@ -150,7 +150,7 @@ namespace SchoolManagement.Model
                 {
                     ProfileRF profileRF = mainW.AccountListData.SelectedItem as ProfileRF;
                     DateTime date = (DateTime)mainW.dp_search.SelectedDate;
-                    List<DateTime> timeList = SqliteDataAccess.LoadTimeCheckRF(profileRF.SERIAL_ID, date);
+                    List<DateTime> timeList = SqliteDataAccess.LoadTimeCheckRF(profileRF.PIN_NO, date);
                     foreach (DateTime item in timeList)
                     {
                         timeCheckRFList.Add(item);
