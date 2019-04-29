@@ -82,11 +82,12 @@ namespace SchoolManagement.Form
                 worker.ProgressChanged += Worker_ProgressChanged;
                 worker.RunWorkerAsync();
             }
-            catch
+            catch (Exception ex)
             {
                 btn_import.IsEnabled = true;
+                logFile.Error(ex.Message);
             }
-            
+
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

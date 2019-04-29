@@ -104,12 +104,12 @@
                             FontWeight="Normal">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="50"></RowDefinition>
+                                    <RowDefinition Height="80"></RowDefinition>
                                     <RowDefinition></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid Grid.Row="0">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition Height="30"></RowDefinition>
                                         <RowDefinition></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <StackPanel 
@@ -216,10 +216,56 @@
                                     </StackPanel>
                                     <StackPanel
                                         Grid.Row="1"
+                                        Margin="10 0"
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center">
-
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0 0">
+                                            <GroupBox Header="Name">
+                                                <TextBox 
+                                                    Name="tb_nameSearch" 
+                                                    Width="90" 
+                                                    Height="20"
+                                                    PreviewKeyDown="Tb_Search_PreviewKeyDown"></TextBox>
+                                            </GroupBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Margin="10 0 0 0">
+                                            <GroupBox Header="Pinno">
+                                                <TextBox 
+                                                    Name="tb_pinSearch" 
+                                                    Width="90" 
+                                                    Height="20"
+                                                    PreviewKeyDown="Tb_Search_PreviewKeyDown"></TextBox>
+                                            </GroupBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Margin="10 0 0 0">
+                                            <GroupBox Header="Adno">
+                                                <TextBox 
+                                                    Name="tb_adnoSearch" 
+                                                    Width="90" 
+                                                    Height="20"
+                                                    PreviewKeyDown="Tb_Search_PreviewKeyDown"></TextBox>
+                                            </GroupBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center">
+                                            <Button 
+                                                Name="btn_filer"
+                                                Width="70" 
+                                                Height="20" 
+                                                Margin="15 5 0 0"
+                                                Click="Filter_Click">Search</Button>
+                                        </StackPanel>
                                     </StackPanel>
                                 </Grid>
                                 <Grid Grid.Row="1">
@@ -280,6 +326,16 @@
                                                  </DataTemplate>
                                                  </DataGridTemplateColumn.CellTemplate>
                                                  </DataGridTemplateColumn>-->
+                                            <DataGridTemplateColumn Header="Change" Width="60">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button 
+                                                            Name="btn_changeStatus" 
+                                                            Click="Btn_changeStatus_Click"
+                                                            Content="Change"></Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </Grid>
@@ -701,7 +757,7 @@
                                                                 </Grid>
                                                             </Grid>
                                                         </StackPanel>
-                                                        <StackPanel>
+                                                        <!--<StackPanel>
                                                             <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="90"></ColumnDefinition>
@@ -722,7 +778,7 @@
                                                                     </ComboBox>
                                                                 </Grid>
                                                             </Grid>
-                                                        </StackPanel>
+                                                        </StackPanel>-->
                                                     </StackPanel>
                                                 </Grid>
                                                 <Grid Grid.Row="1" Background="White">

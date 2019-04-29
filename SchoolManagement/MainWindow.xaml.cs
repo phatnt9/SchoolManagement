@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SchoolManagement
 {
@@ -261,7 +262,7 @@ namespace SchoolManagement
                     dp_disu.Text = temp.DISU.ToLongDateString();
                     tb_student.Text = temp.STUDENT;
                     cbb_class.Text = temp.CLASS;
-                    cbb_status.Text = temp.STATUS;
+                    //cbb_status.Text = temp.STATUS;
                     tb_email.Text = temp.EMAIL;
                     tb_address.Text = temp.ADDRESS;
                     tb_phone.Text = temp.PHONE;
@@ -290,7 +291,7 @@ namespace SchoolManagement
                     dp_disu.IsEnabled = 
                     rb_male.IsEnabled = 
                     rb_female.IsEnabled =
-                    cbb_status.IsEnabled = 
+                    //cbb_status.IsEnabled = 
                     cbb_class.IsEnabled = false;
                 
                 tb_address.IsReadOnly =
@@ -299,7 +300,7 @@ namespace SchoolManagement
                     tb_name.IsReadOnly =
                     tb_phone.IsReadOnly =
                     tb_student.IsReadOnly =
-                    cbb_status.IsReadOnly =
+                    //cbb_status.IsReadOnly =
                     cbb_class.IsReadOnly = true;
                 return true;
             }
@@ -318,7 +319,7 @@ namespace SchoolManagement
                     dp_disu.IsEnabled = 
                     rb_male.IsEnabled = 
                     rb_female.IsEnabled = 
-                    cbb_status.IsEnabled = 
+                    //cbb_status.IsEnabled = 
                     cbb_class.IsEnabled = true;
                 tb_address.IsReadOnly = 
                     tb_email.IsReadOnly = 
@@ -326,7 +327,7 @@ namespace SchoolManagement
                     tb_name.IsReadOnly = 
                     tb_phone.IsReadOnly = 
                     tb_student.IsReadOnly = 
-                    cbb_status.IsReadOnly = 
+                    //cbb_status.IsReadOnly = 
                     cbb_class.IsReadOnly = false;
                 tb_name.Focus();
                 return true;
@@ -436,7 +437,7 @@ namespace SchoolManagement
                     person.NAME = tb_name.Text;
                     person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
                     person.CLASS = cbb_class.Text;
-                    person.STATUS = cbb_status.Text;
+                    //person.STATUS = cbb_status.Text;
                     person.DOB = (DateTime)dp_dateofbirth.SelectedDate;
                     person.DISU = (DateTime)dp_disu.SelectedDate;
                     if (person.CLASS == "Student")
@@ -546,6 +547,39 @@ namespace SchoolManagement
         private void Cbb_status_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void Btn_changeStatus_Click(object sender, RoutedEventArgs e)
+        {
+            ProfileRF profileRF = (sender as System.Windows.Controls.Button).DataContext as ProfileRF;
+            if(profileRF.STATUS == "Active")
+            {
+                profileRF.STATUS = "Suspended";
+                profileRF.LOCK_DATE = DateTime.Now;
+            }
+            else
+            {
+                if (profileRF.STATUS == "Suspended")
+                {
+                    profileRF.STATUS = "Active";
+                    profileRF.LOCK_DATE = DateTime.MinValue;
+                }
+            }
+            SqliteDataAccess.UpdateProfileRF(profileRF, profileRF.STATUS);
+            mainModel.ReloadListProfileRFDGV();
+        }
+
+        private void Filter_Click(object sender, RoutedEventArgs e)
+        {
+            mainModel.ReloadListProfileRFDGV(tb_nameSearch.Text,tb_pinSearch.Text,tb_adnoSearch.Text);
+        }
+
+        private void Tb_Search_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Filter_Click(sender, e);
+            }
         }
     }
 }

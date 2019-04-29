@@ -74,12 +74,12 @@ namespace SchoolManagement.Model
             });
         }
 
-        public void ReloadListProfileRFDGV()
+        public void ReloadListProfileRFDGV(string name = "", string pinno = "", string adno = "")
         {
             try
             {
                 accountRFList.Clear();
-                List<ProfileRF> profileList = SqliteDataAccess.LoadProfileRF();
+                List<ProfileRF> profileList = SqliteDataAccess.LoadProfileRF(name, pinno, adno);
                 foreach (ProfileRF item in profileList)
                 {
                     accountRFList.Add(item);

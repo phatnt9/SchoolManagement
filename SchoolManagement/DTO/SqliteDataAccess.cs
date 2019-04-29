@@ -12,6 +12,8 @@ namespace SchoolManagement.DTO
 {
     public class SqliteDataAccess
     {
+        private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private static string LoadConnectionString(string id = "Default")
         {
             return ConfigurationManager.ConnectionStrings[id].ConnectionString;
@@ -26,11 +28,16 @@ namespace SchoolManagement.DTO
             }
         }
 
-        public static List<ProfileRF> LoadProfileRF()
+        public static List<ProfileRF> LoadProfileRF(string name = "", string pinno = "", string adno = "")
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = cnn.Query<ProfileRF>("SELECT * FROM RF_PROFILE", new DynamicParameters());
+                var p = new DynamicParameters();
+                p.Add("@NAME", "%" + name + "%");
+                p.Add("@PIN_NO", "%" + pinno + "%");
+                p.Add("@ADNO", "%" + adno + "%");
+
+                var output = cnn.Query<ProfileRF>("SELECT * FROM RF_PROFILE WHERE ((NAME LIKE (@NAME)) AND (PIN_NO LIKE (@PIN_NO)) AND (ADNO LIKE (@ADNO)))", p);
                 return output.ToList();
             }
         }
@@ -82,23 +89,52 @@ namespace SchoolManagement.DTO
         }
 
 
-        public static void UpdateProfileRF(ProfileRF profileRF)
+        public static void UpdateProfileRF(ProfileRF profileRF,string Status = null)
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            try
             {
-                cnn.Execute("UPDATE RF_PROFILE SET " +
-                    "name = @NAME, " +
-                    "CLASS = @CLASS, " +
-                    "GENDER = @GENDER, " +
-                    "DOB = @DOB, " +
-                    "STUDENT = @STUDENT, " +
-                    "EMAIL = @EMAIL, " +
-                    "ADDRESS = @ADDRESS, " +
-                    "PHONE = @PHONE, " +
-                    "ADNO = @ADNO, " +
-                    "DISU = @DISU, " +
-                    "STATUS = @STATUS " +
-                    "WHERE PIN_NO = @PIN_NO", profileRF);
+                if (Status == null)
+                {
+                    using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                    {
+                        cnn.Execute("UPDATE RF_PROFILE SET " +
+                            "name = @NAME, " +
+                            "CLASS = @CLASS, " +
+                            "GENDER = @GENDER, " +
+                            "DOB = @DOB, " +
+                            "STUDENT = @STUDENT, " +
+                            "EMAIL = @EMAIL, " +
+                            "ADDRESS = @ADDRESS, " +
+                            "PHONE = @PHONE, " +
+                            "ADNO = @ADNO, " +
+                            "DISU = @DISU " +
+                            "WHERE PIN_NO = @PIN_NO", profileRF);
+                    }
+                }
+                else
+                {
+                    using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                    {
+                        cnn.Execute("UPDATE RF_PROFILE SET " +
+                            "name = @NAME, " +
+                            "CLASS = @CLASS, " +
+                            "GENDER = @GENDER, " +
+                            "DOB = @DOB, " +
+                            "STUDENT = @STUDENT, " +
+                            "EMAIL = @EMAIL, " +
+                            "ADDRESS = @ADDRESS, " +
+                            "PHONE = @PHONE, " +
+                            "ADNO = @ADNO, " +
+                            "DISU = @DISU, " +
+                            "LOCK_DATE = @LOCK_DATE, " +
+                            "STATUS = @STATUS " +
+                            "WHERE PIN_NO = @PIN_NO", profileRF);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
             }
         }
 
@@ -150,6 +186,7 @@ namespace SchoolManagement.DTO
                 return returnSerialIdList;
             }
         }
+        
 
     }
 }

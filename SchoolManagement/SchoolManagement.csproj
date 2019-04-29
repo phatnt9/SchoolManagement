@@ -178,6 +178,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\page_find.png" />
     <None Include="Resources\document-open.png" />
     <None Include="Resources\script.png" />
     <None Include="Resources\database-export.png" />
