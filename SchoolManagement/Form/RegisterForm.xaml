@@ -199,7 +199,7 @@
                         <Grid>
                             <ComboBox 
                                 Name="cbb_class"
-                                Width="205"
+                                Width="190"
                                 SelectionChanged="Cbb_class_SelectionChanged"
                                 Height="20">
                                 <ComboBoxItem>Teacher</ComboBoxItem>
@@ -222,7 +222,7 @@
                         <Label FontFamily="Corsiva" Content="Date of Birth"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
-                        <DatePicker Width="205"
+                        <DatePicker Width="190"
                             Name="dp_dateofbirth"></DatePicker>
                     </Grid>
                 </Grid>
@@ -237,12 +237,12 @@
                         <Label FontFamily="Corsiva" Content="Disu"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
-                        <DatePicker Width="205"
+                        <DatePicker Width="190"
                             Name="dp_disu"></DatePicker>
                     </Grid>
                 </Grid>
             </StackPanel>
-            <StackPanel  Margin="0 2">
+            <!--<StackPanel  Margin="0 2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="90"></ColumnDefinition>
@@ -260,7 +260,7 @@
                             Text=""></TextBox>
                     </Grid>
                 </Grid>
-            </StackPanel>
+            </StackPanel>-->
             <StackPanel  Margin="0 2">
                 <Grid>
                     <Grid.ColumnDefinitions>

@@ -139,6 +139,7 @@
     <Compile Include="DTO\NotifyUIBase.cs" />
     <Compile Include="DTO\SqliteDataAccess.cs" />
     <Compile Include="DTO\TimeCheckRF.cs" />
+    <Compile Include="DTO\TimeRecord.cs" />
     <Compile Include="Form\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>

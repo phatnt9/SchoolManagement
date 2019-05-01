@@ -52,6 +52,7 @@ namespace SchoolManagement.Form
                 }
 
                 DeviceRF deviceRF = new DeviceRF();
+                deviceRF.GATE = tb_gate.Text;
                 deviceRF.IP = tb_ip.Text;
                 string classArray = 
                     ((bool)cb_teacher.IsChecked ? "Teacher" : "") + 

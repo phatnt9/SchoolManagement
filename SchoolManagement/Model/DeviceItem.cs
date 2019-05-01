@@ -141,7 +141,7 @@ namespace SchoolManagement.Model
                                     personList.Add(person);
                                 }
                                 if (personList.Count > 0)
-                                    mainWindowModel.CheckinServer(personList);
+                                    mainWindowModel.CheckinServer(ip,personList);
                             }
                             try
                             {

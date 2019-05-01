@@ -194,7 +194,7 @@
                                             </StackPanel>
                                             <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
                                         </Button>
-                                        <Button
+                                        <!--<Button
                                             Name="exportProfile"
                                             BorderThickness="0"
                                             Background="Transparent"
@@ -211,8 +211,8 @@
                                                     FontSize="10"
                                                     >Export Profile</Label>
                                             </StackPanel>
-                                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
-                                        </Button>
+                                            --><!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>--><!--
+                                        </Button>-->
                                     </StackPanel>
                                     <StackPanel
                                         Grid.Row="1"
@@ -226,6 +226,7 @@
                                                     Margin="0 0">
                                             <GroupBox Header="Name">
                                                 <TextBox 
+                                                    BorderThickness="0"
                                                     Name="tb_nameSearch" 
                                                     Width="90" 
                                                     Height="20"
@@ -236,8 +237,9 @@
                                                     HorizontalAlignment="Left"
                                                     VerticalAlignment="Center"
                                                     Margin="10 0 0 0">
-                                            <GroupBox Header="Pinno">
+                                            <GroupBox Header="PIN No.">
                                                 <TextBox 
+                                                    BorderThickness="0"
                                                     Name="tb_pinSearch" 
                                                     Width="90" 
                                                     Height="20"
@@ -248,8 +250,9 @@
                                                     HorizontalAlignment="Left"
                                                     VerticalAlignment="Center"
                                                     Margin="10 0 0 0">
-                                            <GroupBox Header="Adno">
+                                            <GroupBox Header="AD No.">
                                                 <TextBox 
+                                                    BorderThickness="0"
                                                     Name="tb_adnoSearch" 
                                                     Width="90" 
                                                     Height="20"
@@ -259,12 +262,25 @@
                                         <StackPanel Orientation="Horizontal"
                                                     HorizontalAlignment="Left"
                                                     VerticalAlignment="Center">
-                                            <Button 
-                                                Name="btn_filer"
-                                                Width="70" 
-                                                Height="20" 
-                                                Margin="15 5 0 0"
-                                                Click="Filter_Click">Search</Button>
+                                            <Button
+                                            Name="btn_filter"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Margin="0 0 0 0"
+                                            Padding="0 0 0 0"
+                                            Width="90"
+                                            Height="25"
+                                            Click="Filter_Click">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image 
+                                                    Width="12" 
+                                                    Source="pack://siteoforigin:,,,/Resources/page_find.png"/>
+                                                    <Label 
+                                                    FontSize="10"
+                                                    >Search</Label>
+                                                </StackPanel>
+                                                <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                                            </Button>
                                         </StackPanel>
                                     </StackPanel>
                                 </Grid>
@@ -473,6 +489,11 @@
                             </Grid>
 
                         </TabItem>
+                        <TabItem  
+                            Header="Log"
+                            FontWeight="Normal">
+                            
+                        </TabItem>
                     </TabControl>
 
                 </Grid>
@@ -529,7 +550,7 @@
                                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="PIN No"></Label>
+                                                                    <Label FontWeight="Normal" Content="PIN No."></Label>
                                                                 </Grid>
                                                                 <Grid Grid.Column="1">
                                                                     <TextBox
@@ -549,7 +570,7 @@
                                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="ADNO"></Label>
+                                                                    <Label FontWeight="Normal" Content="AD No."></Label>
                                                                 </Grid>
                                                                 <Grid Grid.Column="1">
                                                                     <TextBox
@@ -665,7 +686,7 @@
                                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                                 </Grid.ColumnDefinitions>
                                                                 <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="DISU"></Label>
+                                                                    <Label FontWeight="Normal" Content="Disu"></Label>
                                                                 </Grid>
                                                                 <Grid Grid.Column="1">
                                                                     <DatePicker
@@ -677,7 +698,7 @@
                                                                 </Grid>
                                                             </Grid>
                                                         </StackPanel>
-                                                        <StackPanel>
+                                                        <!--<StackPanel>
                                                             <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition Width="90"></ColumnDefinition>
@@ -696,7 +717,7 @@
                                                                         Text=""></TextBox>
                                                                 </Grid>
                                                             </Grid>
-                                                        </StackPanel>
+                                                        </StackPanel>-->
                                                         <StackPanel>
                                                             <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>
@@ -876,21 +897,63 @@
                                                 <StackPanel
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center">
-                                                    <Button
+                                                    <!--<Button
                                                         BorderBrush="#a9a9a9"
                                                         FontFamily="Corsiva"
                                                         Name="btn_search"
                                                         Width="75"
                                                         FontWeight="Normal"
-                                                        Margin="0 10"
+                                                        Margin="0 5"
                                                         Content="Search"
-                                                        Click="Btn_search_Click"></Button>
+                                                        Click="Btn_search_Click"></Button>-->
+                                                    <Button
+                                            Name="btn_search"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Margin="0 0 0 0"
+                                            Padding="0 0 0 0"
+                                            Width="90"
+                                            Height="25"
+                                            Click="Btn_search_Click">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image 
+                                                    Width="12" 
+                                                    Source="pack://siteoforigin:,,,/Resources/page_find.png"/>
+                                                            <Label 
+                                                    FontSize="10"
+                                                    >Search</Label>
+                                                        </StackPanel>
+                                                        <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                                                    </Button>
                                                     <!--<Button
-                                                         Width="70"
-                                                         Height="20"
-                                                         Margin="0 5"
-                                                         Content="Export"
-                                                         ></Button>-->
+                                                        BorderBrush="#a9a9a9"
+                                                        FontFamily="Corsiva"
+                                                        Name="btn_exportTimeCheck"
+                                                        Width="75"
+                                                        FontWeight="Normal"
+                                                        Margin="0 5"
+                                                        Content="Export"
+                                                        Click="Btn_exportTimeCheck_Click"></Button>-->
+                                                    <Button
+                            Name="btn_exportTimeCheck"
+                            BorderThickness="0"
+                            Background="Transparent"
+                            Margin="0 0 0 0"
+                            Padding="0 0 0 0"
+                            Width="90"
+                            Height="25"
+                            Click="Btn_exportTimeCheck_Click">
+                                                        <StackPanel 
+                                Orientation="Horizontal">
+                                                            <Image 
+                                    Width="12" 
+                                    Source="pack://siteoforigin:,,,/Resources/document-open.png"/>
+                                                            <Label 
+                                    FontSize="10"
+                                    >Export</Label>
+                                                        </StackPanel>
+                                                        <!--<iconPacks:PackIconMaterial Kind="Plus" Foreground="Green"/>-->
+                                                    </Button>
                                                 </StackPanel>
                                             </Grid>
                                         </Grid>
@@ -899,6 +962,7 @@
                                     <Grid Grid.Row="1">
                                         <DataGrid
                                             FontFamily="Corsiva"
+                                            Background="White"
                                             Name="TimeCheckListData"
                                             FontWeight="Normal"
                                             ItemsSource="{Binding groupedTimeCheck}"
@@ -908,21 +972,21 @@
                                             CanUserDeleteRows="False"
                                             SelectionMode="Single"
                                             SelectionUnit="FullRow"
-                                            AutoGenerateColumns="False"
+                                            AutoGenerateColumns="True"
                                             FontSize="12">
                                             <DataGrid.Columns>
                                                 <!--<DataGridTextColumn 
-                                                     Header="Date"
+                                                     Header="Gate"
                                                      Width="*"
                                                      IsReadOnly="True"
-                                                     Binding="{Binding Path=Date}"
-                                                     ></DataGridTextColumn>-->
+                                                     Binding="{Binding Path=GATE}"
+                                                     ></DataGridTextColumn>
                                                 <DataGridTextColumn 
                                                     Header="Time"
                                                     Width="*"
                                                     IsReadOnly="True"
-                                                    Binding="{Binding Path=TimeOfDay}"
-                                                    ></DataGridTextColumn>
+                                                    Binding="{Binding Path=TIME_CHECK}"
+                                                    ></DataGridTextColumn>-->
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </Grid>

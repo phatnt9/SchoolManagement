@@ -28,7 +28,7 @@ namespace SchoolManagement.Model
         
         public List<ProfileRF> accountRFList;
         public List<DeviceRF> deviceRFList;
-        public List<DateTime> timeCheckRFList;
+        public List<TimeRecord> timeCheckRFList;
 
         //public DeviceItem deviceItem;
         public MainWindowModel(MainWindow mainW)
@@ -44,7 +44,7 @@ namespace SchoolManagement.Model
 
             accountRFList = new List<ProfileRF>();
             deviceRFList = new List<DeviceRF>();
-            timeCheckRFList = new List<DateTime>();
+            timeCheckRFList = new List<TimeRecord>();
 
             groupedAccount = (ListCollectionView)CollectionViewSource.GetDefaultView(accountRFList);
             groupedTimeCheck = (ListCollectionView)CollectionViewSource.GetDefaultView(timeCheckRFList);
@@ -141,21 +141,71 @@ namespace SchoolManagement.Model
             }
         }
 
-        public void ReloadListTimeCheckDGV()
+        public void ReloadListTimeCheckDGV(int tabIndex)
         {
             try
             {
                 timeCheckRFList.Clear();
-                if (mainW.AccountListData.SelectedItem != null && mainW.dp_search.SelectedDate != null)
+                switch (tabIndex)
                 {
-                    ProfileRF profileRF = mainW.AccountListData.SelectedItem as ProfileRF;
-                    DateTime date = (DateTime)mainW.dp_search.SelectedDate;
-                    List<DateTime> timeList = SqliteDataAccess.LoadTimeCheckRF(profileRF.PIN_NO, date);
-                    foreach (DateTime item in timeList)
-                    {
-                        timeCheckRFList.Add(item);
-                    }
+                    case 0: // tab profile
+                        {
+                            if (mainW.AccountListData.SelectedItem != null && mainW.dp_search.SelectedDate != null)
+                            {
+                                ProfileRF profileRF = mainW.AccountListData.SelectedItem as ProfileRF;
+                                DateTime date = (DateTime)mainW.dp_search.SelectedDate;
+                                List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF(profileRF.PIN_NO, date);
+                                foreach (TimeRecord item in timeList)
+                                {
+                                    timeCheckRFList.Add(item);
+                                }
+                            }
+                            else
+                            {
+                                if (mainW.AccountListData.SelectedItem != null)
+                                {
+                                    ProfileRF profileRF = mainW.AccountListData.SelectedItem as ProfileRF;
+                                    List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF(profileRF.PIN_NO, DateTime.MinValue);
+                                    foreach (TimeRecord item in timeList)
+                                    {
+                                        timeCheckRFList.Add(item);
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    case 1: // tab device
+                        {
+                            if (mainW.DeviceRFListData.SelectedItem != null && mainW.dp_search.SelectedDate != null)
+                            {
+                                DeviceRF deviceRF = mainW.DeviceRFListData.SelectedItem as DeviceRF;
+                                DateTime date = (DateTime)mainW.dp_search.SelectedDate;
+                                List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF("", date, deviceRF.IP);
+                                foreach (TimeRecord item in timeList)
+                                {
+                                    timeCheckRFList.Add(item);
+                                }
+                            }
+                            else
+                            {
+                                if (mainW.DeviceRFListData.SelectedItem != null)
+                                {
+                                    DeviceRF deviceRF = mainW.DeviceRFListData.SelectedItem as DeviceRF;
+                                    List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF("", DateTime.MinValue, deviceRF.IP);
+                                    foreach (TimeRecord item in timeList)
+                                    {
+                                        timeCheckRFList.Add(item);
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
                 }
+                
 
                 if (groupedTimeCheck.IsEditingItem)
                     groupedTimeCheck.CommitEdit();
@@ -169,7 +219,7 @@ namespace SchoolManagement.Model
             }
         }
         
-        public bool CheckinServer(List<CheckinData> person)
+        public bool CheckinServer(string ip, List<CheckinData> person)
         {
             try
             {
@@ -180,7 +230,7 @@ namespace SchoolManagement.Model
                     {
                         long date = long.Parse(tick);
                         DateTime dateTime = new DateTime(date);
-                        SqliteDataAccess.SaveTimeCheckRF(p.SERIAL_ID, dateTime);
+                        SqliteDataAccess.SaveTimeCheckRF(ip, p.SERIAL_ID, dateTime);
                     }
                 }
                 return true;
@@ -209,6 +259,109 @@ namespace SchoolManagement.Model
             {
                 logFile.Error(ex.Message);
                 return new List<string>();
+            }
+        }
+
+        public void ExportAllProfile()
+        {
+            Excel.Application excel = new Excel.Application();
+            Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
+            Excel.Worksheet worksheet = null;
+
+            try
+            {
+                SaveFileDialog saveDialog = new SaveFileDialog();
+                saveDialog.Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+                saveDialog.FilterIndex = 2;
+                if (saveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    excel.DisplayAlerts = false;
+                    worksheet = workbook.ActiveSheet;
+
+                    worksheet.Cells[1, 1] = "No";
+                    worksheet.Cells[1, 2] = "Name";
+                    worksheet.Cells[1, 3] = "Adno";
+                    worksheet.Cells[1, 4] = "Gender";
+                    worksheet.Cells[1, 5] = "DOB";
+                    worksheet.Cells[1, 6] = "Disu";
+                    worksheet.Cells[1, 7] = "Image";
+                    worksheet.Cells[1, 8] = "PIN No.";
+                    worksheet.Cells[1, 9] = "Class";
+                    worksheet.Cells[1, 10] = "Email";
+                    worksheet.Cells[1, 11] = "Address";
+                    worksheet.Cells[1, 12] = "Phone";
+                    worksheet.Cells[1, 13] = "Status";
+                    worksheet.Cells[1, 14] = "Suspended Date";
+
+                    int cellRowIndex = 2;
+                    int cellColumnIndex = 1;
+
+                    List<ProfileRF> profileList = SqliteDataAccess.LoadProfileRF();
+
+                    for (int i=0; i < profileList.Count; i++)
+                    {
+                        for (int j = 0; j < 14; j++)
+                        {
+                            if (j == 0)//No
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = i + 1; }
+                            if (j == 1)//Name
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].NAME; }
+                            if (j == 2)//Adno
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].ADNO; }
+                            if (j == 3)//Gender
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].GENDER.ToString(); }
+                            if (j == 4)//DOB
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].DOB; }
+                            if (j == 5)//Disu
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].DISU; }
+                            if (j == 6)//Image
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = ""; }
+                            if (j == 7)//PIN No.
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].PIN_NO; }
+                            if (j == 8)//Class
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].CLASS; }
+                            if (j == 9)//Email
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].EMAIL; }
+                            if (j == 10)//Address
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].ADDRESS; }
+                            if (j == 11)//Phone
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].PHONE; }
+                            if (j == 12)//Status
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].STATUS; }
+                            if (j == 13)//Suspended Date
+                            {
+                                if (profileList[i].STATUS == "Suspended")
+                                {
+                                    { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].LOCK_DATE; }
+                                }
+                                else
+                                {
+                                    { worksheet.Cells[cellRowIndex, cellColumnIndex] = ""; }
+                                }
+                            }
+
+                            cellColumnIndex++;
+                        }
+                        cellColumnIndex = 1;
+                        cellRowIndex++;
+                    }
+
+
+                    worksheet.Columns.AutoFit();
+
+                    workbook.SaveAs(saveDialog.FileName, Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, false, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
+                    System.Windows.Forms.MessageBox.Show("Export Successful");
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+            finally
+            {
+                excel.Quit();
+                workbook = null;
+                excel = null;
             }
         }
         

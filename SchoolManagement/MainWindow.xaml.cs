@@ -79,7 +79,7 @@ namespace SchoolManagement
 
         private void Btn_search_Click(object sender, RoutedEventArgs e)
         {
-            mainModel.ReloadListTimeCheckDGV();
+            mainModel.ReloadListTimeCheckDGV(MainTabControl.SelectedIndex);
         }
 
         private void Btn_requestListTimeCheck_Click(object sender, RoutedEventArgs e)
@@ -161,18 +161,18 @@ namespace SchoolManagement
         }
 
 
-        private void Btn_fakeTimeCheck_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                ProfileRF profileRF = AccountListData.SelectedItem as ProfileRF;
-                SqliteDataAccess.SaveTimeCheckRF(profileRF.PIN_NO, DateTime.Now);
-            }
-            catch (Exception ex)
-            {
-                logFile.Error(ex.Message);
-            }
-        }
+        //private void Btn_fakeTimeCheck_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        ProfileRF profileRF = AccountListData.SelectedItem as ProfileRF;
+        //        SqliteDataAccess.SaveTimeCheckRF(profileRF.PIN_NO, DateTime.Now);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        logFile.Error(ex.Message);
+        //    }
+        //}
 
         private void Btn_delete_Click(object sender, RoutedEventArgs e)
         {
@@ -260,7 +260,6 @@ namespace SchoolManagement
                     tb_name.Text = temp.NAME;
                     dp_dateofbirth.Text = temp.DOB.ToLongDateString();
                     dp_disu.Text = temp.DISU.ToLongDateString();
-                    tb_student.Text = temp.STUDENT;
                     cbb_class.Text = temp.CLASS;
                     //cbb_status.Text = temp.STATUS;
                     tb_email.Text = temp.EMAIL;
@@ -299,7 +298,7 @@ namespace SchoolManagement
                     tb_adno.IsReadOnly =
                     tb_name.IsReadOnly =
                     tb_phone.IsReadOnly =
-                    tb_student.IsReadOnly =
+                    //tb_student.IsReadOnly =
                     //cbb_status.IsReadOnly =
                     cbb_class.IsReadOnly = true;
                 return true;
@@ -326,7 +325,7 @@ namespace SchoolManagement
                     tb_adno.IsReadOnly = 
                     tb_name.IsReadOnly = 
                     tb_phone.IsReadOnly = 
-                    tb_student.IsReadOnly = 
+                    //tb_student.IsReadOnly = 
                     //cbb_status.IsReadOnly = 
                     cbb_class.IsReadOnly = false;
                 tb_name.Focus();
@@ -399,36 +398,37 @@ namespace SchoolManagement
                     return;
                 }
 
-                if(cbb_class.Text.ToString() == "Student")
-                {
-                    if (String.IsNullOrEmpty(tb_student.Text.ToString()) || tb_student.Text.ToString().Trim() == "")
-                    {
-                        System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_studentName", "tb_studentName"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        this.tb_student.Focus();
-                        return;
-                    }
-                }
+                //if(cbb_class.Text.ToString() == "Student")
+                //{
+                //    if (String.IsNullOrEmpty(tb_student.Text.ToString()) || tb_student.Text.ToString().Trim() == "")
+                //    {
+                //        System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_studentName", "tb_studentName"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //        this.tb_student.Focus();
+                //        return;
+                //    }
+                //}
 
-                if (String.IsNullOrEmpty(tb_email.Text.ToString()) || tb_email.Text.ToString().Trim() == "")
-                {
-                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_email", "tb_email"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    this.tb_email.Focus();
-                    return;
-                }
+                //if (String.IsNullOrEmpty(tb_email.Text.ToString()) || tb_email.Text.ToString().Trim() == "")
+                //{
+                //    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_email", "tb_email"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    this.tb_email.Focus();
+                //    return;
+                //}
 
-                if (String.IsNullOrEmpty(tb_address.Text.ToString()) || tb_address.Text.ToString().Trim() == "")
-                {
-                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_address", "tb_address"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    this.tb_address.Focus();
-                    return;
-                }
+                //if (String.IsNullOrEmpty(tb_address.Text.ToString()) || tb_address.Text.ToString().Trim() == "")
+                //{
+                //    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_address", "tb_address"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    this.tb_address.Focus();
+                //    return;
+                //}
 
-                if (String.IsNullOrEmpty(tb_phone.Text.ToString()) || tb_phone.Text.ToString().Trim() == "")
-                {
-                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_phone", "tb_phone"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    this.tb_phone.Focus();
-                    return;
-                }
+                //if (String.IsNullOrEmpty(tb_phone.Text.ToString()) || tb_phone.Text.ToString().Trim() == "")
+                //{
+                //    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_phone", "tb_phone"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    this.tb_phone.Focus();
+                //    return;
+                //}
+
                 if (DisableEditProfile())
                 {
                     ProfileRF person = new ProfileRF();
@@ -440,15 +440,14 @@ namespace SchoolManagement
                     //person.STATUS = cbb_status.Text;
                     person.DOB = (DateTime)dp_dateofbirth.SelectedDate;
                     person.DISU = (DateTime)dp_disu.SelectedDate;
-                    if (person.CLASS == "Student")
-                    {
-                        person.STUDENT = tb_student.Text;
-                    }
-                    else
-                    {
-                        person.STUDENT = "";
-                    }
-                    
+                    //if (person.CLASS == "Student")
+                    //{
+                    //    person.STUDENT = tb_student.Text;
+                    //}
+                    //else
+                    //{
+                    //    person.STUDENT = "";
+                    //}
                     person.EMAIL = tb_email.Text;
                     person.ADDRESS = tb_address.Text;
                     person.PHONE = tb_phone.Text;
@@ -486,15 +485,15 @@ namespace SchoolManagement
         {
             try
             {
-                if ((cbb_class.SelectedItem as ComboBoxItem).Content.ToString() != "Student")
-                {
-                    tb_student.Text = "";
-                    tb_student.IsEnabled = false;
-                }
-                else
-                {
-                    tb_student.IsEnabled = true;
-                }
+                //if ((cbb_class.SelectedItem as ComboBoxItem).Content.ToString() != "Student")
+                //{
+                //    tb_student.Text = "";
+                //    tb_student.IsEnabled = false;
+                //}
+                //else
+                //{
+                //    tb_student.IsEnabled = true;
+                //}
             }
             catch (Exception ex)
             {
@@ -541,7 +540,7 @@ namespace SchoolManagement
 
         private void Export_Click(object sender, RoutedEventArgs e)
         {
-
+            mainModel.ExportAllProfile();
         }
 
         private void Cbb_status_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -580,6 +579,11 @@ namespace SchoolManagement
             {
                 Filter_Click(sender, e);
             }
+        }
+
+        private void Btn_exportTimeCheck_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

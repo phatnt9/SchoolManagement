@@ -172,36 +172,36 @@ namespace SchoolManagement.Form
                 return;
             }
 
-            if (cbb_class.Text.ToString() == "Student")
-            {
-                if (String.IsNullOrEmpty(tb_studentName.Text.ToString()) || tb_studentName.Text.ToString().Trim() == "")
-                {
-                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_studentName", "tb_studentName"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    this.tb_studentName.Focus();
-                    return;
-                }
-            }
+            //if (cbb_class.Text.ToString() == "Student")
+            //{
+            //    if (String.IsNullOrEmpty(tb_studentName.Text.ToString()) || tb_studentName.Text.ToString().Trim() == "")
+            //    {
+            //        System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_studentName", "tb_studentName"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //        this.tb_studentName.Focus();
+            //        return;
+            //    }
+            //}
 
-            if (String.IsNullOrEmpty(tb_email.Text.ToString()) || tb_email.Text.ToString().Trim() == "")
-            {
-                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_email", "tb_email"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.tb_email.Focus();
-                return;
-            }
+            //if (String.IsNullOrEmpty(tb_email.Text.ToString()) || tb_email.Text.ToString().Trim() == "")
+            //{
+            //    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_email", "tb_email"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    this.tb_email.Focus();
+            //    return;
+            //}
 
-            if (String.IsNullOrEmpty(tb_address.Text.ToString()) || tb_address.Text.ToString().Trim() == "")
-            {
-                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_address", "tb_address"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.tb_address.Focus();
-                return;
-            }
+            //if (String.IsNullOrEmpty(tb_address.Text.ToString()) || tb_address.Text.ToString().Trim() == "")
+            //{
+            //    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_address", "tb_address"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    this.tb_address.Focus();
+            //    return;
+            //}
 
-            if (String.IsNullOrEmpty(tb_phone.Text.ToString()) || tb_phone.Text.ToString().Trim() == "")
-            {
-                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_phone", "tb_phone"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.tb_phone.Focus();
-                return;
-            }
+            //if (String.IsNullOrEmpty(tb_phone.Text.ToString()) || tb_phone.Text.ToString().Trim() == "")
+            //{
+            //    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_phone", "tb_phone"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    this.tb_phone.Focus();
+            //    return;
+            //}
 
             if (String.IsNullOrEmpty(tb_adno.Text.ToString()) || tb_adno.Text.ToString().Trim() == "")
             {
@@ -220,14 +220,14 @@ namespace SchoolManagement.Form
             person.CLASS = cbb_class.Text;
             person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
             person.DOB = (DateTime)dp_dateofbirth.SelectedDate;
-            if (person.CLASS == "Student")
-            {
-                person.STUDENT = tb_studentName.Text;
-            }
-            else
-            {
-                person.STUDENT = "";
-            }
+            //if (person.CLASS == "Student")
+            //{
+            //    person.STUDENT = tb_studentName.Text;
+            //}
+            //else
+            //{
+            //    person.STUDENT = "";
+            //}
             person.EMAIL = tb_email.Text;
             person.ADDRESS = tb_address.Text;
             person.PHONE = tb_phone.Text;
@@ -254,7 +254,7 @@ namespace SchoolManagement.Form
             tb_name.Clear();
             tb_adno.Clear();
             rb_male.IsChecked = true;
-            tb_studentName.Clear();
+            //tb_studentName.Clear();
             tb_email.Clear();
             tb_address.Clear();
             tb_phone.Clear();
@@ -289,15 +289,15 @@ namespace SchoolManagement.Form
         {
             try
             {
-                if ((cbb_class.SelectedItem as ComboBoxItem).Content.ToString() != "Student")
-                {
-                    tb_studentName.Text = "";
-                    tb_studentName.IsEnabled = false;
-                }
-                else
-                {
-                    tb_studentName.IsEnabled = true;
-                }
+                //if ((cbb_class.SelectedItem as ComboBoxItem).Content.ToString() != "Student")
+                //{
+                //    tb_studentName.Text = "";
+                //    tb_studentName.IsEnabled = false;
+                //}
+                //else
+                //{
+                //    tb_studentName.IsEnabled = true;
+                //}
             }
             catch (Exception ex)
             {

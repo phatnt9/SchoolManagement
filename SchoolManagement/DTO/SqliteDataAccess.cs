@@ -42,19 +42,82 @@ namespace SchoolManagement.DTO
             }
         }
 
-        public static List<DateTime> LoadTimeCheckRF(string PIN_NO, DateTime time)
+        public static List<TimeRecord> LoadTimeCheckRF(string PIN_NO, DateTime time, string ip = null)
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            try
             {
-                var p = new DynamicParameters();
-                p.Add("@PIN_NO", PIN_NO);
-                p.Add("@FROM", time);
-                p.Add("@TO", time.AddDays(1));
+                if (ip == null)
+                {
+                    if (time != DateTime.MinValue)
+                    {
+                        using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                        {
+                            var p = new DynamicParameters();
+                            p.Add("@PIN_NO", PIN_NO);
+                            p.Add("@FROM", time);
+                            p.Add("@TO", time.AddDays(1));
+
+                            var output = cnn.Query<TimeRecord>("SELECT RF_PROFILE.PIN_NO,TIME_CHECK,RF_DEVICE.IP,GATE FROM RF_TIMECHECK INNER JOIN RF_PROFILE,RF_DEVICE ON " +
+                                "(RF_PROFILE.PIN_NO = RF_TIMECHECK.PIN_NO AND RF_DEVICE.IP = RF_TIMECHECK.IP)" +
+                                " WHERE (TIME_CHECK >= @FROM AND TIME_CHECK < @TO) AND (RF_PROFILE.PIN_NO = @PIN_NO)", p);
+                            return output.ToList();
+                        }
+                    }
+                    else
+                    {
+                        using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                        {
+                            var p = new DynamicParameters();
+                            p.Add("@PIN_NO", PIN_NO);
+
+                            var output = cnn.Query<TimeRecord>("SELECT RF_PROFILE.PIN_NO,TIME_CHECK,RF_DEVICE.IP,GATE FROM RF_TIMECHECK INNER JOIN RF_PROFILE,RF_DEVICE ON " +
+                                "(RF_PROFILE.PIN_NO = RF_TIMECHECK.PIN_NO AND RF_DEVICE.IP = RF_TIMECHECK.IP)" +
+                                " WHERE (RF_PROFILE.PIN_NO = @PIN_NO)", p);
+                            return output.ToList();
+                        }
+                    }
+                }
+                else
+                {
+                    if (time != DateTime.MinValue)
+                    {
+                        using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                        {
+                            var p = new DynamicParameters();
+                            p.Add("@PIN_NO", PIN_NO);
+                            p.Add("@IP", ip);
+                            p.Add("@FROM", time);
+                            p.Add("@TO", time.AddDays(1));
+
+                            var output = cnn.Query<TimeRecord>("SELECT RF_PROFILE.PIN_NO,TIME_CHECK,RF_DEVICE.IP,GATE FROM RF_TIMECHECK INNER JOIN RF_PROFILE,RF_DEVICE ON " +
+                                "(RF_PROFILE.PIN_NO = RF_TIMECHECK.PIN_NO AND RF_DEVICE.IP = RF_TIMECHECK.IP)" +
+                                " WHERE (TIME_CHECK >= @FROM AND TIME_CHECK < @TO) AND (RF_DEVICE.IP = @IP)", p);
+                            return output.ToList();
+                        }
+                    }
+                    else
+                    {
+                        using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                        {
+                            var p = new DynamicParameters();
+                            p.Add("@PIN_NO", PIN_NO);
+                            p.Add("@IP", ip);
+
+                            var output = cnn.Query<TimeRecord>("SELECT RF_PROFILE.PIN_NO,TIME_CHECK,RF_DEVICE.IP,GATE FROM RF_TIMECHECK INNER JOIN RF_PROFILE,RF_DEVICE ON " +
+                                "(RF_PROFILE.PIN_NO = RF_TIMECHECK.PIN_NO AND RF_DEVICE.IP = RF_TIMECHECK.IP)" +
+                                " WHERE (RF_DEVICE.IP = @IP)", p);
+                            return output.ToList();
+                        }
+                    }
+                }
                 
-                var output = cnn.Query<DateTime>("SELECT TIME_CHECK FROM RF_TIMECHECK INNER JOIN RF_PROFILE ON " +
-                    "RF_PROFILE.PIN_NO = RF_TIMECHECK.PIN_NO WHERE (TIME_CHECK >= @FROM AND TIME_CHECK < @TO) AND (RF_PROFILE.PIN_NO = @PIN_NO)", p);
-                return output.ToList();
             }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                return new List<TimeRecord>();
+            }
+            
         }
 
 
@@ -72,19 +135,20 @@ namespace SchoolManagement.DTO
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("INSERT INTO RF_PROFILE (PIN_NO,NAME,CLASS,GENDER,DOB,STUDENT,EMAIL,ADDRESS,PHONE,ADNO,DISU,STATUS) " +
-                    "VALUES (@PIN_NO,@NAME,@CLASS,@GENDER,@DOB,@STUDENT,@EMAIL,@ADDRESS,@PHONE,@ADNO,@DISU,@STATUS)", accountRFCard);
+                cnn.Execute("INSERT INTO RF_PROFILE (PIN_NO,NAME,CLASS,GENDER,DOB,EMAIL,ADDRESS,PHONE,ADNO,DISU,STATUS,LOCK_DATE) " +
+                    "VALUES (@PIN_NO,@NAME,@CLASS,@GENDER,@DOB,@EMAIL,@ADDRESS,@PHONE,@ADNO,@DISU,@STATUS,@LOCK_DATE)", accountRFCard);
             }
         }
 
-        public static void SaveTimeCheckRF(string PIN_NO, DateTime TIME_CHECK)
+        public static void SaveTimeCheckRF(string IP, string PIN_NO, DateTime TIME_CHECK)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 var p = new DynamicParameters();
                 p.Add("@SERIAL_ID", PIN_NO);
                 p.Add("@TIME_CHECK", TIME_CHECK);
-                cnn.Execute("INSERT INTO RF_TIMECHECK (PIN_NO,TIME_CHECK) VALUES (@PIN_NO, @TIME_CHECK)", p);
+                p.Add("@IP", IP);
+                cnn.Execute("INSERT INTO RF_TIMECHECK (PIN_NO,TIME_CHECK,IP) VALUES (@PIN_NO, @TIME_CHECK, @IP)", p);
             }
         }
 
@@ -102,7 +166,6 @@ namespace SchoolManagement.DTO
                             "CLASS = @CLASS, " +
                             "GENDER = @GENDER, " +
                             "DOB = @DOB, " +
-                            "STUDENT = @STUDENT, " +
                             "EMAIL = @EMAIL, " +
                             "ADDRESS = @ADDRESS, " +
                             "PHONE = @PHONE, " +
@@ -120,7 +183,6 @@ namespace SchoolManagement.DTO
                             "CLASS = @CLASS, " +
                             "GENDER = @GENDER, " +
                             "DOB = @DOB, " +
-                            "STUDENT = @STUDENT, " +
                             "EMAIL = @EMAIL, " +
                             "ADDRESS = @ADDRESS, " +
                             "PHONE = @PHONE, " +
