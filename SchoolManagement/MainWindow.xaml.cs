@@ -118,7 +118,7 @@ namespace SchoolManagement
                     logFile.Error(ex.Message);
                 }
             });
-            System.Windows.Forms.MessageBox.Show("All deviceItems updated a new profile table. Please check and ensure them to successfully updated in the DeviceItem Tab!");
+            System.Windows.Forms.MessageBox.Show("All Devices updated a new profile table. Please check and make sure them to successfully updated in the Device Tab!");
         }
 
         private void DataTabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
