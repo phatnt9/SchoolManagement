@@ -103,6 +103,9 @@ namespace SchoolManagement.Model
             {
                 if ((item.IP == deviceRF.IP))
                 {
+                    item.STATUS = deviceRF.STATUS;
+                    item.GATE = deviceRF.GATE;
+                    item.CLASS = deviceRF.CLASS;
                     return true;
                 }
             }
@@ -111,34 +114,38 @@ namespace SchoolManagement.Model
 
         public void ReloadListDeviceRFDGV(DeviceRF removedDevice = null)
         {
-            try
+           mainW.DeviceRFListData.Dispatcher.BeginInvoke(new ThreadStart(() =>
             {
-                List<DeviceRF> deviceList = SqliteDataAccess.LoadDeviceRF();
-                foreach (DeviceRF item in deviceList)
+                try
                 {
-                    if(!CheckExistDeviceRF(deviceRFList, item))
+                    List<DeviceRF> deviceList = SqliteDataAccess.LoadDeviceRF();
+                    foreach (DeviceRF item in deviceList)
                     {
-                        DeviceItem deviceItem = new DeviceItem(this);
-                        item.deviceItem = deviceItem;
-                        deviceRFList.Add(item);
+                        if (!CheckExistDeviceRF(deviceRFList, item))
+                        {
+                            DeviceItem deviceItem = new DeviceItem(this);
+                            item.deviceItem = deviceItem;
+                            deviceRFList.Add(item);
+                        }
                     }
+                    if (removedDevice != null)
+                    {
+                        deviceRFList.Remove(removedDevice);
+                    }
+
+
+                    if (groupedDevice.IsEditingItem)
+                        groupedDevice.CommitEdit();
+                    if (groupedDevice.IsAddingNew)
+                        groupedDevice.CommitNew();
+                    groupedDevice.Refresh();
                 }
-                if(removedDevice != null)
+                catch (Exception ex)
                 {
-                    deviceRFList.Remove(removedDevice);
+                    logFile.Error(ex.Message);
                 }
-
-
-                if (groupedDevice.IsEditingItem)
-                    groupedDevice.CommitEdit();
-                if (groupedDevice.IsAddingNew)
-                    groupedDevice.CommitNew();
-                groupedDevice.Refresh();
-            }
-            catch (Exception ex)
-            {
-                logFile.Error(ex.Message);
-            }
+            }));
+            
         }
 
         public void ReloadListTimeCheckDGV(int tabIndex)
@@ -259,6 +266,80 @@ namespace SchoolManagement.Model
             {
                 logFile.Error(ex.Message);
                 return new List<string>();
+            }
+        }
+
+        public void ExportListTimeCheck()
+        {
+            if (timeCheckRFList.Count <= 0)
+            {
+                return;
+            }
+            Excel.Application excel = new Excel.Application();
+            Excel.Workbook workbook = excel.Workbooks.Add(Type.Missing);
+            Excel.Worksheet worksheet = null;
+
+            try
+            {
+                SaveFileDialog saveDialog = new SaveFileDialog();
+                saveDialog.Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+                saveDialog.FilterIndex = 2;
+                if (saveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    excel.DisplayAlerts = false;
+                    worksheet = workbook.ActiveSheet;
+
+                    worksheet.Cells[1, 1] = "No";
+                    worksheet.Cells[1, 2] = "PIN No.";
+                    worksheet.Cells[1, 3] = "Adno";
+                    worksheet.Cells[1, 4] = "Name";
+                    worksheet.Cells[1, 5] = "Gate";
+                    worksheet.Cells[1, 6] = "Time";
+
+                    int cellRowIndex = 2;
+                    int cellColumnIndex = 1;
+                    
+
+                    for (int i = 0; i < timeCheckRFList.Count; i++)
+                    {
+                        for (int j = 0; j < 6; j++)
+                        {
+                            if (j == 0)//No
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = i + 1; }
+                            if (j == 1)//PIN No.
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = timeCheckRFList[i].PIN_NO; }
+                            if (j == 2)//Adno
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = timeCheckRFList[i].ADNO; }
+                            if (j == 3)//Name
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = timeCheckRFList[i].NAME; }
+                            if (j == 4)//Gate
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = timeCheckRFList[i].GATE.ToString(); }
+                            if (j == 5)//Time
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = timeCheckRFList[i].TIME_CHECK.ToString("MM/dd/yyyy HH:mm:ss"); }
+                            
+
+                            cellColumnIndex++;
+                        }
+                        cellColumnIndex = 1;
+                        cellRowIndex++;
+                    }
+
+
+                    worksheet.Columns.AutoFit();
+
+                    workbook.SaveAs(saveDialog.FileName, Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, false, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
+                    System.Windows.Forms.MessageBox.Show("Export Successful");
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+            finally
+            {
+                excel.Quit();
+                workbook = null;
+                excel = null;
             }
         }
 

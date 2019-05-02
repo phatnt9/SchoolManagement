@@ -11,7 +11,10 @@
         Width="800"
         MinHeight="500"
         MinWidth="800"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Closing="Window_Closing"
+        >
+        
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -100,7 +103,7 @@
                         Name="MainTabControl"
                         SelectionChanged="MainTabControl_SelectionChanged">
                         <TabItem
-                            Header="Account"
+                            Header="Profiles"
                             FontWeight="Normal">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -121,7 +124,7 @@
                                             Name="registrationProfile"
                                             BorderThickness="0"
                                             Background="Transparent"
-                                            Margin="0 0 0 0"
+                                            Margin="5 0 5 0"
                                             Padding="0 0 0 0"
                                             Width="90"
                                             Height="25"
@@ -135,27 +138,8 @@
                                                     FontSize="10"
                                                     >Add Profile</Label>
                                             </StackPanel>
-                                            <!--<iconPacks:PackIconMaterial Kind="Plus" Foreground="Green"/>-->
                                         </Button>
-                                        <Button
-                                            Name="delProfile"
-                                            BorderThickness="0"
-                                            Background="Transparent"
-                                            Margin="0 0 0 0"
-                                            Padding="0 0 0 0"
-                                            Width="90"
-                                            Height="25"
-                                            Click="Btn_delete_Click">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image 
-                                                    Width="12" 
-                                                    Source="pack://siteoforigin:,,,/Resources/table_delete.png"/>
-                                                <Label 
-                                                    FontSize="10"
-                                                    >Remove Profile</Label>
-                                            </StackPanel>
-                                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
-                                        </Button>
+
                                         <Button
                                             Name="editProfile"
                                             BorderThickness="0"
@@ -173,46 +157,49 @@
                                                     FontSize="10"
                                                     >Edit Profile</Label>
                                             </StackPanel>
-                                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
                                         </Button>
+
+
+
                                         <Button
-                                            Name="syncProfile"
+                                            Name="delProfile"
                                             BorderThickness="0"
                                             Background="Transparent"
-                                            Margin="0 0 0 0"
+                                            Margin="5 0 5 0"
                                             Padding="0 0 0 0"
                                             Width="90"
                                             Height="25"
-                                            Click="Btn_sendNewListPerson_Click">
+                                            Click="Btn_delete_Click">
                                             <StackPanel Orientation="Horizontal">
                                                 <Image 
                                                     Width="12" 
-                                                    Source="pack://siteoforigin:,,,/Resources/database_refresh.png"/>
+                                                    Source="pack://siteoforigin:,,,/Resources/table_delete.png"/>
                                                 <Label 
                                                     FontSize="10"
-                                                    >Sync Profile</Label>
+                                                    >Remove Profile</Label>
                                             </StackPanel>
-                                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
                                         </Button>
-                                        <!--<Button
-                                            Name="exportProfile"
+
+                                        <Button
+                                            Name="changeProfileStatus"
                                             BorderThickness="0"
                                             Background="Transparent"
-                                            Margin="0 0 0 0"
+                                            Margin="5 0 5 0"
                                             Padding="0 0 0 0"
                                             Width="90"
                                             Height="25"
-                                            Click="Btn_export_Click">
+                                            Click="ChangeProfileStatus_Click">
                                             <StackPanel Orientation="Horizontal">
                                                 <Image 
                                                     Width="12" 
-                                                    Source="pack://siteoforigin:,,,/Resources/script.png"/>
+                                                    Source="pack://siteoforigin:,,,/Resources/cancel.png"/>
                                                 <Label 
+                                                    Name="btn_changestatuslb"
                                                     FontSize="10"
-                                                    >Export Profile</Label>
+                                                    Content="Suspend Profile"></Label>
                                             </StackPanel>
-                                            --><!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>--><!--
-                                        </Button>-->
+                                        </Button>
+
                                     </StackPanel>
                                     <StackPanel
                                         Grid.Row="1"
@@ -263,21 +250,21 @@
                                                     HorizontalAlignment="Left"
                                                     VerticalAlignment="Center">
                                             <Button
-                                            Name="btn_filter"
-                                            BorderThickness="0"
-                                            Background="Transparent"
-                                            Margin="0 0 0 0"
-                                            Padding="0 0 0 0"
-                                            Width="90"
-                                            Height="25"
-                                            Click="Filter_Click">
+                                                Name="btn_filter"
+                                                BorderThickness="0"
+                                                Background="Transparent"
+                                                Margin="0 0 0 0"
+                                                Padding="0 0 0 0"
+                                                Width="90"
+                                                Height="25"
+                                                Click="Filter_Click">
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image 
-                                                    Width="12" 
-                                                    Source="pack://siteoforigin:,,,/Resources/page_find.png"/>
+                                                        Width="12" 
+                                                        Source="pack://siteoforigin:,,,/Resources/page_find.png"/>
                                                     <Label 
-                                                    FontSize="10"
-                                                    >Search</Label>
+                                                        FontSize="10"
+                                                        >Search</Label>
                                                 </StackPanel>
                                                 <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
                                             </Button>
@@ -296,11 +283,11 @@
                                         CanUserDeleteRows="False"
                                         SelectionMode="Single"
                                         SelectionUnit="FullRow"
-                                        AutoGenerateColumns="True"
+                                        AutoGenerateColumns="False"
                                         SelectedCellsChanged="AccountListData_SelectedCellsChanged"
                                         FontSize="12">
                                         <DataGrid.Columns>
-                                            <!--<DataGridTextColumn 
+                                            <DataGridTextColumn 
                                                 Width="*" 
                                                 Header="Id"
                                                 Visibility="Hidden"
@@ -309,7 +296,7 @@
                                             </DataGridTextColumn>
                                             <DataGridTextColumn 
                                                 Width="*" 
-                                                Header="Serial"
+                                                Header="PIN No."
                                                 Visibility="Visible"
                                                 IsReadOnly="True"
                                                 Binding="{Binding Path=PIN_NO}">
@@ -328,37 +315,51 @@
                                                 IsReadOnly="True"
                                                 Binding="{Binding Path=CLASS}">
                                             </DataGridTextColumn>
-                                            <DataGridTextColumn 
+                                            <!--<DataGridTextColumn 
                                                 Width="*" 
                                                 Header="Gender"
                                                 Visibility="Visible"
                                                 IsReadOnly="True"
                                                 Binding="{Binding Path=GENDER}">
                                             </DataGridTextColumn>-->
-                                            <!--<DataGridTemplateColumn Header="DEL">
-                                                 <DataGridTemplateColumn.CellTemplate>
-                                                 <DataTemplate>
-                                                 <Button IsEnabled="True" Name="btn_delete" Click="Btn_delete_Click">Delele</Button>
-                                                 </DataTemplate>
-                                                 </DataGridTemplateColumn.CellTemplate>
-                                                 </DataGridTemplateColumn>-->
-                                            <DataGridTemplateColumn Header="Change" Width="60">
+                                            <!--<DataGridTextColumn 
+                                                Width="Auto" 
+                                                Header="DOB"
+                                                Visibility="Visible"
+                                                IsReadOnly="True"
+                                                Binding="{Binding Path=DOB, StringFormat=\{0:MM-dd-yyyy\}}">
+                                            </DataGridTextColumn>-->
+                                            <DataGridTextColumn 
+                                                Width="Auto" 
+                                                Header="Status"
+                                                Visibility="Visible"
+                                                IsReadOnly="True"
+                                                Binding="{Binding Path=STATUS}">
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn 
+                                                Width="Auto" 
+                                                Header="Suspended Date"
+                                                Visibility="Visible"
+                                                IsReadOnly="True"
+                                                Binding="{Binding Path=LOCK_DATE, StringFormat=\{0:MM-dd-yyyy\}}">
+                                            </DataGridTextColumn>
+                                            <!--<DataGridTemplateColumn Header="Suspend" Width="60">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button 
                                                             Name="btn_changeStatus" 
                                                             Click="Btn_changeStatus_Click"
-                                                            Content="Change"></Button>
+                                                            Content="Suspend"></Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
+                                            </DataGridTemplateColumn>-->
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </Grid>
                             </Grid>
                         </TabItem>
                         <TabItem 
-                            Header="Device"
+                            Header="Devices"
                             FontWeight="Normal">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -390,6 +391,46 @@
                                             </StackPanel>
                                             <!--<iconPacks:PackIconMaterial Kind="Plus" Foreground="Green"/>-->
                                         </Button>
+                                        <Button
+                                            Name="editDevice"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Margin="0 0 0 0"
+                                            Padding="0 0 0 0"
+                                            Width="90"
+                                            Height="25"
+                                            Click="EditDevice_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image 
+                                                    Width="12" 
+                                                    Source="pack://siteoforigin:,,,/Resources/table_edit.png"/>
+                                                <Label 
+                                                    FontSize="10"
+                                                    >Edit Device</Label>
+                                            </StackPanel>
+                                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                                        </Button>
+
+                                        <Button
+                                            Name="syncProfile"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Margin="0 0 0 0"
+                                            Padding="0 0 0 0"
+                                            Width="90"
+                                            Height="25"
+                                            Click="Btn_sendNewListPerson_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image 
+                                                    Width="12" 
+                                                    Source="pack://siteoforigin:,,,/Resources/database_refresh.png"/>
+                                                <Label 
+                                                    FontSize="10"
+                                                    >Sync Profile</Label>
+                                            </StackPanel>
+                                            <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                                        </Button>
+
                                         <Button
                                             Name="deleleDeviceRF"
                                             BorderThickness="0"
@@ -436,7 +477,7 @@
                                             </DataGridTextColumn>
                                             <DataGridTextColumn 
                                                 Width="Auto" 
-                                                Header="Gate"
+                                                Header="Name"
                                                 Visibility="Visible"
                                                 IsReadOnly="True"
                                                 Binding="{Binding Path=GATE}">
@@ -469,6 +510,13 @@
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Header="Sync" Width="40">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Button Name="btn_sync" Click="Btn_sync_Click">Sync</Button>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
                                             <!--<DataGridTemplateColumn Header="Test" Width="40">
                                                  <DataGridTemplateColumn.CellTemplate>
                                                  <DataTemplate>
@@ -478,10 +526,17 @@
                                                  </DataGridTemplateColumn>-->
                                             <DataGridTextColumn
                                                 Width="100"
-                                                Header="Status"
+                                                Header="Connection"
                                                 Visibility="Visible"
                                                 IsReadOnly="True"
                                                 Binding="{Binding Path=connectStatus, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn
+                                                Width="100"
+                                                Header="Profile Status"
+                                                Visibility="Visible"
+                                                IsReadOnly="True"
+                                                Binding="{Binding Path=STATUS, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                             </DataGridTextColumn>
                                         </DataGrid.Columns>
                                     </DataGrid>
@@ -533,8 +588,10 @@
                                         </Grid>
                                     </Grid>
                                     <Grid Grid.Column="1">
-                                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                                      VerticalScrollBarVisibility="Auto">
+                                        <ScrollViewer 
+                                            Margin="5 10 5 0"
+                                            HorizontalScrollBarVisibility="Auto"
+                                            VerticalScrollBarVisibility="Auto">
                                             <Grid Height="Auto">
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition></RowDefinition>
@@ -699,25 +756,25 @@
                                                             </Grid>
                                                         </StackPanel>
                                                         <!--<StackPanel>
-                                                            <Grid Margin="0 5">
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
-                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                                                </Grid.ColumnDefinitions>
-                                                                <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="Student"></Label>
-                                                                </Grid>
-                                                                <Grid Grid.Column="1">
-                                                                    <TextBox
-                                                                        Name="tb_student"
-                                                                        Margin="5 0"
-                                                                        IsReadOnly="True"
-                                                                        VerticalAlignment="Center"
-                                                                        TextAlignment="Left"
-                                                                        Text=""></TextBox>
-                                                                </Grid>
-                                                            </Grid>
-                                                        </StackPanel>-->
+                                                             <Grid Margin="0 5">
+                                                             <Grid.ColumnDefinitions>
+                                                             <ColumnDefinition Width="90"></ColumnDefinition>
+                                                             <ColumnDefinition Width="*"></ColumnDefinition>
+                                                             </Grid.ColumnDefinitions>
+                                                             <Grid Grid.Column="0">
+                                                             <Label FontWeight="Normal" Content="Student"></Label>
+                                                             </Grid>
+                                                             <Grid Grid.Column="1">
+                                                             <TextBox
+                                                             Name="tb_student"
+                                                             Margin="5 0"
+                                                             IsReadOnly="True"
+                                                             VerticalAlignment="Center"
+                                                             TextAlignment="Left"
+                                                             Text=""></TextBox>
+                                                             </Grid>
+                                                             </Grid>
+                                                             </StackPanel>-->
                                                         <StackPanel>
                                                             <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>
@@ -779,27 +836,27 @@
                                                             </Grid>
                                                         </StackPanel>
                                                         <!--<StackPanel>
-                                                            <Grid Margin="0 5">
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
-                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                                                </Grid.ColumnDefinitions>
-                                                                <Grid Grid.Column="0">
-                                                                    <Label FontWeight="Normal" Content="Status"></Label>
-                                                                </Grid>
-                                                                <Grid Grid.Column="1">
-                                                                    <ComboBox 
-                                                                        Name="cbb_status"
-                                                                        IsEnabled="False"
-                                                                        Margin="5 0"
-                                                                        Height="20"
-                                                                        SelectionChanged="Cbb_status_SelectionChanged">
-                                                                        <ComboBoxItem>Active</ComboBoxItem>
-                                                                        <ComboBoxItem>Suspended</ComboBoxItem>
-                                                                    </ComboBox>
-                                                                </Grid>
-                                                            </Grid>
-                                                        </StackPanel>-->
+                                                             <Grid Margin="0 5">
+                                                             <Grid.ColumnDefinitions>
+                                                             <ColumnDefinition Width="90"></ColumnDefinition>
+                                                             <ColumnDefinition Width="*"></ColumnDefinition>
+                                                             </Grid.ColumnDefinitions>
+                                                             <Grid Grid.Column="0">
+                                                             <Label FontWeight="Normal" Content="Status"></Label>
+                                                             </Grid>
+                                                             <Grid Grid.Column="1">
+                                                             <ComboBox 
+                                                             Name="cbb_status"
+                                                             IsEnabled="False"
+                                                             Margin="5 0"
+                                                             Height="20"
+                                                             SelectionChanged="Cbb_status_SelectionChanged">
+                                                             <ComboBoxItem>Active</ComboBoxItem>
+                                                             <ComboBoxItem>Suspended</ComboBoxItem>
+                                                             </ComboBox>
+                                                             </Grid>
+                                                             </Grid>
+                                                             </StackPanel>-->
                                                     </StackPanel>
                                                 </Grid>
                                                 <Grid Grid.Row="1" Background="White">
@@ -898,61 +955,52 @@
                                                     HorizontalAlignment="Center"
                                                     VerticalAlignment="Center">
                                                     <!--<Button
-                                                        BorderBrush="#a9a9a9"
-                                                        FontFamily="Corsiva"
-                                                        Name="btn_search"
-                                                        Width="75"
-                                                        FontWeight="Normal"
-                                                        Margin="0 5"
-                                                        Content="Search"
-                                                        Click="Btn_search_Click"></Button>-->
+                                                         BorderBrush="#a9a9a9"
+                                                         FontFamily="Corsiva"
+                                                         Name="btn_search"
+                                                         Width="75"
+                                                         FontWeight="Normal"
+                                                         Margin="0 5"
+                                                         Content="Search"
+                                                         Click="Btn_search_Click"></Button>-->
                                                     <Button
-                                            Name="btn_search"
-                                            BorderThickness="0"
-                                            Background="Transparent"
-                                            Margin="0 0 0 0"
-                                            Padding="0 0 0 0"
-                                            Width="90"
-                                            Height="25"
-                                            Click="Btn_search_Click">
+                                                        Name="btn_search"
+                                                        BorderThickness="0"
+                                                        Background="Transparent"
+                                                        Margin="0 0 0 0"
+                                                        Padding="0 0 0 0"
+                                                        Width="90"
+                                                        Height="25"
+                                                        Click="Btn_search_Click">
                                                         <StackPanel Orientation="Horizontal">
                                                             <Image 
-                                                    Width="12" 
-                                                    Source="pack://siteoforigin:,,,/Resources/page_find.png"/>
+                                                                Width="12" 
+                                                                Source="pack://siteoforigin:,,,/Resources/page_find.png"/>
                                                             <Label 
-                                                    FontSize="10"
-                                                    >Search</Label>
+                                                                FontSize="10"
+                                                                >Search</Label>
                                                         </StackPanel>
                                                         <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
                                                     </Button>
-                                                    <!--<Button
-                                                        BorderBrush="#a9a9a9"
-                                                        FontFamily="Corsiva"
-                                                        Name="btn_exportTimeCheck"
-                                                        Width="75"
-                                                        FontWeight="Normal"
-                                                        Margin="0 5"
-                                                        Content="Export"
-                                                        Click="Btn_exportTimeCheck_Click"></Button>-->
+                                                    
                                                     <Button
-                            Name="btn_exportTimeCheck"
-                            BorderThickness="0"
-                            Background="Transparent"
-                            Margin="0 0 0 0"
-                            Padding="0 0 0 0"
-                            Width="90"
-                            Height="25"
-                            Click="Btn_exportTimeCheck_Click">
+                                                        Name="btn_exportTimeCheck"
+                                                        BorderThickness="0"
+                                                        Background="Transparent"
+                                                        Margin="0 0 0 0"
+                                                        Padding="0 0 0 0"
+                                                        Width="90"
+                                                        Height="25"
+                                                        Click="Btn_exportTimeCheck_Click">
                                                         <StackPanel 
-                                Orientation="Horizontal">
+                                                            Orientation="Horizontal">
                                                             <Image 
-                                    Width="12" 
-                                    Source="pack://siteoforigin:,,,/Resources/document-open.png"/>
+                                                                Width="12" 
+                                                                Source="pack://siteoforigin:,,,/Resources/document-open.png"/>
                                                             <Label 
-                                    FontSize="10"
-                                    >Export</Label>
+                                                                FontSize="10"
+                                                                >Export</Label>
                                                         </StackPanel>
-                                                        <!--<iconPacks:PackIconMaterial Kind="Plus" Foreground="Green"/>-->
                                                     </Button>
                                                 </StackPanel>
                                             </Grid>
@@ -981,12 +1029,12 @@
                                                      IsReadOnly="True"
                                                      Binding="{Binding Path=GATE}"
                                                      ></DataGridTextColumn>
-                                                <DataGridTextColumn 
-                                                    Header="Time"
-                                                    Width="*"
-                                                    IsReadOnly="True"
-                                                    Binding="{Binding Path=TIME_CHECK}"
-                                                    ></DataGridTextColumn>-->
+                                                     <DataGridTextColumn 
+                                                     Header="Time"
+                                                     Width="*"
+                                                     IsReadOnly="True"
+                                                     Binding="{Binding Path=TIME_CHECK}"
+                                                     ></DataGridTextColumn>-->
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </Grid>
@@ -1000,61 +1048,61 @@
 
         </Grid>
         <!--<Grid Grid.Row="3">
-            <DockPanel>
-                <StatusBar DockPanel.Dock="Bottom">
-                    <StatusBarItem>
-                        <Grid>
-                            <StackPanel
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Orientation="Horizontal">
-                                <Label FontFamily="Corsiva" Content="Server Status"></Label>
-                                <Grid>
-                                    <Canvas Width="17" 
-                                            Margin="0 4"
-                                            VerticalAlignment="Top"
-                                            HorizontalAlignment="Center">
-                                        <Ellipse
-                                            Fill="Green"
-                                            Height="15"
-                                            Width="15"></Ellipse>
-                                    </Canvas>
-                                </Grid>
-                            </StackPanel>
-                        </Grid>
-                    </StatusBarItem>
-                    <Separator></Separator>
-                    <StatusBarItem>
-                        -->
+             <DockPanel>
+             <StatusBar DockPanel.Dock="Bottom">
+             <StatusBarItem>
+             <Grid>
+             <StackPanel
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"
+             Orientation="Horizontal">
+             <Label FontFamily="Corsiva" Content="Server Status"></Label>
+             <Grid>
+             <Canvas Width="17" 
+             Margin="0 4"
+             VerticalAlignment="Top"
+             HorizontalAlignment="Center">
+             <Ellipse
+             Fill="Green"
+             Height="15"
+             Width="15"></Ellipse>
+             </Canvas>
+             </Grid>
+             </StackPanel>
+             </Grid>
+             </StatusBarItem>
+             <Separator></Separator>
+             <StatusBarItem>
+        -->
         <!--<Grid>
-                             <StackPanel
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="Center"
-                             Orientation="Horizontal">
-                             <Label Name="processStatusText" Margin="0 -1" Content="Ready"></Label>
-                             </StackPanel>
-                             </Grid>-->
+             <StackPanel
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"
+             Orientation="Horizontal">
+             <Label Name="processStatusText" Margin="0 -1" Content="Ready"></Label>
+             </StackPanel>
+             </Grid>-->
         <!--
-                    </StatusBarItem>
-                    <StatusBarItem>
-                        <Grid>
-                            <ProgressBar
-                                Name="pbStatus"
-                                Margin="5 0"
-                                Minimum="0"
-                                Maximum="100"
-                                Width="200"
-                                Height="20">
-                            </ProgressBar>
-                            <TextBlock 
-                                FontWeight="Normal"
-                                Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" 
-                                HorizontalAlignment="Center" 
-                                VerticalAlignment="Center" />
-                        </Grid>
-                    </StatusBarItem>
-                </StatusBar>
-            </DockPanel>
-        </Grid>-->
+             </StatusBarItem>
+             <StatusBarItem>
+             <Grid>
+             <ProgressBar
+             Name="pbStatus"
+             Margin="5 0"
+             Minimum="0"
+             Maximum="100"
+             Width="200"
+             Height="20">
+             </ProgressBar>
+             <TextBlock 
+             FontWeight="Normal"
+             Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" 
+             HorizontalAlignment="Center" 
+             VerticalAlignment="Center" />
+             </Grid>
+             </StatusBarItem>
+             </StatusBar>
+             </DockPanel>
+             </Grid>-->
     </Grid>
 </Window>

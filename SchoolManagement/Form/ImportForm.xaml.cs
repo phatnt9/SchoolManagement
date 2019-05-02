@@ -156,9 +156,9 @@ namespace SchoolManagement.Form
 
 
                         profile.CLASS = xlRange.Cells[i, 9].Value2.ToString();
-                        profile.EMAIL = xlRange.Cells[i, 10].Value2.ToString();
-                        profile.ADDRESS = xlRange.Cells[i, 11].Value2.ToString();
-                        profile.PHONE = xlRange.Cells[i, 12].Value2.ToString();
+                        profile.EMAIL = (xlRange.Cells[i, 10].Value2 == null) ? "" : xlRange.Cells[i, 10].Value2.ToString();
+                        profile.ADDRESS = (xlRange.Cells[i, 11].Value2 == null) ? "" : xlRange.Cells[i, 11].Value2.ToString();
+                        profile.PHONE = (xlRange.Cells[i, 12].Value2 == null) ? "" : xlRange.Cells[i, 12].Value2.ToString();
                         profile.STATUS = xlRange.Cells[i, 13].Value2.ToString();
                         if (profile.STATUS == "Suspended")
                         {

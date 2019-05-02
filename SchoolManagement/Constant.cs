@@ -35,7 +35,7 @@ namespace SchoolManagement
         //    Teacher = 0,
         //    Security = 1,
         //    Student = 2,
-        //    Guess = 3
+        //    Guest = 3
         //}
 
         public enum Gender

@@ -34,6 +34,25 @@ namespace SchoolManagement.Form
             this.mainW = mainW;
         }
 
+        public AddDeviceRFForm(MainWindow mainW, DeviceRF deviceRF)
+        {
+            InitializeComponent();
+            this.mainW = mainW;
+            Title = "Edit Device";
+            btn_addSave.Content = "Save";
+            tb_gate.Text = deviceRF.GATE;
+            tb_ip.Text = deviceRF.IP;
+            string[] classArray = deviceRF.CLASS.Split(',');
+            foreach (string item in classArray)
+            {
+                if (item.Equals("Teacher")) { cb_teacher.IsChecked = true;}
+                if (item.Equals("Security")) { cb_security.IsChecked = true;}
+                if (item.Equals("Student")) { cb_student.IsChecked = true;}
+                if (item.Equals("Guest")) { cb_guest.IsChecked = true;}
+            }
+
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -54,20 +73,32 @@ namespace SchoolManagement.Form
                 DeviceRF deviceRF = new DeviceRF();
                 deviceRF.GATE = tb_gate.Text;
                 deviceRF.IP = tb_ip.Text;
+                deviceRF.STATUS = "Pending";
                 string classArray = 
                     ((bool)cb_teacher.IsChecked ? "Teacher" : "") + 
                     ((bool)cb_security.IsChecked ? ",Security" : "") + 
                     ((bool)cb_student.IsChecked ? ",Student" : "") + 
-                    ((bool)cb_guest.IsChecked ? ",Guess" : "");
+                    ((bool)cb_guest.IsChecked ? ",Guest" : "");
 
                 //Teacher = 0,
                 //Security = 1,
                 //Student = 2,
-                //Guess = 3
+                //Guest = 3
 
                 //deviceRF.CLASS = (AccountClass)cbb_class.SelectedIndex;
                 deviceRF.CLASS = classArray;
-                SqliteDataAccess.SaveDeviceRF(deviceRF);
+
+                if (Title.Equals("Edit Device"))
+                {
+                    SqliteDataAccess.UpdateDeviceRF(deviceRF.IP, "", deviceRF.CLASS, deviceRF.GATE);
+                    mainW.mainModel.ReloadListDeviceRFDGV();
+                    Close();
+                }
+                else
+                {
+
+                    SqliteDataAccess.SaveDeviceRF(deviceRF);
+                }
                 lb_status.Content = "New Device Added";
                 ClearForm();
                 mainW.mainModel.ReloadListDeviceRFDGV();

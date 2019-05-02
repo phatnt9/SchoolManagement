@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using WebSocketSharp;
 
 namespace SchoolManagement.Model
@@ -15,11 +17,20 @@ namespace SchoolManagement.Model
     {
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        public enum STATUSPROFILE
+        {
+            Updated,
+            Updating,
+            Failed,
+            Error,
+            Pending,
+        }
         public enum CLIENTCMD
         {
             REQUEST_PROFILE=110,
             REQUEST_REG_PERSON_LIST=120,
             REQUEST_CHECKALIVE=130,
+            CONFIRM_SENT_PROFILE_SUCCESS = 310,
 
         }
         public enum SERVERRESPONSE
@@ -45,12 +56,20 @@ namespace SchoolManagement.Model
             public int status;
             public List<String> data;
         }
+        public struct FLAGSTATUSCLIENT
+        {
+            public bool OnConfirmProfileSuccess;
+        }
         int publishdata;
         public event Action<String> MessageCallBack;
+        public FLAGSTATUSCLIENT OnFlagStatusClient ;
         private MainWindowModel mainWindowModel;
+        public STATUSPROFILE statusProfile=STATUSPROFILE.Pending;
         public DeviceItem(MainWindowModel mainWindowModel)
         {
             this.mainWindowModel = mainWindowModel;
+
+            OnFlagStatusClient.OnConfirmProfileSuccess = false;
         }
         protected override void OnOpenedEvent()
         {
@@ -77,8 +96,71 @@ namespace SchoolManagement.Model
         }
         public void sendProfile(string ip)
         {
+            if (webSocket != null)
+            {
+                if (webSocket.IsAlive)
+                {
+                    try
+                    {
+                        if (statusProfile != STATUSPROFILE.Updating)
+                        {
+                            JStringProfile Jprofile = new JStringProfile();
+                            Jprofile.status = (int)SERVERRESPONSE.RESP_PROFILE_SUCCESS;
+                            Jprofile.data = mainWindowModel.GetListSerialId(ip);
+                            string dataResp = JsonConvert.SerializeObject(Jprofile).ToString();
+                            StandardString info = new StandardString();
+                            info.data = dataResp;
+                            statusProfile = STATUSPROFILE.Updating;
+                            SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString());
+                            mainWindowModel.ReloadListDeviceRFDGV();
+                            this.Publish(publishdata, info);
+                            new Thread((MainWindowModel) =>
+                            {
+                                int cntTimeOut = 0;
+                                while (cntTimeOut++ < 10)
+                                {
+                                    if (OnFlagStatusClient.OnConfirmProfileSuccess)
+                                        break;
+                                    Thread.Sleep(1000);
+                                }
+                                if (OnFlagStatusClient.OnConfirmProfileSuccess)
+                                {
+                                    OnFlagStatusClient.OnConfirmProfileSuccess = false;
+                                    statusProfile = STATUSPROFILE.Updated;
+                                    SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString()+ " "+ DateTime.Now.ToString("MM/dd/yyyy h:mm:ss tt"));
+                                }
+                                else
+                                {
+                                    statusProfile = STATUSPROFILE.Failed;
+                                    SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString());
+                                }
+                                
+                               
+                                mainWindowModel.ReloadListDeviceRFDGV();
+                            }
+
+                            ).Start(mainWindowModel);
+
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        statusProfile = STATUSPROFILE.Error;
+                        SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString());
+                        mainWindowModel.ReloadListDeviceRFDGV();
+                        logFile.Error(ex.Message);
+                    }
+
+                }
+            }
+        }
+
+        public void sendProfileSync(string ip)
+        {
             try
             {
+                
                 JStringProfile Jprofile = new JStringProfile();
                 Jprofile.status = (int)SERVERRESPONSE.RESP_PROFILE_SUCCESS;
                 Jprofile.data = mainWindowModel.GetListSerialId(ip);
@@ -86,6 +168,7 @@ namespace SchoolManagement.Model
                 StandardString info = new StandardString();
                 info.data = dataResp;
                 this.Publish(publishdata, info);
+                
             }
             catch (Exception ex)
             {
@@ -124,6 +207,9 @@ namespace SchoolManagement.Model
                     case CLIENTCMD.REQUEST_PROFILE:
                         sendProfile(ip);
                         //dynamic product=new JOb
+                        break;
+                    case CLIENTCMD.CONFIRM_SENT_PROFILE_SUCCESS:
+                        OnFlagStatusClient.OnConfirmProfileSuccess = true;
                         break;
 
                     case CLIENTCMD.REQUEST_REG_PERSON_LIST:

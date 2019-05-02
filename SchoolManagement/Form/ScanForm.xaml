@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="ScanForm" Height="110" Width="250" ResizeMode="NoResize"
+        Title="Scan" Height="110" Width="250" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Grid Background="#f1f1f1">
         <StackPanel HorizontalAlignment="Center"

@@ -57,7 +57,7 @@ namespace SchoolManagement.DTO
                             p.Add("@FROM", time);
                             p.Add("@TO", time.AddDays(1));
 
-                            var output = cnn.Query<TimeRecord>("SELECT RF_PROFILE.PIN_NO,TIME_CHECK,RF_DEVICE.IP,GATE FROM RF_TIMECHECK INNER JOIN RF_PROFILE,RF_DEVICE ON " +
+                            var output = cnn.Query<TimeRecord>("SELECT * FROM RF_TIMECHECK INNER JOIN RF_PROFILE,RF_DEVICE ON " +
                                 "(RF_PROFILE.PIN_NO = RF_TIMECHECK.PIN_NO AND RF_DEVICE.IP = RF_TIMECHECK.IP)" +
                                 " WHERE (TIME_CHECK >= @FROM AND TIME_CHECK < @TO) AND (RF_PROFILE.PIN_NO = @PIN_NO)", p);
                             return output.ToList();
@@ -70,7 +70,7 @@ namespace SchoolManagement.DTO
                             var p = new DynamicParameters();
                             p.Add("@PIN_NO", PIN_NO);
 
-                            var output = cnn.Query<TimeRecord>("SELECT RF_PROFILE.PIN_NO,TIME_CHECK,RF_DEVICE.IP,GATE FROM RF_TIMECHECK INNER JOIN RF_PROFILE,RF_DEVICE ON " +
+                            var output = cnn.Query<TimeRecord>("SELECT * FROM RF_TIMECHECK INNER JOIN RF_PROFILE,RF_DEVICE ON " +
                                 "(RF_PROFILE.PIN_NO = RF_TIMECHECK.PIN_NO AND RF_DEVICE.IP = RF_TIMECHECK.IP)" +
                                 " WHERE (RF_PROFILE.PIN_NO = @PIN_NO)", p);
                             return output.ToList();
@@ -89,7 +89,7 @@ namespace SchoolManagement.DTO
                             p.Add("@FROM", time);
                             p.Add("@TO", time.AddDays(1));
 
-                            var output = cnn.Query<TimeRecord>("SELECT RF_PROFILE.PIN_NO,TIME_CHECK,RF_DEVICE.IP,GATE FROM RF_TIMECHECK INNER JOIN RF_PROFILE,RF_DEVICE ON " +
+                            var output = cnn.Query<TimeRecord>("SELECT * FROM RF_TIMECHECK INNER JOIN RF_PROFILE,RF_DEVICE ON " +
                                 "(RF_PROFILE.PIN_NO = RF_TIMECHECK.PIN_NO AND RF_DEVICE.IP = RF_TIMECHECK.IP)" +
                                 " WHERE (TIME_CHECK >= @FROM AND TIME_CHECK < @TO) AND (RF_DEVICE.IP = @IP)", p);
                             return output.ToList();
@@ -102,22 +102,22 @@ namespace SchoolManagement.DTO
                             var p = new DynamicParameters();
                             p.Add("@PIN_NO", PIN_NO);
                             p.Add("@IP", ip);
-
-                            var output = cnn.Query<TimeRecord>("SELECT RF_PROFILE.PIN_NO,TIME_CHECK,RF_DEVICE.IP,GATE FROM RF_TIMECHECK INNER JOIN RF_PROFILE,RF_DEVICE ON " +
+                            //RF_PROFILE.PIN_NO,TIME_CHECK,RF_DEVICE.IP,GATE
+                            var output = cnn.Query<TimeRecord>("SELECT * FROM RF_TIMECHECK INNER JOIN RF_PROFILE,RF_DEVICE ON " +
                                 "(RF_PROFILE.PIN_NO = RF_TIMECHECK.PIN_NO AND RF_DEVICE.IP = RF_TIMECHECK.IP)" +
                                 " WHERE (RF_DEVICE.IP = @IP)", p);
                             return output.ToList();
                         }
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
                 return new List<TimeRecord>();
             }
-            
+
         }
 
 
@@ -127,7 +127,7 @@ namespace SchoolManagement.DTO
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("INSERT INTO RF_DEVICE (IP,GATE,CLASS) VALUES (@IP, @GATE, @CLASS)", deviceRF);
+                cnn.Execute("INSERT INTO RF_DEVICE (IP,GATE,CLASS,STATUS) VALUES (@IP, @GATE, @CLASS,@STATUS)", deviceRF);
             }
         }
 
@@ -145,10 +145,48 @@ namespace SchoolManagement.DTO
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
                 var p = new DynamicParameters();
-                p.Add("@SERIAL_ID", PIN_NO);
+                p.Add("@PIN_NO", PIN_NO);
                 p.Add("@TIME_CHECK", TIME_CHECK);
                 p.Add("@IP", IP);
                 cnn.Execute("INSERT INTO RF_TIMECHECK (PIN_NO,TIME_CHECK,IP) VALUES (@PIN_NO, @TIME_CHECK, @IP)", p);
+            }
+        }
+
+        public static void UpdateDeviceRF(string ip, string status = "", string CLASS = "", string GATE = "")
+        {
+            try
+            {
+                if (status != "")
+                {
+                    using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                    {
+                        var p = new DynamicParameters();
+                        p.Add("@STATUS", status);
+                        p.Add("@IP", ip);
+                        cnn.Execute("UPDATE RF_DEVICE SET " +
+                                "STATUS = @STATUS " +
+                                "WHERE IP = @IP", p);
+                    }
+                }
+                else
+                {
+                    using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                    {
+                        var p = new DynamicParameters();
+                        p.Add("@CLASS", CLASS);
+                        p.Add("@GATE", GATE);
+                        p.Add("@IP", ip);
+                        cnn.Execute("UPDATE RF_DEVICE SET " +
+                                "CLASS = @CLASS, " +
+                                "GATE = @GATE " +
+                                "WHERE IP = @IP", p);
+                    }
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
             }
         }
 
@@ -237,7 +275,7 @@ namespace SchoolManagement.DTO
                     {
                         var filter = new DynamicParameters();
                         filter.Add("@CLASS", Class);
-                        var outputFilter = cnn.Query<string>("SELECT PIN_NO FROM RF_PROFILE WHERE (RF_PROFILE.CLASS = @CLASS)", filter);
+                        var outputFilter = cnn.Query<string>("SELECT PIN_NO FROM RF_PROFILE WHERE (RF_PROFILE.CLASS = @CLASS AND RF_PROFILE.STATUS = 'Active')", filter);
                         outputFilter.ToList();
                         foreach (string item in outputFilter)
                         {

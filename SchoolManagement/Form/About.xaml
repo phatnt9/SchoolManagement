@@ -27,7 +27,7 @@
                         FontFamily="Corsiva"
                         FontSize="30"
                         FontWeight="Bold"
-                        >ATEK4U</Label>
+                        >ATEK</Label>
                 </StackPanel>
                 <StackPanel Orientation="Vertical"
                             HorizontalAlignment="Center"

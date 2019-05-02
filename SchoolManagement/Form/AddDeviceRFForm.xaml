@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="Add Device" Height="180" Width="340"
+        Title="Add Device" Height="200" Width="340"
         ResizeMode="NoResize">
     <Grid 
         Height="Auto">
@@ -25,7 +25,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontFamily="Corsiva" Content="Gate"></Label>
+                        <Label FontFamily="Corsiva" Content="Name"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
@@ -43,7 +43,7 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontFamily="Corsiva" Content="Hostname"></Label>
+                        <Label FontFamily="Corsiva" Content="Ip"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
                         <TextBox
@@ -54,7 +54,7 @@
                     </Grid>
                 </Grid>
             </StackPanel>
-            <StackPanel>
+            <StackPanel Margin="0 5">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="90"></ColumnDefinition>
@@ -65,14 +65,6 @@
                     </Grid>
                     <Grid Grid.Column="1">
                         <Grid>
-                            <!--<ComboBox 
-                                Name="cbb_class"
-                                Height="20">
-                                <ComboBoxItem>Teacher</ComboBoxItem>
-                                <ComboBoxItem>Security</ComboBoxItem>
-                                <ComboBoxItem>Student</ComboBoxItem>
-                                <ComboBoxItem>Guess</ComboBoxItem>
-                            </ComboBox>-->
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="18"></RowDefinition>
                                 <RowDefinition Height="18"></RowDefinition>
@@ -106,6 +98,7 @@
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
                 <Button 
+                    Name="btn_addSave"
                     Margin="5 0"
                     Height="25"
                     FontFamily="Corsiva"

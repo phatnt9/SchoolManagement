@@ -118,6 +118,7 @@ namespace SchoolManagement
                     logFile.Error(ex.Message);
                 }
             });
+            System.Windows.Forms.MessageBox.Show("All deviceItems updated a new profile table. Please check and ensure them to successfully updated in the DeviceItem Tab!");
         }
 
         private void DataTabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -255,6 +256,18 @@ namespace SchoolManagement
                 if (AccountListData.SelectedItem != null)
                 {
                     ProfileRF temp = AccountListData.SelectedItem as ProfileRF;
+
+                    if(temp.STATUS == "Active")
+                    {
+                        btn_changestatuslb.Content = "Suspend Profile";
+                    }
+                    else
+                    {
+                        btn_changestatuslb.Content = "Active Profile";
+                    }
+
+
+
                     tb_serialID.Text = temp.PIN_NO;
                     tb_adno.Text = temp.ADNO;
                     tb_name.Text = temp.NAME;
@@ -583,7 +596,70 @@ namespace SchoolManagement
 
         private void Btn_exportTimeCheck_Click(object sender, RoutedEventArgs e)
         {
+            mainModel.ExportListTimeCheck();
+        }
 
+        private void Btn_sync_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                DeviceRF deviceRF = (sender as System.Windows.Controls.Button).DataContext as DeviceRF;
+                deviceRF.deviceItem.sendProfile(deviceRF.IP);
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+        }
+
+        private void EditDevice_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (DeviceRFListData.SelectedItem != null)
+                {
+                    DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
+                    AddDeviceRFForm frm = new AddDeviceRFForm(this, deviceRF);
+                    frm.ShowDialog();
+                    mainModel.ReloadListDeviceRFDGV();
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+
+            foreach (DeviceRF item in mainModel.deviceRFList)
+            {
+                if(item.deviceItem!=null)
+                    item.deviceItem.Dispose();
+            }
+            Environment.Exit(0);
+        }
+
+        private void ChangeProfileStatus_Click(object sender, RoutedEventArgs e)
+        {
+            if (AccountListData.SelectedItem != null)
+            {
+                ProfileRF profileRF = AccountListData.SelectedItem as ProfileRF;
+                if (profileRF.STATUS == "Active")
+                {
+                    profileRF.STATUS = "Suspended";
+                    profileRF.LOCK_DATE = DateTime.Now;
+                }
+                else
+                {
+                    profileRF.STATUS = "Active";
+                    profileRF.LOCK_DATE = DateTime.MinValue;
+                }
+                SqliteDataAccess.UpdateProfileRF(profileRF, profileRF.STATUS);
+                mainModel.ReloadListProfileRFDGV();
+            }
         }
     }
 }
