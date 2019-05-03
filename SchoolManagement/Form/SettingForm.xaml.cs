@@ -45,6 +45,7 @@ namespace SchoolManagement.Form
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -57,6 +58,7 @@ namespace SchoolManagement.Form
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -72,6 +74,7 @@ namespace SchoolManagement.Form
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
     }

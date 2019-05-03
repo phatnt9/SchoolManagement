@@ -81,6 +81,7 @@ namespace SchoolManagement.Model
             {
                 Console.WriteLine("Robot Control Error Send OnOpenedEvent");
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -150,6 +151,7 @@ namespace SchoolManagement.Model
                         SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString());
                         mainWindowModel.ReloadListDeviceRFDGV();
                         logFile.Error(ex.Message);
+                        Constant.mainWindowPointer.WriteLog(ex.Message);
                     }
 
                 }
@@ -173,6 +175,7 @@ namespace SchoolManagement.Model
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
 
         }
@@ -190,6 +193,7 @@ namespace SchoolManagement.Model
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
 
         }
@@ -240,6 +244,7 @@ namespace SchoolManagement.Model
                             catch (Exception ex)
                             {
                                 logFile.Error(ex.Message);
+                                Constant.mainWindowPointer.WriteLog(ex.Message);
                             }
                         }
                         catch (Exception ex)
@@ -252,11 +257,13 @@ namespace SchoolManagement.Model
                                 msg.data = product.ToString();
                                 Publish(publishdata, msg);
                                 logFile.Error(ex.Message);
+                                Constant.mainWindowPointer.WriteLog(ex.Message);
                             }
                             catch (Exception exc)
                         {
                             logFile.Error(exc.Message);
-                        }
+                                Constant.mainWindowPointer.WriteLog(ex.Message);
+                            }
                 }
                         
                         break;
@@ -266,6 +273,7 @@ namespace SchoolManagement.Model
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
     }

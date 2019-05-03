@@ -107,6 +107,7 @@ namespace SchoolManagement.Form
             {
                 lb_status.Content = "Error add new device";
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
             
         }

@@ -104,6 +104,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Form\ChangePasswordForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Form\ImportForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -130,6 +134,7 @@
     </Compile>
     <Compile Include="Communication\BridgeNodeServerCtrl.cs" />
     <Compile Include="Communication\JObjectExtensions.cs" />
+    <Compile Include="Communication\LogWriter.cs" />
     <Compile Include="Communication\Message.cs" />
     <Compile Include="Communication\MessageTypes.cs" />
     <Compile Include="Communication\Operation.cs" />
@@ -148,6 +153,9 @@
     </Compile>
     <Compile Include="Form\AddDeviceRFForm.xaml.cs">
       <DependentUpon>AddDeviceRFForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Form\ChangePasswordForm.xaml.cs">
+      <DependentUpon>ChangePasswordForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Form\ImportForm.xaml.cs">
       <DependentUpon>ImportForm.xaml</DependentUpon>

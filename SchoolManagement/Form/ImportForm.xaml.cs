@@ -86,6 +86,7 @@ namespace SchoolManagement.Form
             {
                 btn_import.IsEnabled = true;
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
 
         }
@@ -177,6 +178,7 @@ namespace SchoolManagement.Form
                         {
                             //System.Windows.Forms.MessageBox.Show("Lỗi nhập File hãy kiểm tra lại!", Constant.messageTitileError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                             logFile.Error(ex.Message);
+                            Constant.mainWindowPointer.WriteLog(ex.Message);
                         }
                         //if (!Constant.listData.ContainsKey(structExcel.PIN_NO))
                         //{
@@ -203,11 +205,12 @@ namespace SchoolManagement.Form
             {
                 System.Windows.Forms.MessageBox.Show("Lỗi nhập File hãy kiểm tra lại!", Constant.messageTitileError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
 
             finally
             {
-                Console.WriteLine("Dong xlWorkbook.Close();");
+                Constant.mainWindowPointer.WriteLog("Dong xlWorkbook.Close();");
                 xlWorkbook.Close();
                 xlApp.Quit();
                 this.Dispatcher.Invoke(() =>

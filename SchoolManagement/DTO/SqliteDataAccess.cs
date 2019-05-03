@@ -115,6 +115,7 @@ namespace SchoolManagement.DTO
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
                 return new List<TimeRecord>();
             }
 
@@ -187,6 +188,7 @@ namespace SchoolManagement.DTO
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -237,6 +239,7 @@ namespace SchoolManagement.DTO
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 

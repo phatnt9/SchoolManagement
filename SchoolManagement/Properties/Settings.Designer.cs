@@ -58,5 +58,29 @@ namespace SchoolManagement.Properties {
                 this["RequestTimeCheckInterval"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("admin")]
+        public string RootUser {
+            get {
+                return ((string)(this["RootUser"]));
+            }
+            set {
+                this["RootUser"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("atek")]
+        public string RootPassword {
+            get {
+                return ((string)(this["RootPassword"]));
+            }
+            set {
+                this["RootPassword"] = value;
+            }
+        }
     }
 }

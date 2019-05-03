@@ -45,15 +45,16 @@
                             VerticalAlignment="Center">
                     <Label>Email: </Label>
                 </StackPanel>
-                <StackPanel Orientation="Vertical"
+                <!--<StackPanel Orientation="Vertical"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center">
                     <Label>Designer: </Label>
-                </StackPanel>
-                <StackPanel Orientation="Vertical"
+                </StackPanel>-->
+                <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center">
                     <Label>Phone: </Label>
+                    <Label> 0902-698-861 (Hải Nguyễn) </Label>
                 </StackPanel>
             </StackPanel>
         </Grid>

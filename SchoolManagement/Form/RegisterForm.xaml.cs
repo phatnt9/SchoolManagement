@@ -66,6 +66,7 @@ namespace SchoolManagement.Form
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
             
         }
@@ -125,6 +126,7 @@ namespace SchoolManagement.Form
                 catch (Exception ex)
                 {
                     logFile.Error(ex.Message);
+                    Constant.mainWindowPointer.WriteLog(ex.Message);
                 }
 
             }
@@ -222,6 +224,7 @@ namespace SchoolManagement.Form
             {
                 lb_status.Content = "Error add new person";
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -279,6 +282,7 @@ namespace SchoolManagement.Form
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
 
         }

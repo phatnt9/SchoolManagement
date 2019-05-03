@@ -9,6 +9,11 @@ namespace SchoolManagement
 {
     public class Constant
     {
+        public static string userName = "";
+        public static int userAuthor = -2;
+
+        public static MainWindow mainWindowPointer;
+
         public static string messageDuplicated = "{0} is duplicated.";
         public static string messageSaveSucced = "Save operation succeeded.";
         public static string messageSaveFail = "Failed to save. Please try again.";

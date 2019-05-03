@@ -70,6 +70,7 @@ namespace SchoolManagement.Model
                 catch (Exception ex)
                 {
                     logFile.Error(ex.Message);
+                    Constant.mainWindowPointer.WriteLog(ex.Message);
                 }
             });
         }
@@ -93,6 +94,7 @@ namespace SchoolManagement.Model
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
 
         }
@@ -142,6 +144,7 @@ namespace SchoolManagement.Model
                 catch (Exception ex)
                 {
                     logFile.Error(ex.Message);
+                    Constant.mainWindowPointer.WriteLog(ex.Message);
                 }
             }));
             
@@ -222,6 +225,7 @@ namespace SchoolManagement.Model
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
         
@@ -244,6 +248,7 @@ namespace SchoolManagement.Model
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
                 return false;
             }
             finally
@@ -264,6 +269,7 @@ namespace SchoolManagement.Model
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
                 return new List<string>();
             }
         }
@@ -332,6 +338,7 @@ namespace SchoolManagement.Model
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
             finally
             {
@@ -435,6 +442,7 @@ namespace SchoolManagement.Model
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
             finally
             {

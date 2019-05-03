@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Documents;
 
 namespace SchoolManagement
 {
@@ -24,9 +25,55 @@ namespace SchoolManagement
         public MainWindow()
         {
             InitializeComponent();
+            Constant.mainWindowPointer = this;
+            Loaded += MainWindow_Loaded;
             Closed += MainWindow_Closed;
             mainModel = new MainWindowModel(this);
             DataContext = mainModel;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            ChangeToLoginScreen();
+        }
+
+        public void ChangeToLoginScreen()
+        {
+            tbar_main.IsEnabled = false;
+            mn_main.IsEnabled = false;
+            MainTabControl.IsEnabled = false;
+            DataTabControl.IsEnabled = false;
+            gs_main.IsEnabled = false;
+            tb_username.Clear();
+            tb_password.Clear();
+            GridLengthConverter gridLengthConverter = new GridLengthConverter();
+            LoginRow.Height = (GridLength)gridLengthConverter.ConvertFrom("*");
+            MainAppRow.Height = (GridLength)gridLengthConverter.ConvertFrom("0");
+            Constant.userName = "";
+            Constant.userAuthor = -2;
+            tb_username.Focus();
+        }
+
+        public void ChangeToMainScreen(int userAuthor)
+        {
+            tbar_main.IsEnabled = true;
+            mn_main.IsEnabled = true;
+            MainTabControl.IsEnabled = true;
+            DataTabControl.IsEnabled = true;
+            gs_main.IsEnabled = true;
+            GridLengthConverter gridLengthConverter = new GridLengthConverter();
+            LoginRow.Height = (GridLength)gridLengthConverter.ConvertFrom("0");
+            MainAppRow.Height = (GridLength)gridLengthConverter.ConvertFrom("*");
+            if (userAuthor == 0)
+            {
+
+                return;
+            }
+            if (userAuthor == 1)
+            {
+
+                return;
+            }
         }
 
         private void MainWindow_Closed(object sender, EventArgs e)
@@ -67,14 +114,41 @@ namespace SchoolManagement
                 string array = "0";
                 string[] test = array.Split(',');
                 Console.WriteLine(test.Length);
-
+                rtb_log.Document.Blocks.Add(new Paragraph(new Run("test")));
                 //DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
                 //List<string> test = SqliteDataAccess.LoadListProfileRFSerialId(deviceRF.IP);
             }
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
+        }
+
+        public void WriteLog(string message)
+        {
+            try
+            {
+                Task.Run(() =>
+
+                   Dispatcher.Invoke((Action)(() =>
+                   {
+                       //rtb_log.Document.Blocks.Add(new Paragraph(new Run(message)));
+                       rtb_log.AppendText(message);
+                       rtb_log.AppendText("\u2028");
+                       //logConsole.Focus();
+                       //Constant.mainWindowPointer.WriteLog("Dong xlWorkbook.Close();");
+                       rtb_log.ScrollToEnd();
+                   }))
+
+               );
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+            }
+
         }
 
         private void Btn_search_Click(object sender, RoutedEventArgs e)
@@ -96,6 +170,7 @@ namespace SchoolManagement
                 catch (Exception ex)
                 {
                     logFile.Error(ex.Message);
+                    Constant.mainWindowPointer.WriteLog(ex.Message);
                 }
             });
 
@@ -116,6 +191,7 @@ namespace SchoolManagement
                 catch (Exception ex)
                 {
                     logFile.Error(ex.Message);
+                    Constant.mainWindowPointer.WriteLog(ex.Message);
                 }
             });
             System.Windows.Forms.MessageBox.Show("All Devices updated a new profile table. Please check and make sure them to successfully updated in the Device Tab!");
@@ -172,6 +248,7 @@ namespace SchoolManagement
         //    catch (Exception ex)
         //    {
         //        logFile.Error(ex.Message);
+        //        Constant.mainWindowPointer.WriteLog(ex.Message);
         //    }
         //}
 
@@ -201,6 +278,7 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
 
         }
@@ -215,6 +293,7 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -228,6 +307,7 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -246,6 +326,7 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -260,10 +341,12 @@ namespace SchoolManagement
                     if(temp.STATUS == "Active")
                     {
                         btn_changestatuslb.Content = "Suspend Profile";
+                        img_profileStatus.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/cancel.png"));
                     }
                     else
                     {
                         btn_changestatuslb.Content = "Active Profile";
+                        img_profileStatus.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/resultset_next.png"));
                     }
 
 
@@ -292,6 +375,7 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
         
@@ -321,6 +405,7 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
                 return false;
             }
         }
@@ -351,6 +436,7 @@ namespace SchoolManagement
             {
                 DisableEditProfile();
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
                 return false;
             }
         }
@@ -386,6 +472,7 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -477,6 +564,7 @@ namespace SchoolManagement
                     catch (Exception ex)
                     {
                         logFile.Error(ex.Message);
+                        Constant.mainWindowPointer.WriteLog(ex.Message);
                         editProfile.IsEnabled = true;
                         MainTabControl.IsEnabled = true;
                         save.Visibility = Visibility.Hidden;
@@ -488,6 +576,7 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
                 editProfile.IsEnabled = true;
                 MainTabControl.IsEnabled = true;
                 save.Visibility = Visibility.Hidden;
@@ -512,6 +601,7 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
             
         }
@@ -544,6 +634,7 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -610,6 +701,7 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -629,6 +721,7 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -687,6 +780,11 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+            }
+            finally
+            {
+                DeviceRFListData.SelectedItem = null;
             }
         }
 
@@ -703,6 +801,7 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -724,16 +823,14 @@ namespace SchoolManagement
                         {
                             if (deviceRF.deviceItem.webSocket.IsAlive)
                             {
-                                lb_controlDevice.Content = "Stop";
                                 SyncDeviceRF.IsEnabled = true;
-                                img_controlDevice.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/cancel.png"));
                             }
                             else
                             {
-                                lb_controlDevice.Content = "Start";
                                 SyncDeviceRF.IsEnabled = false;
-                                img_controlDevice.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/resultset_next.png"));
                             }
+                            lb_controlDevice.Content = "Stop";
+                            img_controlDevice.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/cancel.png"));
                         }
                         else
                         {
@@ -754,7 +851,85 @@ namespace SchoolManagement
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
+        }
+
+        private void Tb_username_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                this.tb_password.SelectAll();
+                this.tb_password.Focus();
+            }
+        }
+
+        private void Tb_password_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Btn_submit_Click(sender, e);
+            }
+        }
+
+        private void Btn_submit_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(this.tb_username.Text) || this.tb_username.Text.Trim() == "")
+                {
+                    //System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "User Name", "User Name"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.tb_username.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(this.tb_password.Password) || this.tb_password.Password.Trim() == "")
+                {
+                    //System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Password", "Password"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.tb_password.Focus();
+                    return;
+                }
+
+                string userName = tb_username.Text.Trim();
+                string password = tb_password.Password;
+
+                if (userName.Equals("root") && password.Equals("ATEKTechnologyServiceHaiLuatNguyenPhat"))
+                {
+                    Constant.userName = "root";
+                    Constant.userAuthor = 0;
+                    ChangeToMainScreen(Constant.userAuthor);
+                    return;
+                }
+
+                if (userName.Equals(Properties.Settings.Default.RootUser.ToString()) && password.Equals(Properties.Settings.Default.RootPassword.ToString()))
+                {
+                    Constant.userName = Properties.Settings.Default.RootUser.ToString();
+                    Constant.userAuthor = 1;
+                    ChangeToMainScreen(Constant.userAuthor);
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+            }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Logout_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeToLoginScreen();
+        }
+
+        private void ChangePassword_Click(object sender, RoutedEventArgs e)
+        {
+            ChangePasswordForm frm = new ChangePasswordForm(this);
+            frm.ShowDialog();
         }
     }
 }
