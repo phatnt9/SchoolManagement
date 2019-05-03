@@ -514,7 +514,6 @@
                                         SelectionMode="Single"
                                         SelectionUnit="FullRow"
                                         AutoGenerateColumns="False"
-                                        AlternatingRowBackground="LightGray"
                                         FontSize="12"
                                         SelectedCellsChanged="DeviceRFListData_SelectedCellsChanged">
                                         <DataGrid.Columns>
