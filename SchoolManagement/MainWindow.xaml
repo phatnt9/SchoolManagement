@@ -363,11 +363,16 @@
                             FontWeight="Normal">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="25"></RowDefinition>
+                                    <RowDefinition Height="50"></RowDefinition>
                                     <RowDefinition ></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid Grid.Row="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
                                     <StackPanel 
+                                        Grid.Row="0"
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center">
@@ -375,9 +380,8 @@
                                             Name="addDeviceRF"
                                             BorderThickness="0"
                                             Background="Transparent"
-                                            Margin="0 0 0 0"
-                                            Padding="0 0 0 0"
-                                            Width="100"
+                                            Padding="10 0"
+                                            Width="Auto"
                                             Height="25"
                                             Click="AddDeviceRF_Click">
                                             <StackPanel Orientation="Horizontal"
@@ -395,9 +399,8 @@
                                             Name="editDevice"
                                             BorderThickness="0"
                                             Background="Transparent"
-                                            Margin="0 0 0 0"
-                                            Padding="0 0 0 0"
-                                            Width="90"
+                                            Padding="10 0"
+                                            Width="Auto"
                                             Height="25"
                                             Click="EditDevice_Click">
                                             <StackPanel Orientation="Horizontal">
@@ -415,9 +418,8 @@
                                             Name="syncProfile"
                                             BorderThickness="0"
                                             Background="Transparent"
-                                            Margin="0 0 0 0"
-                                            Padding="0 0 0 0"
-                                            Width="90"
+                                            Padding="10 0"
+                                            Width="Auto"
                                             Height="25"
                                             Click="Btn_sendNewListPerson_Click">
                                             <StackPanel Orientation="Horizontal">
@@ -426,7 +428,7 @@
                                                     Source="pack://siteoforigin:,,,/Resources/database_refresh.png"/>
                                                 <Label 
                                                     FontSize="10"
-                                                    >Sync Profile</Label>
+                                                    >Sync All</Label>
                                             </StackPanel>
                                             <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
                                         </Button>
@@ -435,9 +437,8 @@
                                             Name="deleleDeviceRF"
                                             BorderThickness="0"
                                             Background="Transparent"
-                                            Margin="0 0 0 0"
-                                            Padding="0 0 0 0"
-                                            Width="100"
+                                            Padding="10 0"
+                                            Width="Auto"
                                             Height="25"
                                             Click="DeleleDeviceRF_Click">
                                             <StackPanel Orientation="Horizontal">
@@ -449,6 +450,54 @@
                                                     >Remove Device</Label>
                                             </StackPanel>
                                             <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed"/>-->
+                                        </Button>
+                                    </StackPanel>
+                                    <StackPanel
+                                        Grid.Row="1"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center">
+                                        <Button
+                                            Name="ControlDeviceRF"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Padding="10 0"
+                                            Width="Auto"
+                                            Height="25"
+                                            Click="ControlDeviceRF_Click">
+                                            <StackPanel Orientation="Horizontal"
+                                                        HorizontalAlignment="Right">
+                                                <Image 
+                                                    Name="img_controlDevice"
+                                                    Width="12" 
+                                                    Source="pack://siteoforigin:,,,/Resources/resultset_next.png"/>
+                                                <Label 
+                                                    Name="lb_controlDevice"
+                                                    FontSize="10"
+                                                    Content="Start"></Label>
+                                            </StackPanel>
+                                            <!--<iconPacks:PackIconMaterial Kind="Plus" Foreground="Green"/>-->
+                                        </Button>
+                                        <Button
+                                            Name="SyncDeviceRF"
+                                            BorderThickness="0"
+                                            Background="Transparent"
+                                            Padding="10 0"
+                                            Width="Auto"
+                                            Height="25"
+                                            Click="SyncDeviceRF_Click">
+                                            <StackPanel Orientation="Horizontal"
+                                                        HorizontalAlignment="Right">
+                                                <Image 
+                                                    Name="img_syncDevice"
+                                                    Width="12" 
+                                                    Source="pack://siteoforigin:,,,/Resources/server_go.png"/>
+                                                <Label 
+                                                    Name="lb_syncDevice"
+                                                    FontSize="10"
+                                                    Content="Sync"></Label>
+                                            </StackPanel>
+                                            <!--<iconPacks:PackIconMaterial Kind="Plus" Foreground="Green"/>-->
                                         </Button>
                                     </StackPanel>
                                 </Grid>
@@ -466,17 +515,18 @@
                                         SelectionUnit="FullRow"
                                         AutoGenerateColumns="False"
                                         AlternatingRowBackground="LightGray"
-                                        FontSize="12">
+                                        FontSize="12"
+                                        SelectedCellsChanged="DeviceRFListData_SelectedCellsChanged">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn 
-                                                Width="Auto" 
+                                                Width="*" 
                                                 Header="Id"
                                                 Visibility="Visible"
                                                 IsReadOnly="True"
                                                 Binding="{Binding Path=ID}">
                                             </DataGridTextColumn>
                                             <DataGridTextColumn 
-                                                Width="Auto" 
+                                                Width="*" 
                                                 Header="Name"
                                                 Visibility="Visible"
                                                 IsReadOnly="True"
@@ -496,7 +546,7 @@
                                                 IsReadOnly="True"
                                                 Binding="{Binding Path=CLASS}">
                                             </DataGridTextColumn>
-                                            <DataGridTemplateColumn Header="Start" Width="45">
+                                            <!--<DataGridTemplateColumn Header="Start" Width="45">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Name="btn_start" Click="Btn_start_Click">Start</Button>
@@ -509,14 +559,14 @@
                                                         <Button Name="btn_stop" Click="Btn_stop_Click">Stop</Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-                                            <DataGridTemplateColumn Header="Sync" Width="40">
+                                            </DataGridTemplateColumn>-->
+                                            <!--<DataGridTemplateColumn Header="Sync" Width="40">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <Button Name="btn_sync" Click="Btn_sync_Click">Sync</Button>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
+                                            </DataGridTemplateColumn>-->
                                             <!--<DataGridTemplateColumn Header="Test" Width="40">
                                                  <DataGridTemplateColumn.CellTemplate>
                                                  <DataTemplate>
@@ -525,14 +575,14 @@
                                                  </DataGridTemplateColumn.CellTemplate>
                                                  </DataGridTemplateColumn>-->
                                             <DataGridTextColumn
-                                                Width="100"
+                                                Width="*"
                                                 Header="Connection"
                                                 Visibility="Visible"
                                                 IsReadOnly="True"
                                                 Binding="{Binding Path=connectStatus, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                             </DataGridTextColumn>
                                             <DataGridTextColumn
-                                                Width="100"
+                                                Width="*"
                                                 Header="Profile Status"
                                                 Visibility="Visible"
                                                 IsReadOnly="True"
@@ -775,6 +825,26 @@
                                                              </Grid>
                                                              </Grid>
                                                              </StackPanel>-->
+                                                        <StackPanel>
+                                                            <Grid Margin="0 5">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid Grid.Column="0">
+                                                                    <Label FontWeight="Normal" Content="Image"></Label>
+                                                                </Grid>
+                                                                <Grid Grid.Column="1">
+                                                                    <TextBox
+                                                                        Name="tb_image"
+                                                                        Margin="5 0"
+                                                                        IsReadOnly="True"
+                                                                        VerticalAlignment="Center"
+                                                                        TextAlignment="Left"
+                                                                        Text=""></TextBox>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </StackPanel>
                                                         <StackPanel>
                                                             <Grid Margin="0 5">
                                                                 <Grid.ColumnDefinitions>

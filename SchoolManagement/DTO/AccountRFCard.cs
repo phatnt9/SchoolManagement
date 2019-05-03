@@ -19,6 +19,7 @@ namespace SchoolManagement.DTO
         private string _phone;
         private string _adno;
         private DateTime _disu;
+        private string _image;
         private DateTime _lockDate;
         private string _status;
 
@@ -33,6 +34,7 @@ namespace SchoolManagement.DTO
         public string ADDRESS { get => _address; set => _address = value; }
         public string PHONE { get => _phone; set => _phone = value; }
         public string ADNO { get => _adno; set => _adno = value; }
+        public string IMAGE { get => _image; set => _image = value; }
         public DateTime DISU { get => _disu; set => _disu = value; }
         public DateTime LOCK_DATE { get => _lockDate; set => _lockDate = value; }
         public string STATUS { get => _status; set => _status = value; }

@@ -276,6 +276,7 @@ namespace SchoolManagement
                     cbb_class.Text = temp.CLASS;
                     //cbb_status.Text = temp.STATUS;
                     tb_email.Text = temp.EMAIL;
+                    tb_image.Text = temp.IMAGE;
                     tb_address.Text = temp.ADDRESS;
                     tb_phone.Text = temp.PHONE;
                     if (temp.GENDER == Constant.Gender.Male)
@@ -308,6 +309,7 @@ namespace SchoolManagement
                 
                 tb_address.IsReadOnly =
                     tb_email.IsReadOnly =
+                    tb_image.IsReadOnly =
                     tb_adno.IsReadOnly =
                     tb_name.IsReadOnly =
                     tb_phone.IsReadOnly =
@@ -335,6 +337,7 @@ namespace SchoolManagement
                     cbb_class.IsEnabled = true;
                 tb_address.IsReadOnly = 
                     tb_email.IsReadOnly = 
+                    tb_image.IsReadOnly = 
                     tb_adno.IsReadOnly = 
                     tb_name.IsReadOnly = 
                     tb_phone.IsReadOnly = 
@@ -390,6 +393,13 @@ namespace SchoolManagement
         {
             try
             {
+                if (String.IsNullOrEmpty(tb_serialID.Text.ToString()) || tb_serialID.Text.ToString().Trim() == "")
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "PIN No.", "PIN No."), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.tb_serialID.Focus();
+                    return;
+                }
+
                 if (String.IsNullOrEmpty(tb_name.Text.ToString()) || tb_name.Text.ToString().Trim() == "")
                 {
                     System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Name", "Name"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -399,48 +409,38 @@ namespace SchoolManagement
 
                 if (String.IsNullOrEmpty(cbb_class.Text.ToString()) || cbb_class.Text.ToString().Trim() == "")
                 {
-                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "cbb_class", "cbb_class"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Class", "Class"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     this.cbb_class.Focus();
+                    return;
+                }
+
+                if (String.IsNullOrEmpty(tb_adno.Text.ToString()) || tb_adno.Text.ToString().Trim() == "")
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Adno", "Adno"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.tb_adno.Focus();
                     return;
                 }
 
                 if (String.IsNullOrEmpty(dp_dateofbirth.Text.ToString()) || dp_dateofbirth.Text.ToString().Trim() == "")
                 {
-                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "dp_dateofbirth", "dp_dateofbirth"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "DOB", "DOB"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     this.dp_dateofbirth.Focus();
                     return;
                 }
 
-                //if(cbb_class.Text.ToString() == "Student")
-                //{
-                //    if (String.IsNullOrEmpty(tb_student.Text.ToString()) || tb_student.Text.ToString().Trim() == "")
-                //    {
-                //        System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_studentName", "tb_studentName"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //        this.tb_student.Focus();
-                //        return;
-                //    }
-                //}
+                if (String.IsNullOrEmpty(dp_disu.Text.ToString()) || dp_disu.Text.ToString().Trim() == "")
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "DISU", "DISU"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.dp_disu.Focus();
+                    return;
+                }
 
-                //if (String.IsNullOrEmpty(tb_email.Text.ToString()) || tb_email.Text.ToString().Trim() == "")
-                //{
-                //    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_email", "tb_email"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //    this.tb_email.Focus();
-                //    return;
-                //}
-
-                //if (String.IsNullOrEmpty(tb_address.Text.ToString()) || tb_address.Text.ToString().Trim() == "")
-                //{
-                //    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_address", "tb_address"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //    this.tb_address.Focus();
-                //    return;
-                //}
-
-                //if (String.IsNullOrEmpty(tb_phone.Text.ToString()) || tb_phone.Text.ToString().Trim() == "")
-                //{
-                //    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_phone", "tb_phone"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //    this.tb_phone.Focus();
-                //    return;
-                //}
+                if (String.IsNullOrEmpty(tb_image.Text.ToString()) || tb_image.Text.ToString().Trim() == "")
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Image", "Image"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.tb_image.Focus();
+                    return;
+                }
 
                 if (DisableEditProfile())
                 {
@@ -462,6 +462,7 @@ namespace SchoolManagement
                     //    person.STUDENT = "";
                     //}
                     person.EMAIL = tb_email.Text;
+                    person.IMAGE = tb_image.Text;
                     person.ADDRESS = tb_address.Text;
                     person.PHONE = tb_phone.Text;
                     try
@@ -659,6 +660,100 @@ namespace SchoolManagement
                 }
                 SqliteDataAccess.UpdateProfileRF(profileRF, profileRF.STATUS);
                 mainModel.ReloadListProfileRFDGV();
+            }
+        }
+
+        private void ControlDeviceRF_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (DeviceRFListData.SelectedItem == null)
+                {
+                    return;
+                }
+                CheckSelectedDeviceRF();
+                DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
+                if (lb_controlDevice.Content.ToString().Equals("Start") || lb_controlDevice.Content.ToString().Equals("Connect"))
+                {
+                    deviceRF.deviceItem.Start("ws://" + deviceRF.IP + ":9090");
+                    return;
+                }
+                if (lb_controlDevice.Content.ToString().Equals("Stop"))
+                {
+                    deviceRF.deviceItem.Dispose();
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+        }
+
+        private void SyncDeviceRF_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (DeviceRFListData.SelectedItem != null)
+                {
+                    DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
+                    deviceRF.deviceItem.sendProfile(deviceRF.IP);
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+            }
+        }
+
+        private void DeviceRFListData_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            CheckSelectedDeviceRF();
+        }
+
+        public void CheckSelectedDeviceRF()
+        {
+            try
+            {
+                if (DeviceRFListData.SelectedItem != null)
+                {
+                    DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
+                    if (deviceRF.deviceItem != null)
+                    {
+                        if (deviceRF.deviceItem.webSocket != null)
+                        {
+                            if (deviceRF.deviceItem.webSocket.IsAlive)
+                            {
+                                lb_controlDevice.Content = "Stop";
+                                SyncDeviceRF.IsEnabled = true;
+                                img_controlDevice.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/cancel.png"));
+                            }
+                            else
+                            {
+                                lb_controlDevice.Content = "Start";
+                                SyncDeviceRF.IsEnabled = false;
+                                img_controlDevice.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/resultset_next.png"));
+                            }
+                        }
+                        else
+                        {
+                            lb_controlDevice.Content = "Start";
+                            SyncDeviceRF.IsEnabled = false;
+                            img_controlDevice.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/resultset_next.png"));
+                        }
+                    }
+                    else
+                    {
+                        deviceRF.deviceItem = new DeviceItem(mainModel);
+                        lb_controlDevice.Content = "Connect";
+                        SyncDeviceRF.IsEnabled = false;
+                        img_controlDevice.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/view-refresh.png"));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
             }
         }
     }

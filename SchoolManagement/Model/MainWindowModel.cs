@@ -123,8 +123,7 @@ namespace SchoolManagement.Model
                     {
                         if (!CheckExistDeviceRF(deviceRFList, item))
                         {
-                            DeviceItem deviceItem = new DeviceItem(this);
-                            item.deviceItem = deviceItem;
+                            item.deviceItem = new DeviceItem(this);
                             deviceRFList.Add(item);
                         }
                     }
@@ -317,7 +316,6 @@ namespace SchoolManagement.Model
                             if (j == 5)//Time
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = timeCheckRFList[i].TIME_CHECK.ToString("MM/dd/yyyy HH:mm:ss"); }
                             
-
                             cellColumnIndex++;
                         }
                         cellColumnIndex = 1;
@@ -396,7 +394,7 @@ namespace SchoolManagement.Model
                             if (j == 5)//Disu
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].DISU; }
                             if (j == 6)//Image
-                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = ""; }
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].IMAGE; }
                             if (j == 7)//PIN No.
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].PIN_NO; }
                             if (j == 8)//Class

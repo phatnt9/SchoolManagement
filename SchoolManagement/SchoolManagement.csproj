@@ -182,6 +182,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\view-refresh.png" />
+    <None Include="Resources\server_go.png" />
+    <None Include="Resources\resultset_next.png" />
     <Resource Include="favicon.ico" />
     <None Include="Resources\cancel.png" />
     <None Include="Resources\page_find.png" />

@@ -121,6 +121,16 @@ namespace SchoolManagement.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap resultset_next {
+            get {
+                object obj = ResourceManager.GetObject("resultset_next", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         internal static string SchoolPassword {
@@ -135,6 +145,16 @@ namespace SchoolManagement.Properties {
         internal static System.Drawing.Bitmap script {
             get {
                 object obj = ResourceManager.GetObject("script", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap server_go {
+            get {
+                object obj = ResourceManager.GetObject("server_go", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -184,6 +204,16 @@ namespace SchoolManagement.Properties {
         internal static System.Drawing.Bitmap table_save {
             get {
                 object obj = ResourceManager.GetObject("table_save", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap view_refresh {
+            get {
+                object obj = ResourceManager.GetObject("view_refresh", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

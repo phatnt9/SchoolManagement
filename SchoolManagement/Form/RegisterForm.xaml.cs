@@ -139,7 +139,7 @@ namespace SchoolManagement.Form
         {
             if (String.IsNullOrEmpty(tb_serialId.Text.ToString()) || tb_serialId.Text.ToString().Trim() == "")
             {
-                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_serialId", "tb_serialId"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "PIN No.", "PIN No."), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 this.tb_serialId.Focus();
                 return;
             }
@@ -153,59 +153,35 @@ namespace SchoolManagement.Form
 
             if (String.IsNullOrEmpty(cbb_class.Text.ToString()) || cbb_class.Text.ToString().Trim() == "")
             {
-                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "cbb_class", "cbb_class"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Class", "Class"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 this.cbb_class.Focus();
                 return;
             }
 
             if (String.IsNullOrEmpty(dp_dateofbirth.Text.ToString()) || dp_dateofbirth.Text.ToString().Trim() == "")
             {
-                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "dp_dateofbirth", "dp_dateofbirth"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "DOB", "DOB"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 this.dp_dateofbirth.Focus();
                 return;
             }
 
             if (String.IsNullOrEmpty(dp_disu.Text.ToString()) || dp_disu.Text.ToString().Trim() == "")
             {
-                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "dp_disu", "dp_disu"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "DISU", "DISU"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 this.dp_disu.Focus();
                 return;
             }
 
-            //if (cbb_class.Text.ToString() == "Student")
-            //{
-            //    if (String.IsNullOrEmpty(tb_studentName.Text.ToString()) || tb_studentName.Text.ToString().Trim() == "")
-            //    {
-            //        System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_studentName", "tb_studentName"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //        this.tb_studentName.Focus();
-            //        return;
-            //    }
-            //}
-
-            //if (String.IsNullOrEmpty(tb_email.Text.ToString()) || tb_email.Text.ToString().Trim() == "")
-            //{
-            //    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_email", "tb_email"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    this.tb_email.Focus();
-            //    return;
-            //}
-
-            //if (String.IsNullOrEmpty(tb_address.Text.ToString()) || tb_address.Text.ToString().Trim() == "")
-            //{
-            //    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_address", "tb_address"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    this.tb_address.Focus();
-            //    return;
-            //}
-
-            //if (String.IsNullOrEmpty(tb_phone.Text.ToString()) || tb_phone.Text.ToString().Trim() == "")
-            //{
-            //    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_phone", "tb_phone"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    this.tb_phone.Focus();
-            //    return;
-            //}
-
+            if (String.IsNullOrEmpty(tb_image.Text.ToString()) || tb_image.Text.ToString().Trim() == "")
+            {
+                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Image", "Image"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.tb_image.Focus();
+                return;
+            }
+            
             if (String.IsNullOrEmpty(tb_adno.Text.ToString()) || tb_adno.Text.ToString().Trim() == "")
             {
-                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "tb_adno", "tb_adno"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Adno", "Adno"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 this.tb_adno.Focus();
                 return;
             }
@@ -233,6 +209,7 @@ namespace SchoolManagement.Form
             person.PHONE = tb_phone.Text;
             person.ADNO = tb_adno.Text;
             person.DISU = (DateTime)dp_disu.SelectedDate;
+            person.IMAGE = tb_image.Text;
             person.STATUS = "Active";
             try
             {

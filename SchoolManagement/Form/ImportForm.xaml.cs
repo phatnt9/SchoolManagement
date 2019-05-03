@@ -155,6 +155,7 @@ namespace SchoolManagement.Form
                         profile.DISU = DateTime.Parse(dateTime);
 
 
+                        profile.IMAGE = xlRange.Cells[i, 7].Value2.ToString();
                         profile.CLASS = xlRange.Cells[i, 9].Value2.ToString();
                         profile.EMAIL = (xlRange.Cells[i, 10].Value2 == null) ? "" : xlRange.Cells[i, 10].Value2.ToString();
                         profile.ADDRESS = (xlRange.Cells[i, 11].Value2 == null) ? "" : xlRange.Cells[i, 11].Value2.ToString();

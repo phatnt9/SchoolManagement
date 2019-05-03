@@ -268,6 +268,25 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
+                        <Label FontFamily="Corsiva" Content="Image"></Label>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <TextBox
+                            Name="tb_image"
+                            Margin="5 0"
+                            VerticalAlignment="Center"
+                            TextAlignment="Left"
+                            Text=""></TextBox>
+                    </Grid>
+                </Grid>
+            </StackPanel>
+            <StackPanel  Margin="0 2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="90"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
                         <Label FontFamily="Corsiva" Content="Email"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
