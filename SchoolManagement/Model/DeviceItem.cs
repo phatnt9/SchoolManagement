@@ -29,7 +29,7 @@ namespace SchoolManagement.Model
         {
             REQUEST_PROFILE=110,
             REQUEST_REG_PERSON_LIST=120,
-            REQUEST_CHECKALIVE=130,
+            REQUEST_SYNC_TIME=130,
             CONFIRM_SENT_PROFILE_SUCCESS = 310,
 
         }
@@ -37,6 +37,7 @@ namespace SchoolManagement.Model
         {
             RESP_SUCCESS= 200,
             RESP_PROFILE_SUCCESS = 210,
+            RESP_SYNC_TIME = 220,
             RESP_SEND_NEWPROFILE_IMMEDIATELY = 240,
             RESP_REQ_PERSONLIST_IMMEDIATELY = 250,
             RESP_DATAFORMAT_ERROR = 300,
@@ -214,6 +215,14 @@ namespace SchoolManagement.Model
                         break;
                     case CLIENTCMD.CONFIRM_SENT_PROFILE_SUCCESS:
                         OnFlagStatusClient.OnConfirmProfileSuccess = true;
+                        break;
+                    case CLIENTCMD.REQUEST_SYNC_TIME:
+                        dynamic productTimeSync = new JObject();
+                        productTimeSync.status = (int)SERVERRESPONSE.RESP_SYNC_TIME;
+                        productTimeSync.data = DateTime.Now.Ticks;
+                        StandardString msgTimeSync = new StandardString();
+                        msgTimeSync.data = productTimeSync.ToString();
+                        Publish(publishdata, msgTimeSync);
                         break;
 
                     case CLIENTCMD.REQUEST_REG_PERSON_LIST:

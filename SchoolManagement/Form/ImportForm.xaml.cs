@@ -18,7 +18,8 @@ namespace SchoolManagement.Form
     {
 
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private string directory = "";
+        private string importFilePath = "";
+        private string importFileFolder = "";
         BackgroundWorker worker;
         MainWindow mainW;
 
@@ -48,12 +49,21 @@ namespace SchoolManagement.Form
 
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                this.txtFile.Text = directory = openFileDialog1.FileName;
+                this.txtFile.Text = importFilePath = openFileDialog1.FileName;
+                importFileFolder = System.IO.Path.GetDirectoryName(openFileDialog1.FileName);
                 string fileName = "DataImport.xlsx";
                 string path = Path.Combine(Environment.CurrentDirectory, fileName);
                 Console.WriteLine(path);
                 //FileInfo fileInfo = new FileInfo("DataImport");
                 //Console.WriteLine(fileInfo.DirectoryName);
+            }
+        }
+
+        public void CreateFolderToSaveImage(string importFolderPath)
+        {
+            if (!Directory.Exists(importFolderPath + @"\Image"))
+            {
+                Directory.CreateDirectory(importFolderPath + @"\Image");
             }
         }
 
@@ -116,10 +126,10 @@ namespace SchoolManagement.Form
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             Excel.Application xlApp = new Excel.Application();
-            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(directory);
+            Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(importFilePath);
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-
+            CreateFolderToSaveImage(importFileFolder);
             try
             {
 
@@ -157,6 +167,8 @@ namespace SchoolManagement.Form
 
 
                         profile.IMAGE = xlRange.Cells[i, 7].Value2.ToString();
+
+
                         profile.CLASS = xlRange.Cells[i, 9].Value2.ToString();
                         profile.EMAIL = (xlRange.Cells[i, 10].Value2 == null) ? "" : xlRange.Cells[i, 10].Value2.ToString();
                         profile.ADDRESS = (xlRange.Cells[i, 11].Value2 == null) ? "" : xlRange.Cells[i, 11].Value2.ToString();
