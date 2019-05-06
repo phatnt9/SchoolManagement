@@ -14,39 +14,27 @@
         WindowStartupLocation="CenterScreen"
         Closing="Window_Closing"
         >
-    <Window.Triggers>
-        <EventTrigger RoutedEvent="Window.Loaded">
-            <BeginStoryboard>
-                <Storyboard AutoReverse="True" BeginTime="0" >
-                    <DoubleAnimation Storyboard.TargetName="Foo"
-                                     Storyboard.TargetProperty="RelativeTransform"
-                                     From="0.2" To="0.8" Duration="0:0:10"/>
-                </Storyboard>
-            </BeginStoryboard>
-        </EventTrigger>
-    </Window.Triggers>
-    
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Name="LoginRow" Height="*"></RowDefinition>
-            <RowDefinition Name="MainAppRow" Height="0"></RowDefinition>
+            <RowDefinition Name="LoginRow" Height="0"></RowDefinition>
+            <RowDefinition Name="MainAppRow" Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Border 
             Grid.Row="0" 
             Name="LoginGrid">
-            <Border.Background>
+            <!--<Border.Background>
                 <ImageBrush
                     x:Name="Foo"
                     Opacity="0.4"
-                    Transform=""
                     Stretch="UniformToFill"
                     ImageSource="pack://siteoforigin:,,,/Resources/loginBackground.jpg"/>
-                <!--<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                --><!--<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                     <GradientStop Color="Yellow" Offset="0"/>
                     <GradientStop Color="Orange" Offset="0.2"  x:Name="Foo"/>
                     <GradientStop Color="Red" Offset="1"/>
-                </LinearGradientBrush>-->
-            </Border.Background>
+                </LinearGradientBrush>--><!--
+            </Border.Background>-->
             <StackPanel
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
@@ -758,17 +746,7 @@
                                             <ColumnDefinition></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
                                         <Grid Grid.Column="0">
-                                            <Grid Margin="0,5,0,5" Name="profile_image">
-                                                <StackPanel HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center">
-                                                    <Viewbox MaxHeight="200" MaxWidth="200">
-                                                        <Image 
-                                                        Width="{Binding ActualWidth, ElementName=profile_image}"
-                                                        Height="{Binding ActualHeight, ElementName=profile_image}"
-                                                        Source="pack://siteoforigin:,,,/Resources/images.png"/>
-                                                    </Viewbox>
-                                                </StackPanel>
-                                            </Grid>
+                                            
                                         </Grid>
                                         <Grid Grid.Column="1">
                                             <ScrollViewer 
@@ -783,6 +761,24 @@
                                                     <Grid Grid.Row="0">
                                                         <StackPanel
                                                         Orientation="Vertical">
+                                                            <StackPanel 
+                                                                Margin="0,5,0,5" 
+                                                                Name="profile_image">
+                                                                <StackPanel 
+                                                                    HorizontalAlignment="Center"
+                                                                    VerticalAlignment="Center">
+                                                                    <Viewbox 
+                                                                        MinHeight="150"
+                                                                        MaxHeight="200" 
+                                                                        MaxWidth="200">
+                                                                        <Image 
+                                                                            Name="img_profile"
+                                                                            Width="{Binding ActualWidth, ElementName=profile_image}"
+                                                                            Height="{Binding ActualHeight, ElementName=profile_image}"
+                                                                            Source="pack://siteoforigin:,,,/Resources/images.png"/>
+                                                                    </Viewbox>
+                                                                </StackPanel>
+                                                            </StackPanel>
                                                             <StackPanel>
                                                                 <Grid Margin="0 5">
                                                                     <Grid.ColumnDefinitions>

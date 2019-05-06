@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Documents;
+using System.Windows.Media;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 
 namespace SchoolManagement
 {
@@ -30,11 +33,44 @@ namespace SchoolManagement
             Closed += MainWindow_Closed;
             mainModel = new MainWindowModel(this);
             DataContext = mainModel;
+            
+            
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            
             ChangeToLoginScreen();
+            try
+            {
+                ImageBrush img = LoadImage("loginBackground");
+                img.Opacity = 0.4;
+                img.Stretch = Stretch.UniformToFill;
+                LoginGrid.Background = img;
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+            }
+        }
+
+        public ImageBrush LoadImage(string name)
+        {
+            System.Drawing.Bitmap bmp = (System.Drawing.Bitmap)Properties.Resources.ResourceManager.GetObject(name);
+            ImageBrush img = new ImageBrush();
+            img.ImageSource = ImageSourceForBitmap(bmp);
+            return img;
+        }
+
+        public ImageSource ImageSourceForBitmap(System.Drawing.Bitmap bmp)
+        {
+            var handle = bmp.GetHbitmap();
+            try
+            {
+                return Imaging.CreateBitmapSourceFromHBitmap(handle, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            }
+            finally { }
         }
 
         public void ChangeToLoginScreen()
@@ -370,6 +406,17 @@ namespace SchoolManagement
                     {
                         rb_female.IsChecked = true;
                     }
+
+                    try
+                    {
+                        img_profile.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Image/"+ temp.IMAGE));
+                    }
+                    catch
+                    {
+
+                    }
+
+
                 }
             }
             catch (Exception ex)

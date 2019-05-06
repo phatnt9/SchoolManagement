@@ -61,9 +61,9 @@ namespace SchoolManagement.Form
 
         public void CreateFolderToSaveImage(string importFolderPath)
         {
-            if (!Directory.Exists(importFolderPath + @"\Image"))
+            if (!Directory.Exists(System.IO.Directory.GetCurrentDirectory() + @"\Image"))
             {
-                Directory.CreateDirectory(importFolderPath + @"\Image");
+                Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + @"\Image");
             }
         }
 
@@ -167,7 +167,7 @@ namespace SchoolManagement.Form
 
 
                         profile.IMAGE = xlRange.Cells[i, 7].Value2.ToString();
-
+                        ImportProfileImage(importFileFolder, profile.IMAGE);
 
                         profile.CLASS = xlRange.Cells[i, 9].Value2.ToString();
                         profile.EMAIL = (xlRange.Cells[i, 10].Value2 == null) ? "" : xlRange.Cells[i, 10].Value2.ToString();
@@ -247,6 +247,26 @@ namespace SchoolManagement.Form
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
             worker.CancelAsync();
+        }
+
+        public void ImportProfileImage(string importFolderPath,string imageName)
+        {
+            try
+            {
+                string path = importFolderPath + @"\image";
+                if (string.IsNullOrEmpty(path))
+                {
+                    return;
+                }
+                File.Copy(importFolderPath + @"\image\" + imageName, 
+                    System.IO.Directory.GetCurrentDirectory() + @"\Image\" + imageName, 
+                    true);
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+            }
         }
     }
 }
