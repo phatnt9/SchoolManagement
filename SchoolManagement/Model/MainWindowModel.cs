@@ -395,7 +395,27 @@ namespace SchoolManagement.Model
                             if (j == 2)//Adno
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].ADNO; }
                             if (j == 3)//Gender
-                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].GENDER.ToString(); }
+                            {
+                                //worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].GENDER.ToString();
+
+                                var list = new System.Collections.Generic.List<string>();
+                                list.Add("Male");
+                                list.Add("Female");
+                                var flatList = string.Join(",", list.ToArray());
+
+                                var cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[cellRowIndex, cellColumnIndex];
+                                cell.Validation.Delete();
+                                cell.Validation.Add(
+                                   Excel.XlDVType.xlValidateList,
+                                   Excel.XlDVAlertStyle.xlValidAlertInformation,
+                                   Excel.XlFormatConditionOperator.xlBetween,
+                                   flatList,
+                                   Type.Missing);
+                                cell.Value2 = profileList[i].GENDER.ToString();
+                                cell.Locked = true;
+                                cell.Validation.IgnoreBlank = true;
+                                cell.Validation.InCellDropdown = true;
+                            }
                             if (j == 4)//DOB
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].DOB; }
                             if (j == 5)//Disu
@@ -404,8 +424,36 @@ namespace SchoolManagement.Model
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].IMAGE; }
                             if (j == 7)//PIN No.
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].PIN_NO; }
+
+
                             if (j == 8)//Class
-                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].CLASS; }
+                            {
+                                //worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].CLASS;
+
+                                var list = new System.Collections.Generic.List<string>();
+                                list.Add("Teacher");
+                                list.Add("Security");
+                                list.Add("Student");
+                                list.Add("Guest");
+                                var flatList = string.Join(",", list.ToArray());
+
+                                var cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[cellRowIndex, cellColumnIndex];
+                                cell.Validation.Delete();
+                                cell.Validation.Add(
+                                   Excel.XlDVType.xlValidateList,
+                                   Excel.XlDVAlertStyle.xlValidAlertInformation,
+                                   Excel.XlFormatConditionOperator.xlBetween,
+                                   flatList,
+                                   Type.Missing);
+                                cell.Value2 = profileList[i].CLASS;
+                                cell.Validation.IgnoreBlank = true;
+                                cell.Validation.InCellDropdown = true;
+                            }
+
+
+
+
+
                             if (j == 9)//Email
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].EMAIL; }
                             if (j == 10)//Address
@@ -413,7 +461,27 @@ namespace SchoolManagement.Model
                             if (j == 11)//Phone
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].PHONE; }
                             if (j == 12)//Status
-                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].STATUS; }
+                            {
+                                //worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].STATUS;
+
+                                var list = new System.Collections.Generic.List<string>();
+                                list.Add("Active");
+                                list.Add("Suspended");
+                                var flatList = string.Join(",", list.ToArray());
+
+                                var cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[cellRowIndex, cellColumnIndex];
+                                cell.Validation.Delete();
+                                cell.Validation.Add(
+                                   Excel.XlDVType.xlValidateList,
+                                   Excel.XlDVAlertStyle.xlValidAlertInformation,
+                                   Excel.XlFormatConditionOperator.xlBetween,
+                                   flatList,
+                                   Type.Missing);
+                                cell.Value2 = profileList[i].STATUS;
+                                cell.Locked = true;
+                                cell.Validation.IgnoreBlank = true;
+                                cell.Validation.InCellDropdown = true;
+                            }
                             if (j == 13)//Suspended Date
                             {
                                 if (profileList[i].STATUS == "Suspended")

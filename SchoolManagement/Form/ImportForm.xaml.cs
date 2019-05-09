@@ -20,6 +20,7 @@ namespace SchoolManagement.Form
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private string importFilePath = "";
         private string importFileFolder = "";
+        private bool addorupdate = true; //add-true, update-false
         BackgroundWorker worker;
         MainWindow mainW;
 
@@ -84,6 +85,7 @@ namespace SchoolManagement.Form
                     return;
                 }
                 btn_import.IsEnabled = false;
+                addorupdate = (bool)rb_add.IsChecked ? true : false;
                 worker = new BackgroundWorker();
                 worker.WorkerSupportsCancellation = true;
                 worker.WorkerReportsProgress = true;
@@ -120,6 +122,7 @@ namespace SchoolManagement.Form
 
             }
             // general cleanup code, runs when there was an error or not.
+            pbStatus.Value = 0;
             mainW.mainModel.ReloadListProfileRFDGV();
         }
 
@@ -174,6 +177,7 @@ namespace SchoolManagement.Form
                         profile.ADDRESS = (xlRange.Cells[i, 11].Value2 == null) ? "" : xlRange.Cells[i, 11].Value2.ToString();
                         profile.PHONE = (xlRange.Cells[i, 12].Value2 == null) ? "" : xlRange.Cells[i, 12].Value2.ToString();
                         profile.STATUS = xlRange.Cells[i, 13].Value2.ToString();
+                        profile.LOCK_DATE = DateTime.MinValue;
                         if (profile.STATUS == "Suspended")
                         {
                             sDate = xlRange.Cells[i, 14].Value2.ToString();
@@ -184,7 +188,14 @@ namespace SchoolManagement.Form
 
                         try
                         {
-                            SqliteDataAccess.SaveProfileRF(profile);
+                            if (addorupdate)
+                            {
+                                SqliteDataAccess.SaveProfileRF(profile);
+                            }
+                            else
+                            {
+                                SqliteDataAccess.UpdateProfileRF(profile);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -222,7 +233,7 @@ namespace SchoolManagement.Form
 
             finally
             {
-                Constant.mainWindowPointer.WriteLog("Dong xlWorkbook.Close();");
+                //Constant.mainWindowPointer.WriteLog("Dong xlWorkbook.Close();");
                 xlWorkbook.Close();
                 xlApp.Quit();
                 this.Dispatcher.Invoke(() =>
@@ -253,12 +264,12 @@ namespace SchoolManagement.Form
         {
             try
             {
-                string path = importFolderPath + @"\image";
+                string path = importFolderPath + @"\Image";
                 if (string.IsNullOrEmpty(path))
                 {
                     return;
                 }
-                File.Copy(importFolderPath + @"\image\" + imageName, 
+                File.Copy(importFolderPath + @"\Image\" + imageName, 
                     System.IO.Directory.GetCurrentDirectory() + @"\Image\" + imageName, 
                     true);
             }

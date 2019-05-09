@@ -197,43 +197,22 @@ namespace SchoolManagement.DTO
         {
             try
             {
-                if (Status == null)
+                using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
                 {
-                    using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-                    {
-                        cnn.Execute("UPDATE RF_PROFILE SET " +
-                            "name = @NAME, " +
-                            "CLASS = @CLASS, " +
-                            "GENDER = @GENDER, " +
-                            "DOB = @DOB, " +
-                            "EMAIL = @EMAIL, " +
-                            "ADDRESS = @ADDRESS, " +
-                            "PHONE = @PHONE, " +
-                            "ADNO = @ADNO, " +
-                            "DISU = @DISU, " +
-                            "IMAGE = @IMAGE " +
-                            "WHERE PIN_NO = @PIN_NO", profileRF);
-                    }
-                }
-                else
-                {
-                    using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
-                    {
-                        cnn.Execute("UPDATE RF_PROFILE SET " +
-                            "name = @NAME, " +
-                            "CLASS = @CLASS, " +
-                            "GENDER = @GENDER, " +
-                            "DOB = @DOB, " +
-                            "EMAIL = @EMAIL, " +
-                            "ADDRESS = @ADDRESS, " +
-                            "PHONE = @PHONE, " +
-                            "ADNO = @ADNO, " +
-                            "DISU = @DISU, " +
-                            "IMAGE = @IMAGE, " +
-                            "LOCK_DATE = @LOCK_DATE, " +
-                            "STATUS = @STATUS " +
-                            "WHERE PIN_NO = @PIN_NO", profileRF);
-                    }
+                    cnn.Execute("UPDATE RF_PROFILE SET " +
+                        "name = @NAME, " +
+                        "CLASS = @CLASS, " +
+                        "GENDER = @GENDER, " +
+                        "DOB = @DOB, " +
+                        "EMAIL = @EMAIL, " +
+                        "ADDRESS = @ADDRESS, " +
+                        "PHONE = @PHONE, " +
+                        "ADNO = @ADNO, " +
+                        "DISU = @DISU, " +
+                        ((Status == null) ? "" : "LOCK_DATE = @LOCK_DATE, ") +
+                        ((Status == null) ? "" : "STATUS = @STATUS, ") +
+                        "IMAGE = @IMAGE " +
+                        "WHERE PIN_NO = @PIN_NO", profileRF);
                 }
             }
             catch (Exception ex)

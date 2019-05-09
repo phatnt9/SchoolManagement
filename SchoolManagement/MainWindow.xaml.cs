@@ -700,25 +700,25 @@ namespace SchoolManagement
 
         }
 
-        private void Btn_changeStatus_Click(object sender, RoutedEventArgs e)
-        {
-            ProfileRF profileRF = (sender as System.Windows.Controls.Button).DataContext as ProfileRF;
-            if(profileRF.STATUS == "Active")
-            {
-                profileRF.STATUS = "Suspended";
-                profileRF.LOCK_DATE = DateTime.Now;
-            }
-            else
-            {
-                if (profileRF.STATUS == "Suspended")
-                {
-                    profileRF.STATUS = "Active";
-                    profileRF.LOCK_DATE = DateTime.MinValue;
-                }
-            }
-            SqliteDataAccess.UpdateProfileRF(profileRF, profileRF.STATUS);
-            mainModel.ReloadListProfileRFDGV();
-        }
+        //private void Btn_changeStatus_Click(object sender, RoutedEventArgs e)
+        //{
+        //    ProfileRF profileRF = (sender as System.Windows.Controls.Button).DataContext as ProfileRF;
+        //    if(profileRF.STATUS == "Active")
+        //    {
+        //        profileRF.STATUS = "Suspended";
+        //        profileRF.LOCK_DATE = DateTime.Now;
+        //    }
+        //    else
+        //    {
+        //        if (profileRF.STATUS == "Suspended")
+        //        {
+        //            profileRF.STATUS = "Active";
+        //            profileRF.LOCK_DATE = DateTime.MinValue;
+        //        }
+        //    }
+        //    SqliteDataAccess.UpdateProfileRF(profileRF, profileRF.STATUS);
+        //    mainModel.ReloadListProfileRFDGV();
+        //}
 
         private void Filter_Click(object sender, RoutedEventArgs e)
         {
