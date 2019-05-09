@@ -62,7 +62,7 @@ namespace SchoolManagement.Model
             public bool OnConfirmProfileSuccess;
         }
         int publishdata;
-        public event Action<String> MessageCallBack;
+        //public event Action<String> MessageCallBack;
         public FLAGSTATUSCLIENT OnFlagStatusClient ;
         private MainWindowModel mainWindowModel;
         public STATUSPROFILE statusProfile=STATUSPROFILE.Pending;

@@ -413,7 +413,7 @@ namespace SchoolManagement
                     }
                     catch
                     {
-
+                        img_profile.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/" + "images.png"));
                     }
 
 

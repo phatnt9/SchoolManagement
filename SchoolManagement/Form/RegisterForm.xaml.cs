@@ -30,8 +30,7 @@ namespace SchoolManagement.Form
 
 
         public MainWindow mainWindow;
-
-        private BackgroundWorker worker;
+        
         private SerialCOM serial;
         private readonly Stopwatch _stopwatch = new Stopwatch();
 

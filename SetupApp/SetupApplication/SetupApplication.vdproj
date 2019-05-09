@@ -141,6 +141,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_39290096A33546C99AA2AA026FCBF63C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3A927857A8544261A8DA81465CE91961"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3F35A1204A85AB28025D70E0ECDF9112"
         "OwnerKey" = "8:_4732B3DE23B24279BA777264467C2C95"
         "MsmSig" = "8:_UNDEFINED"
@@ -227,6 +239,12 @@
         {
         "MsmKey" = "8:_5B9D8FA4A4D33C048A71D935AA5F779E"
         "OwnerKey" = "8:_4732B3DE23B24279BA777264467C2C95"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6CE2A1C9633F4BB3A3D96DCA25641300"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -641,12 +659,6 @@
         {
         "MsmKey" = "8:_FE705CB3CCB54D7B97661DC216B3F819"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_90D462DABE7BAB4EB6BD64765969B93A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1087,6 +1099,12 @@
         "OwnerKey" = "8:_CE45B0C0C3D292C85BF35F46983470E1"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_90D462DABE7BAB4EB6BD64765969B93A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -1105,6 +1123,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -1121,6 +1147,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -1675,6 +1709,46 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_39290096A33546C99AA2AA026FCBF63C"
+            {
+            "SourcePath" = "8:..\\..\\SchoolManagement\\Resources\\view-refresh.png"
+            "TargetName" = "8:view-refresh.png"
+            "Tag" = "8:"
+            "Folder" = "8:_FD2BAA74F8D64C869DCC8E46B9007984"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3A927857A8544261A8DA81465CE91961"
+            {
+            "SourcePath" = "8:..\\..\\SchoolManagement\\Resources\\server_go.png"
+            "TargetName" = "8:server_go.png"
+            "Tag" = "8:"
+            "Folder" = "8:_FD2BAA74F8D64C869DCC8E46B9007984"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3F35A1204A85AB28025D70E0ECDF9112"
             {
             "AssemblyRegister" = "3:1"
@@ -2085,6 +2159,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6CE2A1C9633F4BB3A3D96DCA25641300"
+            {
+            "SourcePath" = "8:..\\..\\SchoolManagement\\Resources\\loginBackground.jpg"
+            "TargetName" = "8:loginBackground.jpg"
+            "Tag" = "8:"
+            "Folder" = "8:_FD2BAA74F8D64C869DCC8E46B9007984"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6FACB782D111C62D1D7E4284B640E41E"

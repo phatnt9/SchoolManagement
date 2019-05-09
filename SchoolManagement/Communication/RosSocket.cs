@@ -55,7 +55,7 @@ namespace SchoolManagement.Communication
             }
         }
         protected virtual void OnOpenedEvent() { }
-        public String url { get; set; }
+        public String Url { get; set; }
         public RosSocket()
         {
 
@@ -66,12 +66,12 @@ namespace SchoolManagement.Communication
             {
                 new Thread(() =>
                 {
-                    this.url = url;
+                    this.Url = url;
                     IsDisposed = false;
                     webSocket = new WebSocket(url);
                     webSocket.OnClose += (sender, e) => OnClosedEvent((WebSocket)sender, e);
                     webSocket.OnOpen += (sender, e) => OnOpenedEvent();
-                    webSocket.OnMessage += (sender, e) => recievedOperation((WebSocket)sender, e);
+                    webSocket.OnMessage += (sender, e) => RecievedOperation((WebSocket)sender, e);
                     webSocket.Connect();
 
                 }).Start();
@@ -118,23 +118,22 @@ namespace SchoolManagement.Communication
 
         public int Advertise(string topic, string type)
         {
-            int id = generateId();
+            int id = GenerateId();
             publishers.Add(id, new Publisher(topic));
 
-            sendOperation(new Adverisement(id, topic, type));
+            SendOperation(new Adverisement(id, topic, type));
             return id;
         }
 
         public void Publish(int id, Message msg)
         {
-            Publisher publisher;
-            if (publishers.TryGetValue(id, out publisher))
-                sendOperation(new Publication(id, publisher.Topic, msg));
+            if (publishers.TryGetValue(id, out Publisher publisher))
+                SendOperation(new Publication(id, publisher.Topic, msg));
         }
 
         public void Unadvertize(int id)
         {
-            sendOperation(new Unadverisement(id, publishers[id].Topic));
+            SendOperation(new Unadverisement(id, publishers[id].Topic));
             publishers.Remove(id);
         }
 
@@ -147,9 +146,9 @@ namespace SchoolManagement.Communication
             if (messageType == null)
                 return 0;
 
-            int id = generateId();
+            int id = GenerateId();
             subscribers.Add(id, new Subscriber(topic, messageType, messageHandler));
-            sendOperation(new Subscription(id, topic, rosMessageType, throttle_rate, queue_length, fragment_size, compression));
+            SendOperation(new Subscription(id, topic, rosMessageType, throttle_rate, queue_length, fragment_size, compression));
             return id;
 
         }
@@ -165,16 +164,16 @@ namespace SchoolManagement.Communication
 
         public void Unsubscribe(int id)
         {
-            sendOperation(new Unsubscription(id, subscribers[id].topic));
+            SendOperation(new Unsubscription(id, subscribers[id].topic));
             subscribers.Remove(id);
         }
 
         public int CallService(string service, Type objectType, ServiceHandler serviceHandler, object args = null)
         {
-            int id = generateId();
+            int id = GenerateId();
             serviceCallers.Add(id, new ServiceCaller(service, objectType, serviceHandler));
 
-            sendOperation(new ServiceCall(id, service, args));
+            SendOperation(new ServiceCall(id, service, args));
             return id;
         }
         #endregion
@@ -220,7 +219,7 @@ namespace SchoolManagement.Communication
         private Dictionary<int, Subscriber> subscribers = new Dictionary<int, Subscriber>();
         private Dictionary<int, ServiceCaller> serviceCallers = new Dictionary<int, ServiceCaller>();
 
-        private void recievedOperation(object sender, MessageEventArgs e)
+        private void RecievedOperation(object sender, MessageEventArgs e)
         {
             JObject operation = Deserialize(e.RawData);
 
@@ -233,21 +232,20 @@ namespace SchoolManagement.Communication
             {
                 case "publish":
                     {
-                        recievedPublish(operation, e.RawData);
+                        RecievedPublish(operation, e.RawData);
                         return;
                     }
                 case "service_response":
                     {
-                        recievedServiceResponse(operation, e.RawData);
+                        RecievedServiceResponse(operation, e.RawData);
                         return;
                     }
             }
         }
 
-        private void recievedServiceResponse(JObject serviceResponse, byte[] rawData)
+        private void RecievedServiceResponse(JObject serviceResponse, byte[] rawData)
         {
-            ServiceCaller serviceCaller;
-            bool foundById = serviceCallers.TryGetValue(serviceResponse.GetServiceId(), out serviceCaller);
+            bool foundById = serviceCallers.TryGetValue(serviceResponse.GetServiceId(), out ServiceCaller serviceCaller);
 
             if (!foundById)
                 serviceCaller = serviceCallers.Values.FirstOrDefault(x => x.service.Equals(serviceResponse.GetService()));
@@ -261,11 +259,10 @@ namespace SchoolManagement.Communication
                 serviceCaller.serviceHandler?.Invoke(jObject);
         }
 
-        private void recievedPublish(JObject publication, byte[] rawData)
+        private void RecievedPublish(JObject publication, byte[] rawData)
         {
-            Subscriber subscriber;
 
-            bool foundById = subscribers.TryGetValue(publication.GetServiceId(), out subscriber);
+            bool foundById = subscribers.TryGetValue(publication.GetServiceId(), out Subscriber subscriber);
 
             if (!foundById)
                 subscriber = subscribers.Values.FirstOrDefault(x => x.topic.Equals(publication.GetTopic()));
@@ -273,7 +270,7 @@ namespace SchoolManagement.Communication
             subscriber.messageHandler?.Invoke((Message)publication.GetMessage().ToObject(subscriber.messageType));
         }
 
-        private void sendOperation(Operation operation)
+        private void SendOperation(Operation operation)
         {
 #if DEBUG
             //     Console.WriteLine(JsonConvert.SerializeObject(operation, Formatting.Indented));
@@ -301,7 +298,7 @@ namespace SchoolManagement.Communication
             return JsonConvert.DeserializeObject<JObject>(ascii);
         }
 
-        private static int generateId()
+        private static int GenerateId()
         {
             return Guid.NewGuid().GetHashCode();
         }

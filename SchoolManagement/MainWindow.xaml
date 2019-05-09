@@ -11,7 +11,7 @@
         Width="900"
         MinHeight="500"
         MinWidth="800"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="CenterOwner"
         Closing="Window_Closing"
         >
 
@@ -187,7 +187,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="6*"></ColumnDefinition>
                         <ColumnDefinition Width="3"></ColumnDefinition>
-                        <ColumnDefinition Width="4*" MinWidth="300"></ColumnDefinition>
+                        <ColumnDefinition Width="4*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0" 
                       Background="#F1F1F1">
@@ -750,10 +750,8 @@
                                         </Grid>
                                         <Grid Grid.Column="1">
                                             <ScrollViewer 
-                                            Margin="5 10 5 0"
-                                            HorizontalScrollBarVisibility="Auto"
-                                            VerticalScrollBarVisibility="Auto">
-                                                <Grid Height="Auto">
+                                            Margin="5 10 5 0">
+                                                <Grid Height="Auto" Width="300">
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition></RowDefinition>
                                                         <RowDefinition Height="30"></RowDefinition>
@@ -767,16 +765,14 @@
                                                                 <StackPanel 
                                                                     HorizontalAlignment="Center"
                                                                     VerticalAlignment="Center">
-                                                                    <Viewbox 
-                                                                        MinHeight="150"
-                                                                        MaxHeight="200" 
-                                                                        MaxWidth="200">
+                                                                    <!--<Viewbox 
+                                                                        MinHeight="170"
+                                                                        MaxHeight="220">-->
                                                                         <Image 
                                                                             Name="img_profile"
-                                                                            Width="{Binding ActualWidth, ElementName=profile_image}"
-                                                                            Height="{Binding ActualHeight, ElementName=profile_image}"
+                                                                            Height="200"
                                                                             Source="pack://siteoforigin:,,,/Resources/images.png"/>
-                                                                    </Viewbox>
+                                                                    <!--</Viewbox>-->
                                                                 </StackPanel>
                                                             </StackPanel>
                                                             <StackPanel>
