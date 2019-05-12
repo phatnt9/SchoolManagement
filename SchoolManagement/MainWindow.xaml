@@ -6,7 +6,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:SchoolManagement"
         mc:Ignorable="d"
-        Title="ATEK  Gate Management System" 
+        Title="Gate Access Control System" 
         Height="700" 
         Width="900"
         MinHeight="500"
@@ -19,6 +19,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Name="LoginRow" Height="0"></RowDefinition>
             <RowDefinition Name="MainAppRow" Height="*"></RowDefinition>
+            <RowDefinition Height="20"></RowDefinition>
         </Grid.RowDefinitions>
         <Border 
             Grid.Row="0" 
@@ -696,23 +697,22 @@
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition></RowDefinition>
-                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="0"></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="0">
                                         <RichTextBox 
-                                            
                                             IsReadOnly="True"
                                             Margin="10" 
                                             Name="rtb_log">
                                         </RichTextBox>
                                     </Grid>
                                     <Grid Grid.Row="1">
-                                        <Button 
+                                        <!--<Button 
                                             Width="80" 
                                             Height="20"
                                             Click="test_Click">
 
-                                        </Button>
+                                        </Button>-->
                                     </Grid>
                                     
                                     
@@ -1299,6 +1299,19 @@
              </StatusBar>
              </DockPanel>
              </Grid>-->
+        </Grid>
+        <Grid Grid.Row="2">
+            <StackPanel Orientation="Horizontal">
+                <Button
+                    Width="60"
+                    Click="btn_1_click"></Button>
+                <Button
+                    Width="60"
+                    Click="btn_2_click"></Button>
+                <Button
+                    Width="60"
+                    Click="btn_3_click"></Button>
+            </StackPanel>
         </Grid>
     </Grid>
     

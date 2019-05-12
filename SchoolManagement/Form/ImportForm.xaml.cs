@@ -60,13 +60,7 @@ namespace SchoolManagement.Form
             }
         }
 
-        public void CreateFolderToSaveImage(string importFolderPath)
-        {
-            if (!Directory.Exists(System.IO.Directory.GetCurrentDirectory() + @"\Image"))
-            {
-                Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + @"\Image");
-            }
-        }
+        
 
         private void Import_Click(object sender, RoutedEventArgs e)
         {
@@ -132,10 +126,10 @@ namespace SchoolManagement.Form
             Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(importFilePath);
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            CreateFolderToSaveImage(importFileFolder);
+            
             try
             {
-
+                Constant.CreateFolderToSaveData();
                 this.Dispatcher.Invoke(() =>
                 {
                     processStatusText.Content = "Loading";
@@ -194,23 +188,14 @@ namespace SchoolManagement.Form
                             }
                             else
                             {
-                                SqliteDataAccess.UpdateProfileRF(profile);
+                                SqliteDataAccess.UpdateProfileRF(profile, profile.STATUS);
                             }
                         }
                         catch (Exception ex)
                         {
-                            //System.Windows.Forms.MessageBox.Show("Lỗi nhập File hãy kiểm tra lại!", Constant.messageTitileError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                             logFile.Error(ex.Message);
                             Constant.mainWindowPointer.WriteLog(ex.Message);
                         }
-                        //if (!Constant.listData.ContainsKey(structExcel.PIN_NO))
-                        //{
-                        //    Constant.listData.Add(structExcel.PIN_NO, structExcel);
-                        //}
-                        //else
-                        //{
-                        //    Console.WriteLine("Duplicated:-" + structExcel.PIN_NO);
-                        //}
                     }
                     if (worker.CancellationPending)
                     {
@@ -226,7 +211,7 @@ namespace SchoolManagement.Form
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Lỗi nhập File hãy kiểm tra lại!", Constant.messageTitileError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show("Import error, please check again!", Constant.messageTitileError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
@@ -264,13 +249,14 @@ namespace SchoolManagement.Form
         {
             try
             {
+                Constant.CreateFolderToSaveData();
                 string path = importFolderPath + @"\Image";
                 if (string.IsNullOrEmpty(path))
                 {
                     return;
                 }
-                File.Copy(importFolderPath + @"\Image\" + imageName, 
-                    System.IO.Directory.GetCurrentDirectory() + @"\Image\" + imageName, 
+                File.Copy(importFolderPath + @"\Image\" + imageName,
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + imageName, 
                     true);
             }
             catch (Exception ex)

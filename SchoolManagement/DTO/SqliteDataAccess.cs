@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,7 +19,10 @@ namespace SchoolManagement.DTO
 
         private static string LoadConnectionString(string id = "Default")
         {
-            return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+            //return ConfigurationManager.ConnectionStrings[id].ConnectionString;
+            Constant.CreateFolderToSaveData();
+            string test = "Data Source="+ Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB" + @".\Datastore.db;Version=3;";
+            return test;
         }
 
         public static List<DeviceRF> LoadDeviceRF()
@@ -270,7 +276,5 @@ namespace SchoolManagement.DTO
                 return returnSerialIdList;
             }
         }
-        
-
     }
 }

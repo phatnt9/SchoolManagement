@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="ImportForm" Height="150" Width="550"
+        Title="ImportForm" Height="150" Width="470"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Grid>
@@ -31,7 +31,7 @@
                         Margin="5"
                         GroupName="addorupdate" 
                         Name="rb_update" 
-                        Content="Update Profiles (except Status)"></RadioButton>
+                        Content="Update Profiles"></RadioButton>
                     <!--<StackPanel Orientation="Horizontal">
                         <CheckBox VerticalContentAlignment="Center" Name="cbx_addnew"></CheckBox>
                         <Label Content="Add new Profiles"></Label>
@@ -107,7 +107,6 @@
                     </StackPanel>
                 </StackPanel>
             </Grid>
-            
         </Grid>
         <Grid Grid.Row="1">
             <DockPanel>

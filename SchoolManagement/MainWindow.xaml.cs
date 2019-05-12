@@ -13,6 +13,10 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.IO;
+using System.Linq;
 
 namespace SchoolManagement
 {
@@ -39,7 +43,7 @@ namespace SchoolManagement
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            Constant.CreateFolderToSaveData();
             ChangeToLoginScreen();
             try
             {
@@ -409,7 +413,7 @@ namespace SchoolManagement
 
                     try
                     {
-                        img_profile.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Image/"+ temp.IMAGE));
+                        img_profile.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\"+ temp.IMAGE));
                     }
                     catch
                     {
@@ -978,5 +982,22 @@ namespace SchoolManagement
             ChangePasswordForm frm = new ChangePasswordForm(this);
             frm.ShowDialog();
         }
+
+        private void btn_1_click(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+            Console.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.LocalizedResources));
+        }
+
+        private void btn_2_click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void btn_3_click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        
     }
 }

@@ -1,7 +1,10 @@
 ﻿using SchoolManagement.DTO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,6 +12,8 @@ namespace SchoolManagement
 {
     public class Constant
     {
+        private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public static string userName = "";
         public static int userAuthor = -2;
 
@@ -33,6 +38,37 @@ namespace SchoolManagement
 
         //public static SQLiteConnection m_dbConnection;
 
+        public static void CreateFolderToSaveData()
+        {
+            try
+            {
+                if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK"))
+                {
+                    Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK");
+                }
+                if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image"))
+                {
+                    Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image");
+                }
+                if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB"))
+                {
+                    Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB");
+                    if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\"+ "Datastore.db"))
+                    {
+                        File.Copy(Environment.CurrentDirectory + @"\Datastore.db",
+                            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\Datastore.db", 
+                            true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+            }
+            
+        }
+
         public static Dictionary<string, ProfileRF> listData = new Dictionary<string, ProfileRF>();
 
         //public enum AccountClass
@@ -49,7 +85,7 @@ namespace SchoolManagement
             Female = 1
         }
 
-
+        
 
     }
 }
