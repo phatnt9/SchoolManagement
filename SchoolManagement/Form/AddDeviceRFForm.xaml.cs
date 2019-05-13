@@ -45,12 +45,13 @@ namespace SchoolManagement.Form
             string[] classArray = deviceRF.CLASS.Split(',');
             foreach (string item in classArray)
             {
-                if (item.Equals("Teacher")) { cb_teacher.IsChecked = true;}
-                if (item.Equals("Security")) { cb_security.IsChecked = true;}
+                if (item.Equals("Staff")) { cb_staff.IsChecked = true;}
+                if (item.Equals("Parent")) { cb_parent.IsChecked = true;}
                 if (item.Equals("Student")) { cb_student.IsChecked = true;}
-                if (item.Equals("Guest")) { cb_guest.IsChecked = true;}
+                if (item.Equals("Visitor")) { cb_visitor.IsChecked = true;}
+                if (item.Equals("Long Term Supplier")) { cb_longTermSupplier.IsChecked = true;}
+                if (item.Equals("Short Term Supplier")) { cb_shortTermSupplier.IsChecked = true;}
             }
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -63,7 +64,12 @@ namespace SchoolManagement.Form
                     this.tb_ip.Focus();
                     return;
                 }
-                if ((!(bool)cb_teacher.IsChecked) && (!(bool)cb_security.IsChecked) && (!(bool)cb_student.IsChecked) && (!(bool)cb_guest.IsChecked))
+                if ((!(bool)cb_staff.IsChecked) && 
+                    (!(bool)cb_parent.IsChecked) && 
+                    (!(bool)cb_student.IsChecked) && 
+                    (!(bool)cb_visitor.IsChecked) && 
+                    (!(bool)cb_longTermSupplier.IsChecked) && 
+                    (!(bool)cb_shortTermSupplier.IsChecked))
                 {
                     System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "cbb_class", "cbb_class"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     //this.cbb_class.Focus();
@@ -75,10 +81,12 @@ namespace SchoolManagement.Form
                 deviceRF.IP = tb_ip.Text;
                 deviceRF.STATUS = "Pending";
                 string classArray = 
-                    ((bool)cb_teacher.IsChecked ? "Teacher" : "") + 
-                    ((bool)cb_security.IsChecked ? ",Security" : "") + 
+                    ((bool)cb_staff.IsChecked ? "Staff" : "") + 
+                    ((bool)cb_parent.IsChecked ? ",Parent" : "") + 
                     ((bool)cb_student.IsChecked ? ",Student" : "") + 
-                    ((bool)cb_guest.IsChecked ? ",Guest" : "");
+                    ((bool)cb_visitor.IsChecked ? ",Visitor" : "") + 
+                    ((bool)cb_longTermSupplier.IsChecked ? ",Long Term Supplier" : "") + 
+                    ((bool)cb_shortTermSupplier.IsChecked ? ",Short Term Supplier" : "");
 
                 //Teacher = 0,
                 //Security = 1,
@@ -115,7 +123,12 @@ namespace SchoolManagement.Form
         public void ClearForm()
         {
             tb_ip.Clear();
-            cb_guest.IsChecked = cb_security.IsChecked = cb_student.IsChecked = cb_teacher.IsChecked = false;
+            cb_staff.IsChecked =
+                cb_parent.IsChecked =
+                cb_student.IsChecked =
+                cb_visitor.IsChecked =
+                cb_longTermSupplier.IsChecked =
+                cb_shortTermSupplier.IsChecked = false;
         }
     }
 }

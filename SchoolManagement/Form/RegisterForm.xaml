@@ -202,13 +202,14 @@
                                 Width="190"
                                 SelectionChanged="Cbb_class_SelectionChanged"
                                 Height="20">
-                                <ComboBoxItem>Teacher</ComboBoxItem>
-                                <ComboBoxItem>Security</ComboBoxItem>
+                                <ComboBoxItem>Staff</ComboBoxItem>
+                                <ComboBoxItem>Parent</ComboBoxItem>
                                 <ComboBoxItem>Student</ComboBoxItem>
-                                <ComboBoxItem>Guest</ComboBoxItem>
+                                <ComboBoxItem>Visitor</ComboBoxItem>
+                                <ComboBoxItem>Long Term Supplier</ComboBoxItem>
+                                <ComboBoxItem>Short Term Supplier</ComboBoxItem>
                             </ComboBox>
                         </Grid>
-                        
                     </Grid>
                 </Grid>
             </StackPanel>

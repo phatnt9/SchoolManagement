@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="Add Device" Height="200" Width="340"
+        Title="Add Device" Height="200" Width="400"
         ResizeMode="NoResize">
     <Grid 
         Height="Auto">
@@ -68,22 +68,29 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="18"></RowDefinition>
                                 <RowDefinition Height="18"></RowDefinition>
+                                <RowDefinition Height="18"></RowDefinition>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>
                                 <ColumnDefinition></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid Grid.Column="0" Grid.Row="0">
-                                <CheckBox FontFamily="Corsiva" Name="cb_teacher" Content="Teacher"></CheckBox>
+                                <CheckBox FontFamily="Corsiva" Name="cb_staff" Content="Staff"></CheckBox>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="0">
-                                <CheckBox FontFamily="Corsiva" Name="cb_security" Content="Security"></CheckBox>
+                                <CheckBox FontFamily="Corsiva" Name="cb_parent" Content="Parent"></CheckBox>
                             </Grid>
                             <Grid Grid.Column="0" Grid.Row="1">
                                 <CheckBox FontFamily="Corsiva" Name="cb_student" Content="Student"></CheckBox>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="1">
-                                <CheckBox FontFamily="Corsiva" Name="cb_guest" Content="Guest"></CheckBox>
+                                <CheckBox FontFamily="Corsiva" Name="cb_visitor" Content="Visitor"></CheckBox>
+                            </Grid>
+                            <Grid Grid.Column="0" Grid.Row="2">
+                                <CheckBox FontFamily="Corsiva" Name="cb_longTermSupplier" Content="Long Term Supplier"></CheckBox>
+                            </Grid>
+                            <Grid Grid.Column="1" Grid.Row="2">
+                                <CheckBox FontFamily="Corsiva" Name="cb_shortTermSupplier" Content="Short Term Supplier"></CheckBox>
                             </Grid>
 
                         </Grid>

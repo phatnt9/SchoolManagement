@@ -431,10 +431,12 @@ namespace SchoolManagement.Model
                                 //worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].CLASS;
 
                                 var list = new System.Collections.Generic.List<string>();
-                                list.Add("Teacher");
-                                list.Add("Security");
+                                list.Add("Staff");
+                                list.Add("Parent");
                                 list.Add("Student");
-                                list.Add("Guest");
+                                list.Add("Visitor");
+                                list.Add("Long Term Supplier");
+                                list.Add("Short Term Supplier");
                                 var flatList = string.Join(",", list.ToArray());
 
                                 var cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[cellRowIndex, cellColumnIndex];
