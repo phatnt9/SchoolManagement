@@ -142,8 +142,8 @@ namespace SchoolManagement.DTO
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                cnn.Execute("INSERT INTO RF_PROFILE (PIN_NO,NAME,CLASS,GENDER,DOB,EMAIL,ADDRESS,PHONE,ADNO,DISU,STATUS,LOCK_DATE,IMAGE) " +
-                    "VALUES (@PIN_NO,@NAME,@CLASS,@GENDER,@DOB,@EMAIL,@ADDRESS,@PHONE,@ADNO,@DISU,@STATUS,@LOCK_DATE,@IMAGE)", accountRFCard);
+                cnn.Execute("INSERT INTO RF_PROFILE (PIN_NO,NAME,CLASS,GENDER,DOB,EMAIL,ADDRESS,PHONE,ADNO,DISU,STATUS,LOCK_DATE,IMAGE,DATE_TO_LOCK,CHECK_DATE_TO_LOCK) " +
+                    "VALUES (@PIN_NO,@NAME,@CLASS,@GENDER,@DOB,@EMAIL,@ADDRESS,@PHONE,@ADNO,@DISU,@STATUS,@LOCK_DATE,@IMAGE,@DATE_TO_LOCK,@CHECK_DATE_TO_LOCK)", accountRFCard);
             }
         }
 
@@ -217,6 +217,8 @@ namespace SchoolManagement.DTO
                         "DISU = @DISU, " +
                         ((Status == null) ? "" : "LOCK_DATE = @LOCK_DATE, ") +
                         ((Status == null) ? "" : "STATUS = @STATUS, ") +
+                        "DATE_TO_LOCK = @DATE_TO_LOCK, " +
+                        "CHECK_DATE_TO_LOCK = @CHECK_DATE_TO_LOCK, " +
                         "IMAGE = @IMAGE " +
                         "WHERE PIN_NO = @PIN_NO", profileRF);
                 }

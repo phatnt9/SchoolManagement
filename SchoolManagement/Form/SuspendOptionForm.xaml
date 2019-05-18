@@ -1,0 +1,70 @@
+﻿<Window x:Class="SchoolManagement.Form.SuspendOptionForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SchoolManagement.Form"
+        mc:Ignorable="d"
+        Title="Suspend Option" Height="150" Width="300"
+        ResizeMode="NoResize">
+    <Grid Background="#f1f1f1">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch"
+                        Margin="10 0">
+                <RadioButton 
+                        IsChecked="True"
+                        Margin="5"
+                        GroupName="nowOrLater" 
+                        Name="rb_now" 
+                    Checked="Rb_now_Checked"
+                        Content="Now"></RadioButton>
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton 
+                        Margin="5"
+                        GroupName="nowOrLater" 
+                        Name="rb_later" 
+                        Checked="Rb_later_Checked"
+                        Content="Later on"></RadioButton>
+                    <DatePicker
+                        Name="dp_laterOn"
+                        Width="150"
+                        Margin="40 0 0 0"></DatePicker>
+                </StackPanel>
+                <!--<StackPanel Orientation="Horizontal">
+                        <CheckBox VerticalContentAlignment="Center" Name="cbx_addnew"></CheckBox>
+                        <Label Content="Add new Profiles"></Label>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox VerticalContentAlignment="Center" Name="cbx_update"></CheckBox>
+                        <Label Content="Update Profiles"></Label>
+                    </StackPanel>-->
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <StackPanel
+                Orientation="Horizontal"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+                <Button
+                    Name="btn_accept"
+                    Margin="5 0"
+                    Width="70"
+                    Height="20"
+                    Content="OK"
+                    Click="Btn_accept_Click"></Button>
+                <Button
+                    Name="btn_cancel"
+                    Margin="5 0"
+                    Width="70"
+                    Height="20"
+                    Content="Cancel"
+                    Click="Btn_cancel_Click"></Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

@@ -21,6 +21,8 @@ namespace SchoolManagement.DTO
         private DateTime _disu;
         private string _image;
         private DateTime _lockDate;
+        private DateTime _dateToLock;
+        private bool _checkDateToLock;
         private string _status;
 
 
@@ -37,6 +39,8 @@ namespace SchoolManagement.DTO
         public string IMAGE { get => _image; set => _image = value; }
         public DateTime DISU { get => _disu; set => _disu = value; }
         public DateTime LOCK_DATE { get => _lockDate; set => _lockDate = value; }
+        public DateTime DATE_TO_LOCK { get => _dateToLock; set => _dateToLock = value; }
+        public bool CHECK_DATE_TO_LOCK { get => _checkDateToLock; set => _checkDateToLock = value; }
         public string STATUS { get => _status; set => _status = value; }
         
 

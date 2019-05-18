@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:SchoolManagement"
         mc:Ignorable="d"
         Title="Gate Access Control System" 
-        Height="700" 
+        Height="1000" 
         Width="900"
         MinHeight="500"
         MinWidth="800"
@@ -413,20 +413,6 @@
                                                 IsReadOnly="True"
                                                 Binding="{Binding Path=CLASS}">
                                                 </DataGridTextColumn>
-                                                <!--<DataGridTextColumn 
-                                                Width="*" 
-                                                Header="Gender"
-                                                Visibility="Visible"
-                                                IsReadOnly="True"
-                                                Binding="{Binding Path=GENDER}">
-                                            </DataGridTextColumn>-->
-                                                <!--<DataGridTextColumn 
-                                                Width="Auto" 
-                                                Header="DOB"
-                                                Visibility="Visible"
-                                                IsReadOnly="True"
-                                                Binding="{Binding Path=DOB, StringFormat=\{0:MM-dd-yyyy\}}">
-                                            </DataGridTextColumn>-->
                                                 <DataGridTextColumn 
                                                 Width="Auto" 
                                                 Header="Status"
@@ -439,18 +425,15 @@
                                                 Header="Suspended Date"
                                                 Visibility="Visible"
                                                 IsReadOnly="True"
-                                                Binding="{Binding Path=LOCK_DATE, StringFormat=\{0:MM-dd-yyyy\}}">
+                                                Binding="{Binding Path=LOCK_DATE, StringFormat=\{0:dd-MM-yyyy\}}">
                                                 </DataGridTextColumn>
-                                                <!--<DataGridTemplateColumn Header="Suspend" Width="60">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <Button 
-                                                            Name="btn_changeStatus" 
-                                                            Click="Btn_changeStatus_Click"
-                                                            Content="Suspend"></Button>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>-->
+                                                <DataGridTextColumn 
+                                                Width="Auto" 
+                                                Header="Expire Date"
+                                                Visibility="Visible"
+                                                IsReadOnly="True"
+                                                Binding="{Binding Path=DATE_TO_LOCK, StringFormat=\{0:dd-MM-yyyy\}}">
+                                                </DataGridTextColumn>
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </Grid>
@@ -930,6 +913,34 @@
                                                                         VerticalAlignment="Center"
                                                                         Text=""></DatePicker>
                                                                     </Grid>
+                                                                </Grid>
+                                                            </StackPanel>
+                                                            <StackPanel>
+                                                                <Grid Margin="0 5">
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="90"></ColumnDefinition>
+                                                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Grid Grid.Column="0">
+
+                                                                        <Label FontWeight="Normal" Content="Expire Date"></Label>
+
+                                                                    </Grid>
+                                                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                                        <DatePicker
+                                                                        Name="dp_datetolock"
+                                                                        Margin="5 0"
+                                                                        IsEnabled="False"
+                                                                        VerticalAlignment="Center"
+                                                                            Width="170"
+                                                                        Text=""></DatePicker>
+                                                                        <CheckBox 
+                                                                            Name="cb_automanicsuspension"
+                                                                            HorizontalAlignment="Center"
+                                                                            IsEnabled="False"
+                                                                            VerticalAlignment="Center">
+                                                                        </CheckBox>
+                                                                    </StackPanel>
                                                                 </Grid>
                                                             </StackPanel>
                                                             <!--<StackPanel>

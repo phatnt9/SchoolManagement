@@ -19,8 +19,9 @@ namespace SchoolManagement.Model
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public System.Timers.Timer timerSyncTimeSheet;
+        public System.Timers.Timer SuspendStudentCheckTimer;
         public MainWindow mainW;
-        
+
         public ListCollectionView groupedAccount { get; private set; }
         public ListCollectionView groupedTimeCheck { get; private set; }
         public ListCollectionView groupedDevice { get; private set; }
@@ -42,6 +43,8 @@ namespace SchoolManagement.Model
             timerSyncTimeSheet.AutoReset = true;
             timerSyncTimeSheet.Start();
 
+            
+
             accountRFList = new List<ProfileRF>();
             deviceRFList = new List<DeviceRF>();
             timeCheckRFList = new List<TimeRecord>();
@@ -54,6 +57,10 @@ namespace SchoolManagement.Model
             //deviceItem.Start("ws://192.168.1.121:9090");
 
         }
+
+        
+
+        
 
         private void TimerSyncTimeSheet_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
@@ -73,6 +80,36 @@ namespace SchoolManagement.Model
                     Constant.mainWindowPointer.WriteLog(ex.Message);
                 }
             });
+        }
+
+
+        public void CheckSuspendAllProfile()
+        {
+            try
+            {
+                //Get all Profile
+                List<ProfileRF> profiles = SqliteDataAccess.LoadProfileRF();
+
+                //Check status --> check date to Suspend --> Suspend(active)
+                foreach (ProfileRF profile in profiles)
+                {
+                    if (profile.STATUS == "Active" && profile.CHECK_DATE_TO_LOCK == true)
+                    {
+                        if (DateTime.Now > profile.DATE_TO_LOCK)
+                        {
+                            profile.STATUS = "Suspended";
+                            profile.LOCK_DATE = DateTime.Now;
+                            SqliteDataAccess.UpdateProfileRF(profile, profile.STATUS);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+            }
+            
         }
 
         public void ReloadListProfileRFDGV(string name = "", string pinno = "", string adno = "")
@@ -378,6 +415,8 @@ namespace SchoolManagement.Model
                     worksheet.Cells[1, 12] = "Phone";
                     worksheet.Cells[1, 13] = "Status";
                     worksheet.Cells[1, 14] = "Suspended Date";
+                    worksheet.Cells[1, 15] = "Expire Date";
+                    worksheet.Cells[1, 16] = "Automatic Suspension";
 
                     int cellRowIndex = 2;
                     int cellColumnIndex = 1;
@@ -494,6 +533,38 @@ namespace SchoolManagement.Model
                                 {
                                     { worksheet.Cells[cellRowIndex, cellColumnIndex] = ""; }
                                 }
+                            }
+
+                            if (j == 14)
+                            {
+                                if (profileList[i].CHECK_DATE_TO_LOCK == true)
+                                {
+                                    { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].DATE_TO_LOCK; }
+                                }
+                                else
+                                {
+                                    { worksheet.Cells[cellRowIndex, cellColumnIndex] = ""; }
+                                }
+                            }
+                            if (j == 15)
+                            {
+                                var list = new System.Collections.Generic.List<string>();
+                                list.Add("TRUE");
+                                list.Add("FALSE");
+                                var flatList = string.Join(",", list.ToArray());
+
+                                var cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[cellRowIndex, cellColumnIndex];
+                                cell.Validation.Delete();
+                                cell.Validation.Add(
+                                   Excel.XlDVType.xlValidateList,
+                                   Excel.XlDVAlertStyle.xlValidAlertInformation,
+                                   Excel.XlFormatConditionOperator.xlBetween,
+                                   flatList,
+                                   Type.Missing);
+                                cell.Value2 = profileList[i].CHECK_DATE_TO_LOCK;
+                                cell.Locked = true;
+                                cell.Validation.IgnoreBlank = true;
+                                cell.Validation.InCellDropdown = true;
                             }
 
                             cellColumnIndex++;

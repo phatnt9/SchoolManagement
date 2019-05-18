@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="Add Device" Height="200" Width="400"
+        Title="Add Device" Height="210" Width="400"
         ResizeMode="NoResize">
     <Grid 
         Height="Auto">

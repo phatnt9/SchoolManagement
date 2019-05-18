@@ -17,6 +17,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Timers;
 
 namespace SchoolManagement
 {
@@ -27,8 +29,9 @@ namespace SchoolManagement
     {
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        int lastHour = DateTime.Now.Hour;
+        int lastSec = DateTime.Now.Second;
         public MainWindowModel mainModel;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -37,8 +40,28 @@ namespace SchoolManagement
             Closed += MainWindow_Closed;
             mainModel = new MainWindowModel(this);
             DataContext = mainModel;
-            
-            
+
+            System.Timers.Timer SuspendStudentCheckTimer = new System.Timers.Timer(5000); //One second, (use less to add precision, use more to consume less processor time
+            lastHour = DateTime.Now.Hour;
+            lastSec = DateTime.Now.Second;
+            SuspendStudentCheckTimer.Elapsed += SuspendStudentCheckTimer_Elapsed;
+            SuspendStudentCheckTimer.Start();
+
+
+        }
+
+        private void SuspendStudentCheckTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (lastSec < DateTime.Now.Second || (lastSec == 23 && DateTime.Now.Second == 0))
+            {
+                lastSec = DateTime.Now.Second;
+                Console.WriteLine("Catch " + DateTime.Now.ToLongTimeString() + "s.");
+                mainModel.CheckSuspendAllProfile();
+                System.Windows.Application.Current.Dispatcher.BeginInvoke(new ThreadStart(() =>
+                {
+                    mainModel.ReloadListProfileRFDGV();
+                }));
+            }
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -51,6 +74,7 @@ namespace SchoolManagement
                 img.Opacity = 0.4;
                 img.Stretch = Stretch.UniformToFill;
                 LoginGrid.Background = img;
+                
             }
             catch (Exception ex)
             {
@@ -402,6 +426,8 @@ namespace SchoolManagement
                     tb_image.Text = temp.IMAGE;
                     tb_address.Text = temp.ADDRESS;
                     tb_phone.Text = temp.PHONE;
+                    cb_automanicsuspension.IsChecked = temp.CHECK_DATE_TO_LOCK;
+                    dp_datetolock.Text = temp.DATE_TO_LOCK.ToLongDateString();
                     if (temp.GENDER == Constant.Gender.Male)
                     {
                         rb_male.IsChecked = true;
@@ -437,9 +463,11 @@ namespace SchoolManagement
             {
                 dp_dateofbirth.IsEnabled = 
                     dp_disu.IsEnabled = 
+                    dp_datetolock.IsEnabled = 
                     rb_male.IsEnabled = 
                     rb_female.IsEnabled =
                     //cbb_status.IsEnabled = 
+                    cb_automanicsuspension.IsEnabled =
                     cbb_class.IsEnabled = false;
                 
                 tb_address.IsReadOnly =
@@ -466,10 +494,12 @@ namespace SchoolManagement
             try
             {
                 dp_dateofbirth.IsEnabled = 
-                    dp_disu.IsEnabled = 
+                    dp_disu.IsEnabled =
+                    dp_datetolock.IsEnabled =
                     rb_male.IsEnabled = 
-                    rb_female.IsEnabled = 
-                    //cbb_status.IsEnabled = 
+                    rb_female.IsEnabled =
+                    //cbb_status.IsEnabled =  
+                    cb_automanicsuspension.IsEnabled =
                     cbb_class.IsEnabled = true;
                 tb_address.IsReadOnly = 
                     tb_email.IsReadOnly = 
@@ -573,6 +603,16 @@ namespace SchoolManagement
                     return;
                 }
 
+                if (cb_automanicsuspension.IsChecked == true)
+                {
+                    if (String.IsNullOrEmpty(dp_datetolock.Text.ToString()) || dp_datetolock.Text.ToString().Trim() == "")
+                    {
+                        System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Expire Date", "Expire Date"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        this.dp_datetolock.Focus();
+                        return;
+                    }
+                }
+
                 if (String.IsNullOrEmpty(tb_image.Text.ToString()) || tb_image.Text.ToString().Trim() == "")
                 {
                     System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Image", "Image"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -602,6 +642,16 @@ namespace SchoolManagement
                     person.EMAIL = tb_email.Text;
                     person.IMAGE = tb_image.Text;
                     person.ADDRESS = tb_address.Text;
+                    person.PHONE = tb_phone.Text;
+                    person.CHECK_DATE_TO_LOCK = (bool)cb_automanicsuspension.IsChecked;
+                    if (person.CHECK_DATE_TO_LOCK)
+                    {
+                        person.DATE_TO_LOCK = (DateTime)dp_datetolock.SelectedDate;
+                    }
+                    else
+                    {
+                        person.DATE_TO_LOCK = DateTime.MinValue;
+                    }
                     person.PHONE = tb_phone.Text;
                     try
                     {
@@ -794,13 +844,20 @@ namespace SchoolManagement
                 ProfileRF profileRF = AccountListData.SelectedItem as ProfileRF;
                 if (profileRF.STATUS == "Active")
                 {
-                    profileRF.STATUS = "Suspended";
-                    profileRF.LOCK_DATE = DateTime.Now;
+                    //Suspend profile
+                    //There is 2 choices: imediately or set exprire date
+                    SuspendOptionForm frm = new SuspendOptionForm(this,profileRF);
+                    frm.ShowDialog();
+                    return;
                 }
                 else
                 {
+                    //Active profile
                     profileRF.STATUS = "Active";
+                    //Release lock date and expire date
                     profileRF.LOCK_DATE = DateTime.MinValue;
+                    profileRF.CHECK_DATE_TO_LOCK = false;
+                    profileRF.DATE_TO_LOCK = DateTime.MinValue;
                 }
                 SqliteDataAccess.UpdateProfileRF(profileRF, profileRF.STATUS);
                 mainModel.ReloadListProfileRFDGV();
@@ -999,5 +1056,124 @@ namespace SchoolManagement
 
         }
         
+    }
+
+    public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
+    {
+        // Indicates whether the current thread is processing work items.
+        [ThreadStatic]
+        private static bool _currentThreadIsProcessingItems;
+
+        // The list of tasks to be executed 
+        private readonly LinkedList<Task> _tasks = new LinkedList<Task>(); // protected by lock(_tasks)
+
+        // The maximum concurrency level allowed by this scheduler. 
+        private readonly int _maxDegreeOfParallelism;
+
+        // Indicates whether the scheduler is currently processing work items. 
+        private int _delegatesQueuedOrRunning = 0;
+
+        // Creates a new instance with the specified degree of parallelism. 
+        public LimitedConcurrencyLevelTaskScheduler(int maxDegreeOfParallelism)
+        {
+            if (maxDegreeOfParallelism < 1) throw new ArgumentOutOfRangeException("maxDegreeOfParallelism");
+            _maxDegreeOfParallelism = maxDegreeOfParallelism;
+        }
+
+        // Queues a task to the scheduler. 
+        protected sealed override void QueueTask(Task task)
+        {
+            // Add the task to the list of tasks to be processed.  If there aren't enough 
+            // delegates currently queued or running to process tasks, schedule another. 
+            lock (_tasks)
+            {
+                _tasks.AddLast(task);
+                if (_delegatesQueuedOrRunning < _maxDegreeOfParallelism)
+                {
+                    ++_delegatesQueuedOrRunning;
+                    NotifyThreadPoolOfPendingWork();
+                }
+            }
+        }
+
+        // Inform the ThreadPool that there's work to be executed for this scheduler. 
+        private void NotifyThreadPoolOfPendingWork()
+        {
+            ThreadPool.UnsafeQueueUserWorkItem(_ =>
+            {
+                // Note that the current thread is now processing work items.
+                // This is necessary to enable inlining of tasks into this thread.
+                _currentThreadIsProcessingItems = true;
+                try
+                {
+                    // Process all available items in the queue.
+                    while (true)
+                    {
+                        Task item;
+                        lock (_tasks)
+                        {
+                            // When there are no more items to be processed,
+                            // note that we're done processing, and get out.
+                            if (_tasks.Count == 0)
+                            {
+                                --_delegatesQueuedOrRunning;
+                                break;
+                            }
+
+                            // Get the next item from the queue
+                            item = _tasks.First.Value;
+                            _tasks.RemoveFirst();
+                        }
+
+                        // Execute the task we pulled out of the queue
+                        base.TryExecuteTask(item);
+                    }
+                }
+                // We're done processing items on the current thread
+                finally { _currentThreadIsProcessingItems = false; }
+            }, null);
+        }
+
+        // Attempts to execute the specified task on the current thread. 
+        protected sealed override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
+        {
+            // If this thread isn't already processing a task, we don't support inlining
+            if (!_currentThreadIsProcessingItems) return false;
+
+            // If the task was previously queued, remove it from the queue
+            if (taskWasPreviouslyQueued)
+                // Try to run the task. 
+                if (TryDequeue(task))
+                    return base.TryExecuteTask(task);
+                else
+                    return false;
+            else
+                return base.TryExecuteTask(task);
+        }
+
+        // Attempt to remove a previously scheduled task from the scheduler. 
+        protected sealed override bool TryDequeue(Task task)
+        {
+            lock (_tasks) return _tasks.Remove(task);
+        }
+
+        // Gets the maximum concurrency level supported by this scheduler. 
+        public sealed override int MaximumConcurrencyLevel { get { return _maxDegreeOfParallelism; } }
+
+        // Gets an enumerable of the tasks currently scheduled on this scheduler. 
+        protected sealed override IEnumerable<Task> GetScheduledTasks()
+        {
+            bool lockTaken = false;
+            try
+            {
+                Monitor.TryEnter(_tasks, ref lockTaken);
+                if (lockTaken) return _tasks;
+                else throw new NotSupportedException();
+            }
+            finally
+            {
+                if (lockTaken) Monitor.Exit(_tasks);
+            }
+        }
     }
 }

@@ -171,13 +171,31 @@ namespace SchoolManagement.Form
                         profile.ADDRESS = (xlRange.Cells[i, 11].Value2 == null) ? "" : xlRange.Cells[i, 11].Value2.ToString();
                         profile.PHONE = (xlRange.Cells[i, 12].Value2 == null) ? "" : xlRange.Cells[i, 12].Value2.ToString();
                         profile.STATUS = xlRange.Cells[i, 13].Value2.ToString();
-                        profile.LOCK_DATE = DateTime.MinValue;
+                        
                         if (profile.STATUS == "Suspended")
                         {
                             sDate = xlRange.Cells[i, 14].Value2.ToString();
                             date = double.Parse(sDate);
                             dateTime = DateTime.FromOADate(date).ToString("MMMM dd, yyyy");
                             profile.LOCK_DATE = DateTime.Parse(dateTime);
+                        }
+                        else
+                        {
+                            profile.LOCK_DATE = DateTime.MinValue;
+                        }
+
+                        profile.CHECK_DATE_TO_LOCK = Boolean.Parse(xlRange.Cells[i, 16].Value2.ToString());
+                        
+                        if (profile.CHECK_DATE_TO_LOCK == true)
+                        {
+                            sDate = xlRange.Cells[i, 15].Value2.ToString();
+                            date = double.Parse(sDate);
+                            dateTime = DateTime.FromOADate(date).ToString("MMMM dd, yyyy");
+                            profile.DATE_TO_LOCK = DateTime.Parse(dateTime);
+                        }
+                        else
+                        {
+                            profile.DATE_TO_LOCK = DateTime.MinValue;
                         }
 
                         try

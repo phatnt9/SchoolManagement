@@ -124,6 +124,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Form\SuspendOptionForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -168,6 +172,9 @@
     <Compile Include="Form\SettingForm.xaml.cs">
       <DependentUpon>SettingForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Form\SuspendOptionForm.xaml.cs">
+      <DependentUpon>SuspendOptionForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -176,6 +183,8 @@
   <ItemGroup>
     <Compile Include="Model\DeviceItem.cs" />
     <Compile Include="Model\MainWindowModel.cs" />
+    <Compile Include="MyScheduler.cs" />
+    <Compile Include="Model\SchedulerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
