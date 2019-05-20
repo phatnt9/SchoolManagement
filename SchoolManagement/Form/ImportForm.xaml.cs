@@ -184,14 +184,30 @@ namespace SchoolManagement.Form
                             profile.LOCK_DATE = DateTime.MinValue;
                         }
 
-                        profile.CHECK_DATE_TO_LOCK = Boolean.Parse(xlRange.Cells[i, 16].Value2.ToString());
+                        if (xlRange.Cells[i, 16].Value2 != null)
+                        {
+                            profile.CHECK_DATE_TO_LOCK = Boolean.Parse(xlRange.Cells[i, 16].Value2.ToString());
+                        }
+                        else
+                        {
+                            profile.CHECK_DATE_TO_LOCK = false;
+                        }
+                        
                         
                         if (profile.CHECK_DATE_TO_LOCK == true)
                         {
-                            sDate = xlRange.Cells[i, 15].Value2.ToString();
-                            date = double.Parse(sDate);
-                            dateTime = DateTime.FromOADate(date).ToString("MMMM dd, yyyy");
-                            profile.DATE_TO_LOCK = DateTime.Parse(dateTime);
+                            if (xlRange.Cells[i, 15].Value2 != null)
+                            {
+                                sDate = xlRange.Cells[i, 15].Value2.ToString();
+                                date = double.Parse(sDate);
+                                dateTime = DateTime.FromOADate(date).ToString("MMMM dd, yyyy");
+                                profile.DATE_TO_LOCK = DateTime.Parse(dateTime);
+                            }
+                            else
+                            {
+                                profile.DATE_TO_LOCK = DateTime.MinValue;
+                            }
+                            
                         }
                         else
                         {

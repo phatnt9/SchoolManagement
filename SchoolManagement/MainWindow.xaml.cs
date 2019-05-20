@@ -41,7 +41,7 @@ namespace SchoolManagement
             mainModel = new MainWindowModel(this);
             DataContext = mainModel;
 
-            System.Timers.Timer SuspendStudentCheckTimer = new System.Timers.Timer(5000); //One second, (use less to add precision, use more to consume less processor time
+            System.Timers.Timer SuspendStudentCheckTimer = new System.Timers.Timer(30000); //One second, (use less to add precision, use more to consume less processor time
             lastHour = DateTime.Now.Hour;
             lastSec = DateTime.Now.Second;
             SuspendStudentCheckTimer.Elapsed += SuspendStudentCheckTimer_Elapsed;
@@ -52,10 +52,10 @@ namespace SchoolManagement
 
         private void SuspendStudentCheckTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (lastSec < DateTime.Now.Second || (lastSec == 23 && DateTime.Now.Second == 0))
+            if (lastHour < DateTime.Now.Hour || (lastHour == 23 && DateTime.Now.Hour == 0))
             {
-                lastSec = DateTime.Now.Second;
-                Console.WriteLine("Catch " + DateTime.Now.ToLongTimeString() + "s.");
+                lastHour = DateTime.Now.Hour;
+                Constant.mainWindowPointer.WriteLog("Catch " + DateTime.Now.ToLongTimeString() + "s.");
                 mainModel.CheckSuspendAllProfile();
                 System.Windows.Application.Current.Dispatcher.BeginInvoke(new ThreadStart(() =>
                 {

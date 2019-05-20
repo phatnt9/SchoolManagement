@@ -425,7 +425,7 @@ namespace SchoolManagement.Model
 
                     for (int i=0; i < profileList.Count; i++)
                     {
-                        for (int j = 0; j < 14; j++)
+                        for (int j = 0; j < 16; j++)
                         {
                             if (j == 0)//No
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = i + 1; }

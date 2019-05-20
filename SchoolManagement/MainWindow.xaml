@@ -434,6 +434,13 @@
                                                 IsReadOnly="True"
                                                 Binding="{Binding Path=DATE_TO_LOCK, StringFormat=\{0:dd-MM-yyyy\}}">
                                                 </DataGridTextColumn>
+                                                <DataGridTextColumn 
+                                                Width="Auto" 
+                                                Header="Auto Suspension"
+                                                Visibility="Visible"
+                                                IsReadOnly="True"
+                                                Binding="{Binding Path=CHECK_DATE_TO_LOCK}">
+                                                </DataGridTextColumn>
                                             </DataGrid.Columns>
                                         </DataGrid>
                                     </Grid>

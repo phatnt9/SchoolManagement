@@ -173,6 +173,16 @@ namespace SchoolManagement.Form
                 return;
             }
 
+            if (cb_automanicsuspension.IsChecked == true)
+            {
+                if (String.IsNullOrEmpty(dp_datetolock.Text.ToString()) || dp_datetolock.Text.ToString().Trim() == "")
+                {
+                    System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Expire Date", "Expire Date"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    this.dp_datetolock.Focus();
+                    return;
+                }
+            }
+
             if (String.IsNullOrEmpty(tb_image.Text.ToString()) || tb_image.Text.ToString().Trim() == "")
             {
                 System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Image", "Image"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -186,34 +196,45 @@ namespace SchoolManagement.Form
                 this.tb_adno.Focus();
                 return;
             }
+
+
             CreateNewPerson();
         }
 
         private void CreateNewPerson()
         {
-            ProfileRF person = new ProfileRF();
-            person.PIN_NO = tb_serialId.Text;
-            person.NAME = tb_name.Text;
-            person.CLASS = cbb_class.Text;
-            person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
-            person.DOB = (DateTime)dp_dateofbirth.SelectedDate;
-            //if (person.CLASS == "Student")
-            //{
-            //    person.STUDENT = tb_studentName.Text;
-            //}
-            //else
-            //{
-            //    person.STUDENT = "";
-            //}
-            person.EMAIL = tb_email.Text;
-            person.ADDRESS = tb_address.Text;
-            person.PHONE = tb_phone.Text;
-            person.ADNO = tb_adno.Text;
-            person.DISU = (DateTime)dp_disu.SelectedDate;
-            person.IMAGE = tb_image.Text;
-            person.STATUS = "Active";
             try
             {
+                ProfileRF person = new ProfileRF();
+                person.PIN_NO = tb_serialId.Text;
+                person.NAME = tb_name.Text;
+                person.CLASS = cbb_class.Text;
+                person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
+                person.DOB = (DateTime)dp_dateofbirth.SelectedDate;
+                //if (person.CLASS == "Student")
+                //{
+                //    person.STUDENT = tb_studentName.Text;
+                //}
+                //else
+                //{
+                //    person.STUDENT = "";
+                //}
+                person.EMAIL = tb_email.Text;
+                person.ADDRESS = tb_address.Text;
+                person.PHONE = tb_phone.Text;
+                person.ADNO = tb_adno.Text;
+                person.DISU = (DateTime)dp_disu.SelectedDate;
+                person.CHECK_DATE_TO_LOCK = (bool)cb_automanicsuspension.IsChecked;
+                if (cb_automanicsuspension.IsChecked == true)
+                {
+                    person.DATE_TO_LOCK = (DateTime)dp_datetolock.SelectedDate;
+                }
+                else
+                {
+                    person.DATE_TO_LOCK = DateTime.MinValue;
+                }
+                person.IMAGE = tb_image.Text;
+                person.STATUS = "Active";
                 SqliteDataAccess.SaveProfileRF(person);
                 lb_status.Content = "New Profile Added";
                 ClearForm();

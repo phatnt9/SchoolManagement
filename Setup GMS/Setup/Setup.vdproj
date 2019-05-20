@@ -279,12 +279,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_65581BEA28664DD7AC77786003B43856"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_6A302EABC48022BD06C528100F485B80"
         "OwnerKey" = "8:_CC64B6FD681B4FEA9458F5EC53E062B6"
         "MsmSig" = "8:_UNDEFINED"
@@ -328,6 +322,12 @@
         "Entry"
         {
         "MsmKey" = "8:_7805180E60F4457FA09FAB6AC87CE8B7"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7811A6002D8E4F70B99D2B603B0BFEF4"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -683,12 +683,6 @@
         {
         "MsmKey" = "8:_FEE5FF6A61504912B5CF236BE553CD3B"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D1333633B35E43A1DF012597787BA549"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1129,6 +1123,12 @@
         "OwnerKey" = "8:_900BEBD3ACAE7C468C917E32892BFE71"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D1333633B35E43A1DF012597787BA549"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -1147,6 +1147,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -1163,6 +1179,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -2302,26 +2326,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_65581BEA28664DD7AC77786003B43856"
-            {
-            "SourcePath" = "8:..\\..\\Datastore.db"
-            "TargetName" = "8:Datastore.db"
-            "Tag" = "8:"
-            "Folder" = "8:_7CEE0B3659FA4569A42BF3519101112C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6A302EABC48022BD06C528100F485B80"
             {
             "AssemblyRegister" = "3:1"
@@ -2472,6 +2476,26 @@
             "TargetName" = "8:database_refresh.png"
             "Tag" = "8:"
             "Folder" = "8:_8129B072C54B430BB4B69E3E73B1C509"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7811A6002D8E4F70B99D2B603B0BFEF4"
+            {
+            "SourcePath" = "8:..\\..\\Datastore.db"
+            "TargetName" = "8:Datastore.db"
+            "Tag" = "8:"
+            "Folder" = "8:_7CEE0B3659FA4569A42BF3519101112C"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4007,7 +4031,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Setup"
         "ProductCode" = "8:{519C5BD6-96D3-4BDC-A87E-46448E048CA0}"
-        "PackageCode" = "8:{285D28DD-573C-4520-95E3-B8AC5061A964}"
+        "PackageCode" = "8:{BC930CE9-2287-41D3-B9E2-1886091B5B91}"
         "UpgradeCode" = "8:{55189571-E786-47AE-A160-70AC8DD3118F}"
         "AspNetVersion" = "8:1.1.4322.0"
         "RestartWWWService" = "11:FALSE"

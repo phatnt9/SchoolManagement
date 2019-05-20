@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SchoolManagement.Form"
         mc:Ignorable="d"
-        Title="Register" Height="450" Width="340"
+        Title="Register" Height="480" Width="340"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Grid 
@@ -20,33 +20,33 @@
             Margin="15 5"
             Orientation="Vertical">
             <!--<StackPanel>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="90"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <Label Content="Picture:"></Label>
-                    </Grid>
-                    <Grid Grid.Column="1">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox
-                                IsEnabled="False"
-                                Width="Auto"
-                                MinWidth="50"
-                                Margin="5 0"
-                                VerticalAlignment="Center"
-                                TextAlignment="Left"
-                                Text=""></TextBox>
-                            <Button 
-                                Height="20"
-                                Width="50"
-                                Content="..."></Button>
-                        </StackPanel>
-
-                    </Grid>
-                </Grid>
-            </StackPanel>-->
+                 <Grid>
+                 <Grid.ColumnDefinitions>
+                 <ColumnDefinition Width="90"></ColumnDefinition>
+                 <ColumnDefinition Width="*"></ColumnDefinition>
+                 </Grid.ColumnDefinitions>
+                 <Grid Grid.Column="0">
+                 <Label Content="Picture:"></Label>
+                 </Grid>
+                 <Grid Grid.Column="1">
+                 <StackPanel Orientation="Horizontal">
+                 <TextBox
+                 IsEnabled="False"
+                 Width="Auto"
+                 MinWidth="50"
+                 Margin="5 0"
+                 VerticalAlignment="Center"
+                 TextAlignment="Left"
+                 Text=""></TextBox>
+                 <Button 
+                 Height="20"
+                 Width="50"
+                 Content="..."></Button>
+                 </StackPanel>
+                 
+                 </Grid>
+                 </Grid>
+                 </StackPanel>-->
             <Separator></Separator>
             <StackPanel Margin="0 2">
                 <Grid>
@@ -62,8 +62,8 @@
                         <Label  FontFamily="Corsiva" Margin="0 7 0 0" Content="PIN No."></Label>
                     </Grid>
                     <!--<Grid Grid.Column="0" Grid.Row="1">
-                        <Label FontFamily="Corsiva" Margin="0 7 0 0" Content="COM Port:"></Label>
-                    </Grid>-->
+                         <Label FontFamily="Corsiva" Margin="0 7 0 0" Content="COM Port:"></Label>
+                         </Grid>-->
                     <Grid Grid.Column="1" Grid.Row="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -90,30 +90,30 @@
                         </Grid>
                     </Grid>
                     <!--<Grid Grid.Column="1" Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="70"></ColumnDefinition>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
-                            <TextBox
-                                Name="tb_comport"
-                                IsEnabled="False"
-                                Margin="5 0"
-                                Width="Auto"
-                                VerticalAlignment="Center"
-                                TextAlignment="Left"
-                                Text=""></TextBox>
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <Button 
-                                Name="btn_edit"
-                                FontFamily="Corsiva"
-                                Width="60"
-                                Height="20"
-                                Content="Edit"
-                                Click="Btn_edit_Click"></Button>
-                        </Grid>
-                    </Grid>-->
+                         <Grid.ColumnDefinitions>
+                         <ColumnDefinition Width="70"></ColumnDefinition>
+                         <ColumnDefinition Width="Auto"></ColumnDefinition>
+                         </Grid.ColumnDefinitions>
+                         <Grid Grid.Column="0">
+                         <TextBox
+                         Name="tb_comport"
+                         IsEnabled="False"
+                         Margin="5 0"
+                         Width="Auto"
+                         VerticalAlignment="Center"
+                         TextAlignment="Left"
+                         Text=""></TextBox>
+                         </Grid>
+                         <Grid Grid.Column="1">
+                         <Button 
+                         Name="btn_edit"
+                         FontFamily="Corsiva"
+                         Width="60"
+                         Height="20"
+                         Content="Edit"
+                         Click="Btn_edit_Click"></Button>
+                         </Grid>
+                         </Grid>-->
 
                 </Grid>
             </StackPanel>
@@ -224,7 +224,7 @@
                     </Grid>
                     <Grid Grid.Column="1">
                         <DatePicker Width="190"
-                            Name="dp_dateofbirth"></DatePicker>
+                                    Name="dp_dateofbirth"></DatePicker>
                     </Grid>
                 </Grid>
             </StackPanel>
@@ -239,29 +239,55 @@
                     </Grid>
                     <Grid Grid.Column="1">
                         <DatePicker Width="190"
-                            Name="dp_disu"></DatePicker>
+                                    Name="dp_disu"></DatePicker>
                     </Grid>
                 </Grid>
             </StackPanel>
-            <!--<StackPanel  Margin="0 2">
-                <Grid>
+            <StackPanel>
+                <Grid Margin="0 5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="90"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
-                        <Label FontFamily="Corsiva" Content="Student name"></Label>
+                        <Label FontWeight="Normal" Content="Expire Date"></Label>
                     </Grid>
-                    <Grid Grid.Column="1">
-                        <TextBox
-                            Name="tb_studentName"
+                    <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                        <DatePicker
+                            Name="dp_datetolock"
                             Margin="5 0"
                             VerticalAlignment="Center"
-                            TextAlignment="Left"
-                            Text=""></TextBox>
-                    </Grid>
+                            Width="175"
+                            Text=""></DatePicker>
+                        <CheckBox 
+                            Name="cb_automanicsuspension"
+                            IsChecked="False"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                        </CheckBox>
+                    </StackPanel>
                 </Grid>
-            </StackPanel>-->
+            </StackPanel>
+            <!--<StackPanel  Margin="0 2">
+                 <Grid>
+                 <Grid.ColumnDefinitions>
+                 <ColumnDefinition Width="90"></ColumnDefinition>
+                 <ColumnDefinition Width="*"></ColumnDefinition>
+                 </Grid.ColumnDefinitions>
+                 <Grid Grid.Column="0">
+                 <Label FontFamily="Corsiva" Content="Student name"></Label>
+                 </Grid>
+                 <Grid Grid.Column="1">
+                 <TextBox
+                 Name="tb_studentName"
+                 Margin="5 0"
+                 VerticalAlignment="Center"
+                 TextAlignment="Left"
+                 Text=""></TextBox>
+                 </Grid>
+                 </Grid>
+                 </StackPanel>-->
             <StackPanel  Margin="0 2">
                 <Grid>
                     <Grid.ColumnDefinitions>
