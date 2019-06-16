@@ -1055,7 +1055,11 @@ namespace SchoolManagement
         {
 
         }
-        
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            mainModel.CheckSuspendAllProfile();
+        }
     }
 
     public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler

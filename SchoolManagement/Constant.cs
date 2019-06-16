@@ -53,12 +53,18 @@ namespace SchoolManagement
                 if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB"))
                 {
                     Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB");
-                    if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\"+ "Datastore.db"))
-                    {
-                        File.Copy(Environment.CurrentDirectory + @"\Datastore.db",
-                            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\Datastore.db", 
-                            true);
-                    }
+                    //if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\"+ "Datastore.db"))
+                    //{
+                    //    File.Copy(Environment.CurrentDirectory + @"\Datastore.db",
+                    //        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\Datastore.db", 
+                    //        true);
+                    //}
+                }
+                if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\" + "Datastore.db"))
+                {
+                    File.Copy(Environment.CurrentDirectory + @"\Datastore.db",
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\Datastore.db",
+                        false);
                 }
             }
             catch (Exception ex)
