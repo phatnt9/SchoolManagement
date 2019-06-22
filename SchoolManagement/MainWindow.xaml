@@ -655,13 +655,13 @@
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
                                             </DataGridTemplateColumn>-->
-                                                <!--<DataGridTemplateColumn Header="Test" Width="40">
+                                                <DataGridTemplateColumn Header="Test" Width="40">
                                                  <DataGridTemplateColumn.CellTemplate>
                                                  <DataTemplate>
                                                  <Button Name="btn_test" Click="Btn_test_Click">Test</Button>
                                                  </DataTemplate>
                                                  </DataGridTemplateColumn.CellTemplate>
-                                                 </DataGridTemplateColumn>-->
+                                                 </DataGridTemplateColumn>
                                                 <DataGridTextColumn
                                                 Width="*"
                                                 Header="Connection"

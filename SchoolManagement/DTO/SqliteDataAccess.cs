@@ -251,7 +251,7 @@ namespace SchoolManagement.DTO
 
 
 
-        public static List<string> LoadListProfileRFSerialId(string ip)
+        public static List<ProfileRF> LoadListProfileRFSerialId(string ip)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -260,22 +260,22 @@ namespace SchoolManagement.DTO
 
                 var output = cnn.Query<string>("SELECT CLASS FROM RF_DEVICE WHERE (RF_DEVICE.IP = @IP)", p);
                 string[] classArray = output.ToList()[0].Split(',');
-                List<string> returnSerialIdList = new List<string>();
+                List<ProfileRF> returnProfileList = new List<ProfileRF>();
                 foreach (string Class in classArray)
                 {
                     if (Class != "")
                     {
                         var filter = new DynamicParameters();
                         filter.Add("@CLASS", Class);
-                        var outputFilter = cnn.Query<string>("SELECT PIN_NO FROM RF_PROFILE WHERE (RF_PROFILE.CLASS = @CLASS AND RF_PROFILE.STATUS = 'Active')", filter);
+                        var outputFilter = cnn.Query<ProfileRF>("SELECT * FROM RF_PROFILE WHERE (RF_PROFILE.CLASS = @CLASS AND RF_PROFILE.STATUS = 'Active')", filter);
                         outputFilter.ToList();
-                        foreach (string item in outputFilter)
+                        foreach (ProfileRF item in outputFilter)
                         {
-                            returnSerialIdList.Add(item);
+                            returnProfileList.Add(item);
                         }
                     }
                 }
-                return returnSerialIdList;
+                return returnProfileList;
             }
         }
     }

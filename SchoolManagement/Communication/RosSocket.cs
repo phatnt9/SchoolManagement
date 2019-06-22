@@ -72,6 +72,7 @@ namespace SchoolManagement.Communication
                     webSocket.OnClose += (sender, e) => OnClosedEvent((WebSocket)sender, e);
                     webSocket.OnOpen += (sender, e) => OnOpenedEvent();
                     webSocket.OnMessage += (sender, e) => RecievedOperation((WebSocket)sender, e);
+                    webSocket.WaitTime = TimeSpan.FromMilliseconds(1000);
                     webSocket.Connect();
 
                 }).Start();

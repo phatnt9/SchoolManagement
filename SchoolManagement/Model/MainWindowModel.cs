@@ -11,6 +11,7 @@ using System.Threading;
 using SchoolManagement.DTO;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SchoolManagement.Model
 {
@@ -296,18 +297,22 @@ namespace SchoolManagement.Model
             
         }
 
-        public List<string> GetListSerialId(string ip)
+        public List<ProfileRF> GetListSerialId(string ip)
         {
             try
             {
-                List<string> returnSerialId = SqliteDataAccess.LoadListProfileRFSerialId(ip);
+                List<ProfileRF> returnSerialId = SqliteDataAccess.LoadListProfileRFSerialId(ip);
+                //foreach(ProfileRF prof in returnSerialId)
+                //{
+                //    string json = JsonConvert.SerializeObject()
+                //}
                 return returnSerialId;
             }
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
-                return new List<string>();
+                return new List<ProfileRF>();
             }
         }
 

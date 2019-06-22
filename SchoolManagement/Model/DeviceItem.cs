@@ -4,11 +4,13 @@ using SchoolManagement.Communication;
 using SchoolManagement.DTO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using WebSocketSharp;
 
 namespace SchoolManagement.Model
@@ -49,7 +51,7 @@ namespace SchoolManagement.Model
         public class JStringProfile
         {
             public int status;
-            public List<String> data;
+            public List<ProfileRF> data;
         }
         public class JStringClient
         {
@@ -62,6 +64,7 @@ namespace SchoolManagement.Model
             public bool OnConfirmProfileSuccess;
         }
         int publishdata;
+        int publishdataImg;
         //public event Action<String> MessageCallBack;
         public FLAGSTATUSCLIENT OnFlagStatusClient ;
         private MainWindowModel mainWindowModel;
@@ -91,8 +94,43 @@ namespace SchoolManagement.Model
             base.OnClosedEvent(sender, e);
 
         }
+
+        public void ReqImgHandler(Message message)
+        {
+            StandardString standard = (StandardString)message;
+            SensorCompressedImage imgdata = new SensorCompressedImage();
+            try
+            {
+                BitmapImage img = new System.Windows.Media.Imaging.BitmapImage(new Uri(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + standard.data));
+                imgdata.format = "jpg";
+                imgdata.data = ImageToByte(img);
+            }
+            catch
+            {
+                BitmapImage img = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/" + "images.png"));
+                imgdata.format = "png";
+                imgdata.data = ImageToByte(img);
+            }
+        }
+        public Byte[] ImageToByte(BitmapImage imageSource)
+        {
+            Stream stream = imageSource.StreamSource;
+            Byte[] buffer = null;
+            if (stream != null && stream.Length > 0)
+            {
+                using (BinaryReader br = new BinaryReader(stream))
+                {
+                    buffer = br.ReadBytes((Int32)stream.Length);
+                }
+            }
+
+            return buffer;
+        }
         public void createRosTerms()
         {
+            int subscription_imagerequest = this.Subscribe("ReqImage", "std_msgs/String", ReqImgHandler);
+            publishdataImg = this.Advertise("ServerRespImg", "sensor_msgs/CompressedImage");
+
             publishdata = this.Advertise("ServerPublish", "std_msgs/String");
             int subscription = this.Subscribe("ClientPublish", "std_msgs/String", DataHandler);
         }

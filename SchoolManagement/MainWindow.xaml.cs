@@ -380,11 +380,11 @@ namespace SchoolManagement
             try
             {
                 DeviceRF deviceRF = (sender as System.Windows.Controls.Button).DataContext as DeviceRF;
-                List<string> test = SqliteDataAccess.LoadListProfileRFSerialId(deviceRF.IP);
+                List<ProfileRF> test = SqliteDataAccess.LoadListProfileRFSerialId(deviceRF.IP);
                 Console.WriteLine("============");
-                foreach (string item in test)
+                foreach (ProfileRF item in test)
                 {
-                    Console.WriteLine(item);
+                    Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(item));
                 }
             }
             catch (Exception ex)
