@@ -104,7 +104,6 @@ namespace SchoolManagement.Form
                 }
                 else
                 {
-
                     SqliteDataAccess.SaveDeviceRF(deviceRF);
                 }
                 lb_status.Content = "New Device Added";

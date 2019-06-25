@@ -4,6 +4,7 @@ using SchoolManagement.Communication;
 using SchoolManagement.DTO;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ using WebSocketSharp;
 
 namespace SchoolManagement.Model
 {
-   public class DeviceItem:RosSocket
+    public class DeviceItem : RosSocket
     {
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -29,15 +30,15 @@ namespace SchoolManagement.Model
         }
         public enum CLIENTCMD
         {
-            REQUEST_PROFILE=110,
-            REQUEST_REG_PERSON_LIST=120,
-            REQUEST_SYNC_TIME=130,
+            REQUEST_PROFILE = 110,
+            REQUEST_REG_PERSON_LIST = 120,
+            REQUEST_SYNC_TIME = 130,
             CONFIRM_SENT_PROFILE_SUCCESS = 310,
 
         }
         public enum SERVERRESPONSE
         {
-            RESP_SUCCESS= 200,
+            RESP_SUCCESS = 200,
             RESP_PROFILE_SUCCESS = 210,
             RESP_SYNC_TIME = 220,
             RESP_SEND_NEWPROFILE_IMMEDIATELY = 240,
@@ -66,9 +67,9 @@ namespace SchoolManagement.Model
         int publishdata;
         int publishdataImg;
         //public event Action<String> MessageCallBack;
-        public FLAGSTATUSCLIENT OnFlagStatusClient ;
+        public FLAGSTATUSCLIENT OnFlagStatusClient;
         private MainWindowModel mainWindowModel;
-        public STATUSPROFILE statusProfile=STATUSPROFILE.Pending;
+        public STATUSPROFILE statusProfile = STATUSPROFILE.Pending;
         public DeviceItem(MainWindowModel mainWindowModel)
         {
             this.mainWindowModel = mainWindowModel;
@@ -101,30 +102,35 @@ namespace SchoolManagement.Model
             SensorCompressedImage imgdata = new SensorCompressedImage();
             try
             {
-                BitmapImage img = new System.Windows.Media.Imaging.BitmapImage(new Uri(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + standard.data));
-                imgdata.format = "jpg";
+                //  BitmapImage img = new System.Windows.Media.Imaging.BitmapImage(new Uri(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + standard.data));
+                Image img = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + standard.data);
+                imgdata.format = "png";
                 imgdata.data = ImageToByte(img);
+                if (webSocket.IsAlive)
+                    this.Publish(publishdataImg, imgdata);
             }
             catch
             {
-                BitmapImage img = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/" + "images.png"));
+                Image img = Image.FromFile(@"pack://siteoforigin:,,,/Resources/" + "images.png");
                 imgdata.format = "png";
                 imgdata.data = ImageToByte(img);
+                if (webSocket.IsAlive)
+                    this.Publish(publishdataImg, imgdata);
             }
         }
-        public Byte[] ImageToByte(BitmapImage imageSource)
+        public Byte[] ImageToByte(Image img)
         {
-            Stream stream = imageSource.StreamSource;
-            Byte[] buffer = null;
-            if (stream != null && stream.Length > 0)
+            byte[] byteArray = new byte[0];
+            using (MemoryStream stream = new MemoryStream())
             {
-                using (BinaryReader br = new BinaryReader(stream))
-                {
-                    buffer = br.ReadBytes((Int32)stream.Length);
-                }
-            }
+                img.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                stream.Close();
 
-            return buffer;
+                byteArray = stream.ToArray();
+            }
+            return byteArray;
+
+
         }
         public void createRosTerms()
         {
@@ -167,15 +173,15 @@ namespace SchoolManagement.Model
                                 {
                                     OnFlagStatusClient.OnConfirmProfileSuccess = false;
                                     statusProfile = STATUSPROFILE.Updated;
-                                    SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString()+ " "+ DateTime.Now.ToString("MM/dd/yyyy h:mm:ss tt"));
+                                    SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString() + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm:ss tt"));
                                 }
                                 else
                                 {
                                     statusProfile = STATUSPROFILE.Failed;
                                     SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString());
                                 }
-                                
-                               
+
+
                                 mainWindowModel.ReloadListDeviceRFDGV();
                             }
 
@@ -201,7 +207,7 @@ namespace SchoolManagement.Model
         {
             try
             {
-                
+
                 JStringProfile Jprofile = new JStringProfile();
                 Jprofile.status = (int)SERVERRESPONSE.RESP_PROFILE_SUCCESS;
                 Jprofile.data = mainWindowModel.GetListSerialId(ip);
@@ -209,7 +215,7 @@ namespace SchoolManagement.Model
                 StandardString info = new StandardString();
                 info.data = dataResp;
                 this.Publish(publishdata, info);
-                
+
             }
             catch (Exception ex)
             {
@@ -268,7 +274,7 @@ namespace SchoolManagement.Model
                         try
                         {
                             JObject dataClient = JObject.Parse(standard.data);
-                            if(dataClient["data"].Count()>0)
+                            if (dataClient["data"].Count() > 0)
                             {
                                 foreach (var result in dataClient["data"])
                                 {
@@ -278,7 +284,7 @@ namespace SchoolManagement.Model
                                     personList.Add(person);
                                 }
                                 if (personList.Count > 0)
-                                    mainWindowModel.CheckinServer(ip,personList);
+                                    mainWindowModel.CheckinServer(ip, personList);
                             }
                             try
                             {
@@ -307,12 +313,12 @@ namespace SchoolManagement.Model
                                 Constant.mainWindowPointer.WriteLog(ex.Message);
                             }
                             catch (Exception exc)
-                        {
-                            logFile.Error(exc.Message);
+                            {
+                                logFile.Error(exc.Message);
                                 Constant.mainWindowPointer.WriteLog(ex.Message);
                             }
-                }
-                        
+                        }
+
                         break;
 
                 }
