@@ -10,12 +10,11 @@
     <Grid Background="#f1f1f1">
         <StackPanel HorizontalAlignment="Center"
                     VerticalAlignment="Center">
-            <TextBox 
+            <TextBox
                 Name="tb_pinno"
                 Width="150"
                 PreviewKeyDown="Tb_pinno_PreviewKeyDown"
                 PreviewTextInput="Tb_pinno_PreviewTextInput">
-                
             </TextBox>
             <Label Margin="5" HorizontalContentAlignment="Center">
                 Scaning...

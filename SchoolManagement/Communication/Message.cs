@@ -20,51 +20,56 @@ namespace SchoolManagement.Communication
     public class Message
     {
         [JsonIgnore]
-        public string RosMessageType
-        {
-            get { return MessageTypes.RosMessageType(GetType()); }
-        }
+        public string RosMessageType => MessageTypes.RosMessageType(GetType());
     }
 
     public class GeometryTwist : Message
     {
         public GeometryVector3 linear;
         public GeometryVector3 angular;
+
         public GeometryTwist()
         {
             linear = new GeometryVector3();
             angular = new GeometryVector3();
         }
     }
+
     public class StandardString : Message
     {
         public string data;
+
         public StandardString()
         {
             data = "";
         }
     }
-	public class StandardInt32 : Message
-	{
-		public int data;
-		public StandardInt32()
-		{
-			data = 0;
-		}
-	}
 
-	public class StandardFloat32 : Message
-	{
-		public float data;
-		public StandardFloat32()
-		{
-			data = 0;
-		}
-	}
-	public class GeometryAccel : Message
+    public class StandardInt32 : Message
+    {
+        public int data;
+
+        public StandardInt32()
+        {
+            data = 0;
+        }
+    }
+
+    public class StandardFloat32 : Message
+    {
+        public float data;
+
+        public StandardFloat32()
+        {
+            data = 0;
+        }
+    }
+
+    public class GeometryAccel : Message
     {
         public GeometryVector3 linear;
         public GeometryVector3 angular;
+
         public GeometryAccel()
         {
             linear = new GeometryVector3();
@@ -79,6 +84,7 @@ namespace SchoolManagement.Communication
         public float[] position;
         public float[] velocity;
         public float[] effort;
+
         public SensorJointStates()
         {
             header = new StandardHeader();
@@ -88,11 +94,13 @@ namespace SchoolManagement.Communication
             effort = new float[0];
         }
     }
+
     public class GeometryVector3 : Message
     {
         public float x;
         public float y;
         public float z;
+
         public GeometryVector3()
         {
             x = 0f;
@@ -100,6 +108,7 @@ namespace SchoolManagement.Communication
             z = 0f;
         }
     }
+
     public class SensorJoy : Message
     {
         public StandardHeader header;
@@ -120,6 +129,7 @@ namespace SchoolManagement.Communication
         public string child_frame_id;
         public GeometryPoseWithCovariance pose;
         public GeometryTwistWithCovariance twist;
+
         public NavigationOdometry()
         {
             header = new StandardHeader();
@@ -128,11 +138,13 @@ namespace SchoolManagement.Communication
             twist = new GeometryTwistWithCovariance();
         }
     }
+
     public class StandardHeader : Message
     {
         public int seq;
         public StandardTime stamp;
         public string frame_id;
+
         public StandardHeader()
         {
             seq = 0;
@@ -145,16 +157,19 @@ namespace SchoolManagement.Communication
     {
         public GeometryPose pose;
         public float[] covariance;
+
         public GeometryPoseWithCovariance()
         {
             pose = new GeometryPose();
             covariance = new float[32];
         }
     }
+
     public class GeometryTwistWithCovariance : Message
     {
         public GeometryTwist twist;
         public float[] covariance;
+
         public GeometryTwistWithCovariance()
         {
             twist = new GeometryTwist();
@@ -166,6 +181,7 @@ namespace SchoolManagement.Communication
     {
         public GeometryPoint position;
         public GeometryQuaternion orientation;
+
         public GeometryPose()
         {
             position = new GeometryPoint();
@@ -177,6 +193,7 @@ namespace SchoolManagement.Communication
     {
         public StandardHeader header;
         public GeometryPose pose;
+
         public GeometryPoseStamped()
         {
             header = new StandardHeader();
@@ -184,22 +201,24 @@ namespace SchoolManagement.Communication
         }
     }
 
-	public class GeometryPoseWithCovarianceStamped : Message
-	{
-		public StandardHeader header;
-		public GeometryPoseWithCovariance pose;
-		public GeometryPoseWithCovarianceStamped()
-		{
-			header = new StandardHeader();
-			pose = new GeometryPoseWithCovariance();
-		}
-	}
+    public class GeometryPoseWithCovarianceStamped : Message
+    {
+        public StandardHeader header;
+        public GeometryPoseWithCovariance pose;
 
-	public class GeometryPoint : Message
+        public GeometryPoseWithCovarianceStamped()
+        {
+            header = new StandardHeader();
+            pose = new GeometryPoseWithCovariance();
+        }
+    }
+
+    public class GeometryPoint : Message
     {
         public float x;
         public float y;
         public float z;
+
         public GeometryPoint()
         {
             x = 0;
@@ -207,12 +226,14 @@ namespace SchoolManagement.Communication
             z = 0;
         }
     }
+
     public class GeometryQuaternion : Message
     {
         public float x;
         public float y;
         public float z;
         public float w;
+
         public GeometryQuaternion()
         {
             x = 0;
@@ -221,6 +242,7 @@ namespace SchoolManagement.Communication
             w = 0;
         }
     }
+
     public class SensorPointCloud2 : Message
     {
         public StandardHeader header;
@@ -233,6 +255,7 @@ namespace SchoolManagement.Communication
 
         public byte[] data;
         public bool is_dense;
+
         public SensorPointCloud2()
         {
             header = new StandardHeader();
@@ -246,12 +269,14 @@ namespace SchoolManagement.Communication
             data = new byte[0];
         }
     }
+
     public class SensorPointField : Message
     {
         public int datatype;
         public string name;
         public int offset;
         public int count;
+
         public SensorPointField()
         {
             datatype = 0;
@@ -260,6 +285,7 @@ namespace SchoolManagement.Communication
             count = 0;
         }
     }
+
     public class SensorImage : Message
     {
         public StandardHeader header;
@@ -269,6 +295,7 @@ namespace SchoolManagement.Communication
         public bool is_bigendian;
         public int step;
         public byte[] data;
+
         public SensorImage()
         {
             header = new StandardHeader();
@@ -280,11 +307,13 @@ namespace SchoolManagement.Communication
             data = new byte[0];
         }
     }
+
     public class SensorCompressedImage : Message
     {
         public StandardHeader header;
         public string format;
         public byte[] data;
+
         public SensorCompressedImage()
         {
             header = new StandardHeader();
@@ -297,6 +326,7 @@ namespace SchoolManagement.Communication
     {
         public int secs;
         public int nsecs;
+
         public StandardTime()
         {
             secs = 0;
@@ -327,6 +357,7 @@ namespace SchoolManagement.Communication
         public StandardHeader header;
         public NavigationMapMetaData info;
         public sbyte[] data;
+
         public NavigationOccupancyGrid()
         {
             header = new StandardHeader();
@@ -338,6 +369,7 @@ namespace SchoolManagement.Communication
     public class ParamName : Message
     {
         public string name;
+
         public ParamName(string _name)
         {
             name = _name;
@@ -348,6 +380,7 @@ namespace SchoolManagement.Communication
     {
         public string name;
         public string value;
+
         public SetParam(string _name, string _value)
         {
             name = _name;

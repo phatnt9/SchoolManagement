@@ -1,24 +1,19 @@
-﻿using SchoolManagement.Form;
-using System.Windows;
+﻿using SchoolManagement.DTO;
+using SchoolManagement.Form;
 using SchoolManagement.Model;
-using System.ComponentModel;
-using SchoolManagement.DTO;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Documents;
-using System.Windows.Media;
-using System.Windows.Interop;
-using System.Windows.Media.Imaging;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.IO;
-using System.Linq;
+using System.ComponentModel;
 using System.Threading;
-using System.Timers;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Forms;
+using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace SchoolManagement
 {
@@ -29,9 +24,10 @@ namespace SchoolManagement
     {
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        int lastHour = DateTime.Now.Hour;
-        int lastSec = DateTime.Now.Second;
+        private int lastHour = DateTime.Now.Hour;
+        private int lastSec = DateTime.Now.Second;
         public MainWindowModel mainModel;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -46,8 +42,6 @@ namespace SchoolManagement
             lastSec = DateTime.Now.Second;
             SuspendStudentCheckTimer.Elapsed += SuspendStudentCheckTimer_Elapsed;
             SuspendStudentCheckTimer.Start();
-
-
         }
 
         private void SuspendStudentCheckTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -74,7 +68,6 @@ namespace SchoolManagement
                 img.Opacity = 0.4;
                 img.Stretch = Stretch.UniformToFill;
                 LoginGrid.Background = img;
-                
             }
             catch (Exception ex)
             {
@@ -130,12 +123,10 @@ namespace SchoolManagement
             MainAppRow.Height = (GridLength)gridLengthConverter.ConvertFrom("*");
             if (userAuthor == 0)
             {
-
                 return;
             }
             if (userAuthor == 1)
             {
-
                 return;
             }
         }
@@ -156,7 +147,7 @@ namespace SchoolManagement
             regForm.ShowDialog();
             mainModel.ReloadListProfileRFDGV();
         }
-        
+
         private void AddDeviceRF_Click(object sender, RoutedEventArgs e)
         {
             AddDeviceRFForm frm = new AddDeviceRFForm(this);
@@ -212,7 +203,6 @@ namespace SchoolManagement
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
-
         }
 
         private void Btn_search_Click(object sender, RoutedEventArgs e)
@@ -237,7 +227,6 @@ namespace SchoolManagement
                     Constant.mainWindowPointer.WriteLog(ex.Message);
                 }
             });
-
         }
 
         private void Btn_sendNewListPerson_Click(object sender, RoutedEventArgs e)
@@ -268,15 +257,15 @@ namespace SchoolManagement
                 switch (((e.Source as System.Windows.Controls.TabControl).SelectedIndex))
                 {
                     case 0:
-                        {
-                            Console.WriteLine("pick tab 0");
-                            break;
-                        }
+                    {
+                        Console.WriteLine("pick tab 0");
+                        break;
+                    }
                     case 1:
-                        {
-                            Console.WriteLine("pick tab 1");
-                            break;
-                        }
+                    {
+                        Console.WriteLine("pick tab 1");
+                        break;
+                    }
                 }
             }
         }
@@ -288,19 +277,18 @@ namespace SchoolManagement
                 switch (((e.Source as System.Windows.Controls.TabControl).SelectedIndex))
                 {
                     case 0:
-                        {
-                            mainModel.ReloadListProfileRFDGV();
-                            break;
-                        }
+                    {
+                        mainModel.ReloadListProfileRFDGV();
+                        break;
+                    }
                     case 1:
-                        {
-                            mainModel.ReloadListDeviceRFDGV();
-                            break;
-                        }
+                    {
+                        mainModel.ReloadListDeviceRFDGV();
+                        break;
+                    }
                 }
             }
         }
-
 
         //private void Btn_fakeTimeCheck_Click(object sender, RoutedEventArgs e)
         //{
@@ -344,7 +332,6 @@ namespace SchoolManagement
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
-
         }
 
         private void Btn_start_Click(object sender, RoutedEventArgs e)
@@ -402,7 +389,7 @@ namespace SchoolManagement
                 {
                     ProfileRF temp = AccountListData.SelectedItem as ProfileRF;
 
-                    if(temp.STATUS == "Active")
+                    if (temp.STATUS == "Active")
                     {
                         btn_changestatuslb.Content = "Suspend Profile";
                         img_profileStatus.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/cancel.png"));
@@ -412,8 +399,6 @@ namespace SchoolManagement
                         btn_changestatuslb.Content = "Active Profile";
                         img_profileStatus.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/resultset_next.png"));
                     }
-
-
 
                     tb_serialID.Text = temp.PIN_NO;
                     tb_adno.Text = temp.ADNO;
@@ -439,14 +424,12 @@ namespace SchoolManagement
 
                     try
                     {
-                        img_profile.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\"+ temp.IMAGE));
+                        img_profile.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + temp.IMAGE));
                     }
                     catch
                     {
                         img_profile.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/" + "images.png"));
                     }
-
-
                 }
             }
             catch (Exception ex)
@@ -455,21 +438,20 @@ namespace SchoolManagement
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
-        
 
         private bool DisableEditProfile()
         {
             try
             {
-                dp_dateofbirth.IsEnabled = 
-                    dp_disu.IsEnabled = 
-                    dp_datetolock.IsEnabled = 
-                    rb_male.IsEnabled = 
+                dp_dateofbirth.IsEnabled =
+                    dp_disu.IsEnabled =
+                    dp_datetolock.IsEnabled =
+                    rb_male.IsEnabled =
                     rb_female.IsEnabled =
-                    //cbb_status.IsEnabled = 
+                    //cbb_status.IsEnabled =
                     cb_automanicsuspension.IsEnabled =
                     cbb_class.IsEnabled = false;
-                
+
                 tb_address.IsReadOnly =
                     tb_email.IsReadOnly =
                     tb_image.IsReadOnly =
@@ -493,22 +475,22 @@ namespace SchoolManagement
         {
             try
             {
-                dp_dateofbirth.IsEnabled = 
+                dp_dateofbirth.IsEnabled =
                     dp_disu.IsEnabled =
                     dp_datetolock.IsEnabled =
-                    rb_male.IsEnabled = 
+                    rb_male.IsEnabled =
                     rb_female.IsEnabled =
-                    //cbb_status.IsEnabled =  
+                    //cbb_status.IsEnabled =
                     cb_automanicsuspension.IsEnabled =
                     cbb_class.IsEnabled = true;
-                tb_address.IsReadOnly = 
-                    tb_email.IsReadOnly = 
-                    tb_image.IsReadOnly = 
-                    tb_adno.IsReadOnly = 
-                    tb_name.IsReadOnly = 
-                    tb_phone.IsReadOnly = 
-                    //tb_student.IsReadOnly = 
-                    //cbb_status.IsReadOnly = 
+                tb_address.IsReadOnly =
+                    tb_email.IsReadOnly =
+                    tb_image.IsReadOnly =
+                    tb_adno.IsReadOnly =
+                    tb_name.IsReadOnly =
+                    tb_phone.IsReadOnly =
+                    //tb_student.IsReadOnly =
+                    //cbb_status.IsReadOnly =
                     cbb_class.IsReadOnly = false;
                 tb_name.Focus();
                 return true;
@@ -671,7 +653,6 @@ namespace SchoolManagement
                         save.Visibility = Visibility.Hidden;
                         AccountListData.IsEnabled = true;
                     }
-
                 }
             }
             catch (Exception ex)
@@ -704,7 +685,6 @@ namespace SchoolManagement
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
-            
         }
 
         private void DeleleDeviceRF_Click(object sender, RoutedEventArgs e)
@@ -730,7 +710,6 @@ namespace SchoolManagement
                         mainModel.ReloadListDeviceRFDGV(deviceRF);
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -741,7 +720,6 @@ namespace SchoolManagement
 
         private void Btn_export_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void Export_Click(object sender, RoutedEventArgs e)
@@ -751,7 +729,6 @@ namespace SchoolManagement
 
         private void Cbb_status_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
 
         //private void Btn_changeStatus_Click(object sender, RoutedEventArgs e)
@@ -776,7 +753,7 @@ namespace SchoolManagement
 
         private void Filter_Click(object sender, RoutedEventArgs e)
         {
-            mainModel.ReloadListProfileRFDGV(tb_nameSearch.Text,tb_pinSearch.Text,tb_adnoSearch.Text);
+            mainModel.ReloadListProfileRFDGV(tb_nameSearch.Text, tb_pinSearch.Text, tb_adnoSearch.Text);
         }
 
         private void Tb_Search_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -817,7 +794,6 @@ namespace SchoolManagement
                     frm.ShowDialog();
                     mainModel.ReloadListDeviceRFDGV();
                 }
-                
             }
             catch (Exception ex)
             {
@@ -828,11 +804,12 @@ namespace SchoolManagement
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-
             foreach (DeviceRF item in mainModel.deviceRFList)
             {
-                if(item.deviceItem!=null)
+                if (item.deviceItem != null)
+                {
                     item.deviceItem.Dispose();
+                }
             }
             Environment.Exit(0);
         }
@@ -846,7 +823,7 @@ namespace SchoolManagement
                 {
                     //Suspend profile
                     //There is 2 choices: imediately or set exprire date
-                    SuspendOptionForm frm = new SuspendOptionForm(this,profileRF);
+                    SuspendOptionForm frm = new SuspendOptionForm(this, profileRF);
                     frm.ShowDialog();
                     return;
                 }
@@ -1026,7 +1003,6 @@ namespace SchoolManagement
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void Logout_Click(object sender, RoutedEventArgs e)
@@ -1048,12 +1024,10 @@ namespace SchoolManagement
 
         private void btn_2_click(object sender, RoutedEventArgs e)
         {
-            
         }
 
         private void btn_3_click(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -1068,27 +1042,31 @@ namespace SchoolManagement
         [ThreadStatic]
         private static bool _currentThreadIsProcessingItems;
 
-        // The list of tasks to be executed 
+        // The list of tasks to be executed
         private readonly LinkedList<Task> _tasks = new LinkedList<Task>(); // protected by lock(_tasks)
 
-        // The maximum concurrency level allowed by this scheduler. 
+        // The maximum concurrency level allowed by this scheduler.
         private readonly int _maxDegreeOfParallelism;
 
-        // Indicates whether the scheduler is currently processing work items. 
+        // Indicates whether the scheduler is currently processing work items.
         private int _delegatesQueuedOrRunning = 0;
 
-        // Creates a new instance with the specified degree of parallelism. 
+        // Creates a new instance with the specified degree of parallelism.
         public LimitedConcurrencyLevelTaskScheduler(int maxDegreeOfParallelism)
         {
-            if (maxDegreeOfParallelism < 1) throw new ArgumentOutOfRangeException("maxDegreeOfParallelism");
+            if (maxDegreeOfParallelism < 1)
+            {
+                throw new ArgumentOutOfRangeException("maxDegreeOfParallelism");
+            }
+
             _maxDegreeOfParallelism = maxDegreeOfParallelism;
         }
 
-        // Queues a task to the scheduler. 
+        // Queues a task to the scheduler.
         protected sealed override void QueueTask(Task task)
         {
-            // Add the task to the list of tasks to be processed.  If there aren't enough 
-            // delegates currently queued or running to process tasks, schedule another. 
+            // Add the task to the list of tasks to be processed.  If there aren't enough
+            // delegates currently queued or running to process tasks, schedule another.
             lock (_tasks)
             {
                 _tasks.AddLast(task);
@@ -1100,7 +1078,7 @@ namespace SchoolManagement
             }
         }
 
-        // Inform the ThreadPool that there's work to be executed for this scheduler. 
+        // Inform the ThreadPool that there's work to be executed for this scheduler.
         private void NotifyThreadPoolOfPendingWork()
         {
             ThreadPool.UnsafeQueueUserWorkItem(_ =>
@@ -1138,45 +1116,68 @@ namespace SchoolManagement
             }, null);
         }
 
-        // Attempts to execute the specified task on the current thread. 
+        // Attempts to execute the specified task on the current thread.
         protected sealed override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
         {
             // If this thread isn't already processing a task, we don't support inlining
-            if (!_currentThreadIsProcessingItems) return false;
+            if (!_currentThreadIsProcessingItems)
+            {
+                return false;
+            }
 
             // If the task was previously queued, remove it from the queue
             if (taskWasPreviouslyQueued)
-                // Try to run the task. 
+            {
+                // Try to run the task.
                 if (TryDequeue(task))
+                {
                     return base.TryExecuteTask(task);
+                }
                 else
+                {
                     return false;
+                }
+            }
             else
+            {
                 return base.TryExecuteTask(task);
+            }
         }
 
-        // Attempt to remove a previously scheduled task from the scheduler. 
+        // Attempt to remove a previously scheduled task from the scheduler.
         protected sealed override bool TryDequeue(Task task)
         {
-            lock (_tasks) return _tasks.Remove(task);
+            lock (_tasks)
+            {
+                return _tasks.Remove(task);
+            }
         }
 
-        // Gets the maximum concurrency level supported by this scheduler. 
-        public sealed override int MaximumConcurrencyLevel { get { return _maxDegreeOfParallelism; } }
+        // Gets the maximum concurrency level supported by this scheduler.
+        public sealed override int MaximumConcurrencyLevel => _maxDegreeOfParallelism;
 
-        // Gets an enumerable of the tasks currently scheduled on this scheduler. 
+        // Gets an enumerable of the tasks currently scheduled on this scheduler.
         protected sealed override IEnumerable<Task> GetScheduledTasks()
         {
             bool lockTaken = false;
             try
             {
                 Monitor.TryEnter(_tasks, ref lockTaken);
-                if (lockTaken) return _tasks;
-                else throw new NotSupportedException();
+                if (lockTaken)
+                {
+                    return _tasks;
+                }
+                else
+                {
+                    throw new NotSupportedException();
+                }
             }
             finally
             {
-                if (lockTaken) Monitor.Exit(_tasks);
+                if (lockTaken)
+                {
+                    Monitor.Exit(_tasks);
+                }
             }
         }
     }

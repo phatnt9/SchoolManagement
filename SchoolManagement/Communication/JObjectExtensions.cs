@@ -25,23 +25,28 @@ namespace SchoolManagement.Communication
         {
             return jObject.GetValue("op").ToString();
         }
+
         public static int GetServiceId(this JObject jObject)
         {
             JToken jToken = jObject.GetValue("id");
             return (jToken == null ? 0 : jToken.ToObject<int>());
         }
+
         public static string GetTopic(this JObject jObject)
         {
             return jObject.GetValue("topic").ToString();
         }
+
         public static string GetService(this JObject jObject)
         {
             return jObject.GetValue("service").ToString();
         }
+
         public static JObject GetValues(this JObject jObject)
         {
             return (JObject)jObject.GetValue("values");
         }
+
         public static JObject GetMessage(this JObject jObject)
         {
             return (JObject)jObject.GetValue("msg");

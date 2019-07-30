@@ -16,18 +16,18 @@
             <StackPanel VerticalAlignment="Center"
                         HorizontalAlignment="Stretch"
                         Margin="10 0">
-                <RadioButton 
+                <RadioButton
                         IsChecked="True"
                         Margin="5"
-                        GroupName="nowOrLater" 
-                        Name="rb_now" 
+                        GroupName="nowOrLater"
+                        Name="rb_now"
                     Checked="Rb_now_Checked"
                         Content="Now"></RadioButton>
                 <StackPanel Orientation="Horizontal">
-                    <RadioButton 
+                    <RadioButton
                         Margin="5"
-                        GroupName="nowOrLater" 
-                        Name="rb_later" 
+                        GroupName="nowOrLater"
+                        Name="rb_later"
                         Checked="Rb_later_Checked"
                         Content="Later on"></RadioButton>
                     <DatePicker

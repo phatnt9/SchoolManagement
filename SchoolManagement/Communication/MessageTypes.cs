@@ -25,17 +25,17 @@ namespace SchoolManagement.Communication
         {
             { "geometry_msgs/Twist", typeof(GeometryTwist) },
             { "std_msgs/String", typeof(StandardString) },
-			 { "std_msgs/Int32", typeof(StandardInt32) },
-			  { "std_msgs/Float32", typeof(StandardFloat32) },
-			{ "geometry_msgs/Accel", typeof(GeometryAccel) },
+             { "std_msgs/Int32", typeof(StandardInt32) },
+              { "std_msgs/Float32", typeof(StandardFloat32) },
+            { "geometry_msgs/Accel", typeof(GeometryAccel) },
             { "sensor_msgs/JointState", typeof(SensorJointStates) },
             { "geometry_msgs/Vector3", typeof(GeometryVector3) },
             { "sensor_msgs/Joy", typeof(SensorJoy) },
             { "nav_msgs/Odometry", typeof(NavigationOdometry) },
             { "std_msgs/Header", typeof(StandardHeader) },
             { "geometry_msgs/PoseWithCovariance",typeof(GeometryPoseWithCovariance) },
-			{ "geometry_msgs/PoseWithCovarianceStamped",typeof(GeometryPoseWithCovarianceStamped) },
-			{ "geometry_msgs/TwistWithCovariance", typeof(GeometryTwistWithCovariance) },
+            { "geometry_msgs/PoseWithCovarianceStamped",typeof(GeometryPoseWithCovarianceStamped) },
+            { "geometry_msgs/TwistWithCovariance", typeof(GeometryTwistWithCovariance) },
             { "geometry_msgs/Pose", typeof(GeometryPose) },
             { "geometry_msgs/PoseStamped", typeof(GeometryPoseStamped) },
             { "geometry_msgs/Point", typeof(GeometryPoint) },
@@ -48,10 +48,12 @@ namespace SchoolManagement.Communication
             { "nav_msgs/MapMetaData", typeof(NavigationMapMetaData) },
             { "nav_msgs/OccupancyGrid", typeof(NavigationOccupancyGrid)}
         };
+
         public static string RosMessageType(Type messageType)
         {
             return Dictionary.FirstOrDefault(x => x.Value == messageType).Key;
         }
+
         public static Type MessageType(string rosMessageType)
         {
             Type messageType;

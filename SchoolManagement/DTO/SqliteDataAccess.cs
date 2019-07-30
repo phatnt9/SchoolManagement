@@ -1,15 +1,9 @@
 ﻿using Dapper;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagement.DTO
 {
@@ -21,7 +15,7 @@ namespace SchoolManagement.DTO
         {
             //return ConfigurationManager.ConnectionStrings[id].ConnectionString;
             Constant.CreateFolderToSaveData();
-            string test = "Data Source="+ Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB" + @".\Datastore.db;Version=3;";
+            string test = "Data Source=" + Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB" + @".\Datastore.db;Version=3;";
             return test;
         }
 
@@ -116,7 +110,6 @@ namespace SchoolManagement.DTO
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -124,11 +117,7 @@ namespace SchoolManagement.DTO
                 Constant.mainWindowPointer.WriteLog(ex.Message);
                 return new List<TimeRecord>();
             }
-
         }
-
-
-
 
         public static void SaveDeviceRF(DeviceRF deviceRF)
         {
@@ -189,7 +178,6 @@ namespace SchoolManagement.DTO
                                 "WHERE IP = @IP", p);
                     }
                 }
-                
             }
             catch (Exception ex)
             {
@@ -198,8 +186,7 @@ namespace SchoolManagement.DTO
             }
         }
 
-
-        public static void UpdateProfileRF(ProfileRF profileRF,string Status = null)
+        public static void UpdateProfileRF(ProfileRF profileRF, string Status = null)
         {
             try
             {
@@ -230,7 +217,6 @@ namespace SchoolManagement.DTO
             }
         }
 
-        
         public static void RemoveDeviceRF(DeviceRF deviceRF)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
@@ -247,9 +233,6 @@ namespace SchoolManagement.DTO
                 cnn.Execute("DELETE FROM RF_PROFILE WHERE PIN_NO=@PIN_NO", profileRF);
             }
         }
-
-
-
 
         public static List<ProfileRF> LoadListProfileRFSerialId(string ip)
         {

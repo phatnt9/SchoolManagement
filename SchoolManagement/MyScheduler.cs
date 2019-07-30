@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagement.Model
 {
@@ -13,15 +9,18 @@ namespace SchoolManagement.Model
             interval = interval / 3600;
             SchedulerService.Instance.ScheduleTask(hour, sec, interval, task);
         }
+
         public static void IntervalInMinutes(int hour, int min, double interval, Action task)
         {
             interval = interval / 60;
             SchedulerService.Instance.ScheduleTask(hour, min, interval, task);
         }
+
         public static void IntervalInHours(int hour, int min, double interval, Action task)
         {
             SchedulerService.Instance.ScheduleTask(hour, min, interval, task);
         }
+
         public static void IntervalInDays(int hour, int min, double interval, Action task)
         {
             interval = interval * 24;

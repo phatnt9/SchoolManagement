@@ -1,17 +1,12 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using SchoolManagement.DTO;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Threading;
-using System.IO;
-using System.Linq;
-using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Forms;
-using System.Threading;
-using SchoolManagement.DTO;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace SchoolManagement.Model
 {
@@ -26,8 +21,7 @@ namespace SchoolManagement.Model
         public ListCollectionView groupedAccount { get; private set; }
         public ListCollectionView groupedTimeCheck { get; private set; }
         public ListCollectionView groupedDevice { get; private set; }
-        
-        
+
         public List<ProfileRF> accountRFList;
         public List<DeviceRF> deviceRFList;
         public List<TimeRecord> timeCheckRFList;
@@ -35,7 +29,6 @@ namespace SchoolManagement.Model
         //public DeviceItem deviceItem;
         public MainWindowModel(MainWindow mainW)
         {
-            
             this.mainW = mainW;
 
             timerSyncTimeSheet = new System.Timers.Timer();
@@ -43,8 +36,6 @@ namespace SchoolManagement.Model
             timerSyncTimeSheet.Elapsed += TimerSyncTimeSheet_Elapsed;
             timerSyncTimeSheet.AutoReset = true;
             timerSyncTimeSheet.Start();
-
-            
 
             accountRFList = new List<ProfileRF>();
             deviceRFList = new List<DeviceRF>();
@@ -56,12 +47,7 @@ namespace SchoolManagement.Model
 
             //DeviceItem deviceItem = new DeviceItem(this);
             //deviceItem.Start("ws://192.168.1.121:9090");
-
         }
-
-        
-
-        
 
         private void TimerSyncTimeSheet_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
@@ -82,7 +68,6 @@ namespace SchoolManagement.Model
                 }
             });
         }
-
 
         public void CheckSuspendAllProfile()
         {
@@ -110,7 +95,6 @@ namespace SchoolManagement.Model
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
-            
         }
 
         public void ReloadListProfileRFDGV(string name = "", string pinno = "", string adno = "")
@@ -124,9 +108,15 @@ namespace SchoolManagement.Model
                     accountRFList.Add(item);
                 }
                 if (groupedAccount.IsEditingItem)
+                {
                     groupedAccount.CommitEdit();
+                }
+
                 if (groupedAccount.IsAddingNew)
+                {
                     groupedAccount.CommitNew();
+                }
+
                 groupedAccount.Refresh();
             }
             catch (Exception ex)
@@ -134,10 +124,9 @@ namespace SchoolManagement.Model
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
-
         }
 
-        public bool CheckExistDeviceRF (List<DeviceRF> list, DeviceRF deviceRF)
+        public bool CheckExistDeviceRF(List<DeviceRF> list, DeviceRF deviceRF)
         {
             foreach (DeviceRF item in list)
             {
@@ -154,38 +143,42 @@ namespace SchoolManagement.Model
 
         public void ReloadListDeviceRFDGV(DeviceRF removedDevice = null)
         {
-           mainW.DeviceRFListData.Dispatcher.BeginInvoke(new ThreadStart(() =>
-            {
-                try
-                {
-                    List<DeviceRF> deviceList = SqliteDataAccess.LoadDeviceRF();
-                    foreach (DeviceRF item in deviceList)
-                    {
-                        if (!CheckExistDeviceRF(deviceRFList, item))
-                        {
-                            item.deviceItem = new DeviceItem(this);
-                            deviceRFList.Add(item);
-                        }
-                    }
-                    if (removedDevice != null)
-                    {
-                        deviceRFList.Remove(removedDevice);
-                    }
+            mainW.DeviceRFListData.Dispatcher.BeginInvoke(new ThreadStart(() =>
+             {
+                 try
+                 {
+                     List<DeviceRF> deviceList = SqliteDataAccess.LoadDeviceRF();
+                     foreach (DeviceRF item in deviceList)
+                     {
+                         if (!CheckExistDeviceRF(deviceRFList, item))
+                         {
+                             item.deviceItem = new DeviceItem(this);
+                             deviceRFList.Add(item);
+                         }
+                     }
+                     if (removedDevice != null)
+                     {
+                         deviceRFList.Remove(removedDevice);
+                     }
 
+                     if (groupedDevice.IsEditingItem)
+                     {
+                         groupedDevice.CommitEdit();
+                     }
 
-                    if (groupedDevice.IsEditingItem)
-                        groupedDevice.CommitEdit();
-                    if (groupedDevice.IsAddingNew)
-                        groupedDevice.CommitNew();
-                    groupedDevice.Refresh();
-                }
-                catch (Exception ex)
-                {
-                    logFile.Error(ex.Message);
-                    Constant.mainWindowPointer.WriteLog(ex.Message);
-                }
-            }));
-            
+                     if (groupedDevice.IsAddingNew)
+                     {
+                         groupedDevice.CommitNew();
+                     }
+
+                     groupedDevice.Refresh();
+                 }
+                 catch (Exception ex)
+                 {
+                     logFile.Error(ex.Message);
+                     Constant.mainWindowPointer.WriteLog(ex.Message);
+                 }
+             }));
         }
 
         public void ReloadListTimeCheckDGV(int tabIndex)
@@ -196,68 +189,73 @@ namespace SchoolManagement.Model
                 switch (tabIndex)
                 {
                     case 0: // tab profile
+                    {
+                        if (mainW.AccountListData.SelectedItem != null && mainW.dp_search.SelectedDate != null)
                         {
-                            if (mainW.AccountListData.SelectedItem != null && mainW.dp_search.SelectedDate != null)
+                            ProfileRF profileRF = mainW.AccountListData.SelectedItem as ProfileRF;
+                            DateTime date = (DateTime)mainW.dp_search.SelectedDate;
+                            List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF(profileRF.PIN_NO, date);
+                            foreach (TimeRecord item in timeList)
+                            {
+                                timeCheckRFList.Add(item);
+                            }
+                        }
+                        else
+                        {
+                            if (mainW.AccountListData.SelectedItem != null)
                             {
                                 ProfileRF profileRF = mainW.AccountListData.SelectedItem as ProfileRF;
-                                DateTime date = (DateTime)mainW.dp_search.SelectedDate;
-                                List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF(profileRF.PIN_NO, date);
+                                List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF(profileRF.PIN_NO, DateTime.MinValue);
                                 foreach (TimeRecord item in timeList)
                                 {
                                     timeCheckRFList.Add(item);
                                 }
                             }
-                            else
-                            {
-                                if (mainW.AccountListData.SelectedItem != null)
-                                {
-                                    ProfileRF profileRF = mainW.AccountListData.SelectedItem as ProfileRF;
-                                    List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF(profileRF.PIN_NO, DateTime.MinValue);
-                                    foreach (TimeRecord item in timeList)
-                                    {
-                                        timeCheckRFList.Add(item);
-                                    }
-                                }
-                            }
-                            break;
                         }
+                        break;
+                    }
                     case 1: // tab device
+                    {
+                        if (mainW.DeviceRFListData.SelectedItem != null && mainW.dp_search.SelectedDate != null)
                         {
-                            if (mainW.DeviceRFListData.SelectedItem != null && mainW.dp_search.SelectedDate != null)
+                            DeviceRF deviceRF = mainW.DeviceRFListData.SelectedItem as DeviceRF;
+                            DateTime date = (DateTime)mainW.dp_search.SelectedDate;
+                            List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF("", date, deviceRF.IP);
+                            foreach (TimeRecord item in timeList)
+                            {
+                                timeCheckRFList.Add(item);
+                            }
+                        }
+                        else
+                        {
+                            if (mainW.DeviceRFListData.SelectedItem != null)
                             {
                                 DeviceRF deviceRF = mainW.DeviceRFListData.SelectedItem as DeviceRF;
-                                DateTime date = (DateTime)mainW.dp_search.SelectedDate;
-                                List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF("", date, deviceRF.IP);
+                                List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF("", DateTime.MinValue, deviceRF.IP);
                                 foreach (TimeRecord item in timeList)
                                 {
                                     timeCheckRFList.Add(item);
                                 }
                             }
-                            else
-                            {
-                                if (mainW.DeviceRFListData.SelectedItem != null)
-                                {
-                                    DeviceRF deviceRF = mainW.DeviceRFListData.SelectedItem as DeviceRF;
-                                    List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF("", DateTime.MinValue, deviceRF.IP);
-                                    foreach (TimeRecord item in timeList)
-                                    {
-                                        timeCheckRFList.Add(item);
-                                    }
-                                }
-                            }
-                            break;
                         }
+                        break;
+                    }
                     default:
-                        {
-                            break;
-                        }
+                    {
+                        break;
+                    }
                 }
-                
 
                 if (groupedTimeCheck.IsEditingItem)
+                {
                     groupedTimeCheck.CommitEdit();
+                }
+
                 if (groupedTimeCheck.IsAddingNew)
+                {
                     groupedTimeCheck.CommitNew();
+                }
+
                 groupedTimeCheck.Refresh();
             }
             catch (Exception ex)
@@ -266,7 +264,7 @@ namespace SchoolManagement.Model
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
-        
+
         public bool CheckinServer(string ip, List<CheckinData> person)
         {
             try
@@ -291,10 +289,7 @@ namespace SchoolManagement.Model
             }
             finally
             {
-                
             }
-
-            
         }
 
         public List<ProfileRF> GetListSerialId(string ip)
@@ -345,7 +340,6 @@ namespace SchoolManagement.Model
 
                     int cellRowIndex = 2;
                     int cellColumnIndex = 1;
-                    
 
                     for (int i = 0; i < timeCheckRFList.Count; i++)
                     {
@@ -363,13 +357,12 @@ namespace SchoolManagement.Model
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = timeCheckRFList[i].GATE.ToString(); }
                             if (j == 5)//Time
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = timeCheckRFList[i].TIME_CHECK.ToString("MM/dd/yyyy HH:mm:ss"); }
-                            
+
                             cellColumnIndex++;
                         }
                         cellColumnIndex = 1;
                         cellRowIndex++;
                     }
-
 
                     worksheet.Columns.AutoFit();
 
@@ -428,7 +421,7 @@ namespace SchoolManagement.Model
 
                     List<ProfileRF> profileList = SqliteDataAccess.LoadProfileRF();
 
-                    for (int i=0; i < profileList.Count; i++)
+                    for (int i = 0; i < profileList.Count; i++)
                     {
                         for (int j = 0; j < 16; j++)
                         {
@@ -437,7 +430,13 @@ namespace SchoolManagement.Model
                             if (j == 1)//Name
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].NAME; }
                             if (j == 2)//Adno
-                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].ADNO; }
+                            {
+                                Range cells = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[cellRowIndex, cellColumnIndex];
+                                cells.NumberFormat = "@";
+                                cells.HorizontalAlignment = XlHAlign.xlHAlignRight;
+                                cells.Value2 = profileList[i].ADNO;
+                                //worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].ADNO;
+                            }
                             if (j == 3)//Gender
                             {
                                 //worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].GENDER.ToString();
@@ -465,10 +464,23 @@ namespace SchoolManagement.Model
                             if (j == 5)//Disu
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].DISU; }
                             if (j == 6)//Image
-                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].IMAGE; }
-                            if (j == 7)//PIN No.
-                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].PIN_NO; }
+                            {
+                                Range cells = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[cellRowIndex, cellColumnIndex];
+                                cells.NumberFormat = "@";
+                                cells.HorizontalAlignment = XlHAlign.xlHAlignRight;
+                                cells.Value2 = profileList[i].IMAGE;
 
+                                //worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].IMAGE;
+                            }
+                            if (j == 7)//PIN No.
+                            {
+                                Range cells = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[cellRowIndex, cellColumnIndex];
+                                cells.NumberFormat = "@";
+                                cells.HorizontalAlignment = XlHAlign.xlHAlignRight;
+                                cells.Value2 = profileList[i].PIN_NO;
+                                //worksheet.Range[cellColumnIndex].NumberFormat = "0";
+                                //worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].PIN_NO;
+                            }
 
                             if (j == 8)//Class
                             {
@@ -481,6 +493,7 @@ namespace SchoolManagement.Model
                                 list.Add("Visitor");
                                 list.Add("Long Term Supplier");
                                 list.Add("Short Term Supplier");
+                                list.Add("Security");
                                 var flatList = string.Join(",", list.ToArray());
 
                                 var cell = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[cellRowIndex, cellColumnIndex];
@@ -496,16 +509,18 @@ namespace SchoolManagement.Model
                                 cell.Validation.InCellDropdown = true;
                             }
 
-
-
-
-
                             if (j == 9)//Email
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].EMAIL; }
                             if (j == 10)//Address
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].ADDRESS; }
                             if (j == 11)//Phone
-                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].PHONE; }
+                            {
+                                Range cells = (Microsoft.Office.Interop.Excel.Range)worksheet.Cells[cellRowIndex, cellColumnIndex];
+                                cells.NumberFormat = "@";
+                                cells.HorizontalAlignment = XlHAlign.xlHAlignRight;
+                                cells.Value2 = profileList[i].PHONE;
+                                //worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].PHONE;
+                            }
                             if (j == 12)//Status
                             {
                                 //worksheet.Cells[cellRowIndex, cellColumnIndex] = profileList[i].STATUS;
@@ -540,7 +555,7 @@ namespace SchoolManagement.Model
                                 }
                             }
 
-                            if (j == 14)
+                            if (j == 14)//Expire Date
                             {
                                 if (profileList[i].CHECK_DATE_TO_LOCK == true)
                                 {
@@ -551,7 +566,7 @@ namespace SchoolManagement.Model
                                     { worksheet.Cells[cellRowIndex, cellColumnIndex] = ""; }
                                 }
                             }
-                            if (j == 15)
+                            if (j == 15)// Automatic Suspension
                             {
                                 var list = new System.Collections.Generic.List<string>();
                                 list.Add("TRUE");
@@ -578,7 +593,6 @@ namespace SchoolManagement.Model
                         cellRowIndex++;
                     }
 
-
                     worksheet.Columns.AutoFit();
 
                     workbook.SaveAs(saveDialog.FileName, Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, false, false, Excel.XlSaveAsAccessMode.xlNoChange, Excel.XlSaveConflictResolution.xlLocalSessionChanges, Type.Missing, Type.Missing);
@@ -597,6 +611,5 @@ namespace SchoolManagement.Model
                 excel = null;
             }
         }
-        
     }
 }

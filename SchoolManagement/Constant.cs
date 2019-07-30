@@ -2,11 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagement
 {
@@ -30,7 +25,6 @@ namespace SchoolManagement
         public static string messageDeleteUse = "Can\'t delete {0} because it has been using on {1}.";
         public static string messageValidateNumber = "{0} must be {1} than {2}.";
         public static string messageNoDataSave = "There is no updated data to save.";
-
 
         public static string messageTitileInformation = "Information";
         public static string messageTitileError = "Error";
@@ -56,7 +50,7 @@ namespace SchoolManagement
                     //if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\"+ "Datastore.db"))
                     //{
                     //    File.Copy(Environment.CurrentDirectory + @"\Datastore.db",
-                    //        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\Datastore.db", 
+                    //        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\Datastore.db",
                     //        true);
                     //}
                 }
@@ -72,7 +66,6 @@ namespace SchoolManagement
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
-            
         }
 
         public static Dictionary<string, ProfileRF> listData = new Dictionary<string, ProfileRF>();
@@ -90,8 +83,5 @@ namespace SchoolManagement
             Male = 0,
             Female = 1
         }
-
-        
-
     }
 }

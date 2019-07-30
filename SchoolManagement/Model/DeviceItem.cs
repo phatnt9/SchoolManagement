@@ -7,11 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media.Imaging;
 using WebSocketSharp;
 
 namespace SchoolManagement.Model
@@ -28,14 +24,15 @@ namespace SchoolManagement.Model
             Error,
             Pending,
         }
+
         public enum CLIENTCMD
         {
             REQUEST_PROFILE = 110,
             REQUEST_REG_PERSON_LIST = 120,
             REQUEST_SYNC_TIME = 130,
             CONFIRM_SENT_PROFILE_SUCCESS = 310,
-
         }
+
         public enum SERVERRESPONSE
         {
             RESP_SUCCESS = 200,
@@ -45,37 +42,42 @@ namespace SchoolManagement.Model
             RESP_REQ_PERSONLIST_IMMEDIATELY = 250,
             RESP_DATAFORMAT_ERROR = 300,
             RESP_PERSONLIST_ERROR = 320,
-
-
-
         }
+
         public class JStringProfile
         {
             public int status;
             public List<ProfileRF> data;
         }
+
         public class JStringClient
         {
             public int deviceId;
             public int status;
             public List<String> data;
         }
+
         public struct FLAGSTATUSCLIENT
         {
             public bool OnConfirmProfileSuccess;
         }
-        int publishdata;
-        int publishdataImg;
+
+        private int publishdata;
+        private int publishdataImg;
+
         //public event Action<String> MessageCallBack;
         public FLAGSTATUSCLIENT OnFlagStatusClient;
+
         private MainWindowModel mainWindowModel;
         public STATUSPROFILE statusProfile = STATUSPROFILE.Pending;
+
         public DeviceItem(MainWindowModel mainWindowModel)
         {
             this.mainWindowModel = mainWindowModel;
 
             OnFlagStatusClient.OnConfirmProfileSuccess = false;
         }
+
         protected override void OnOpenedEvent()
         {
             try
@@ -93,7 +95,6 @@ namespace SchoolManagement.Model
         protected override void OnClosedEvent(object sender, CloseEventArgs e)
         {
             base.OnClosedEvent(sender, e);
-
         }
 
         public void ReqImgHandler(Message message)
@@ -104,10 +105,14 @@ namespace SchoolManagement.Model
             {
                 //  BitmapImage img = new System.Windows.Media.Imaging.BitmapImage(new Uri(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + standard.data));
                 Image img = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + standard.data);
-                imgdata.format = "png";
+                imgdata.format = standard.data;
+                
+          //      imgdata.header = standard.data;
                 imgdata.data = ImageToByte(img);
                 if (webSocket.IsAlive)
+                {
                     this.Publish(publishdataImg, imgdata);
+                }
             }
             catch
             {
@@ -115,9 +120,12 @@ namespace SchoolManagement.Model
                 imgdata.format = "png";
                 imgdata.data = ImageToByte(img);
                 if (webSocket.IsAlive)
+                {
                     this.Publish(publishdataImg, imgdata);
+                }
             }
         }
+
         public Byte[] ImageToByte(Image img)
         {
             byte[] byteArray = new byte[0];
@@ -129,9 +137,8 @@ namespace SchoolManagement.Model
                 byteArray = stream.ToArray();
             }
             return byteArray;
-
-
         }
+
         public void createRosTerms()
         {
             int subscription_imagerequest = this.Subscribe("ReqImage", "std_msgs/String", ReqImgHandler);
@@ -140,6 +147,7 @@ namespace SchoolManagement.Model
             publishdata = this.Advertise("ServerPublish", "std_msgs/String");
             int subscription = this.Subscribe("ClientPublish", "std_msgs/String", DataHandler);
         }
+
         public void sendProfile(string ip)
         {
             if (webSocket != null)
@@ -166,7 +174,10 @@ namespace SchoolManagement.Model
                                 while (cntTimeOut++ < 10)
                                 {
                                     if (OnFlagStatusClient.OnConfirmProfileSuccess)
+                                    {
                                         break;
+                                    }
+
                                     Thread.Sleep(1000);
                                 }
                                 if (OnFlagStatusClient.OnConfirmProfileSuccess)
@@ -181,14 +192,11 @@ namespace SchoolManagement.Model
                                     SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString());
                                 }
 
-
                                 mainWindowModel.ReloadListDeviceRFDGV();
                             }
 
                             ).Start(mainWindowModel);
-
                         }
-
                     }
                     catch (Exception ex)
                     {
@@ -198,7 +206,6 @@ namespace SchoolManagement.Model
                         logFile.Error(ex.Message);
                         Constant.mainWindowPointer.WriteLog(ex.Message);
                     }
-
                 }
             }
         }
@@ -207,7 +214,6 @@ namespace SchoolManagement.Model
         {
             try
             {
-
                 JStringProfile Jprofile = new JStringProfile();
                 Jprofile.status = (int)SERVERRESPONSE.RESP_PROFILE_SUCCESS;
                 Jprofile.data = mainWindowModel.GetListSerialId(ip);
@@ -215,14 +221,12 @@ namespace SchoolManagement.Model
                 StandardString info = new StandardString();
                 info.data = dataResp;
                 this.Publish(publishdata, info);
-
             }
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
-
         }
 
         public void requestPersonListImmediately()
@@ -240,7 +244,6 @@ namespace SchoolManagement.Model
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
-
         }
 
         private void DataHandler(Message message)
@@ -257,9 +260,11 @@ namespace SchoolManagement.Model
                         sendProfile(ip);
                         //dynamic product=new JOb
                         break;
+
                     case CLIENTCMD.CONFIRM_SENT_PROFILE_SUCCESS:
                         OnFlagStatusClient.OnConfirmProfileSuccess = true;
                         break;
+
                     case CLIENTCMD.REQUEST_SYNC_TIME:
                         dynamic productTimeSync = new JObject();
                         productTimeSync.status = (int)SERVERRESPONSE.RESP_SYNC_TIME;
@@ -284,7 +289,9 @@ namespace SchoolManagement.Model
                                     personList.Add(person);
                                 }
                                 if (personList.Count > 0)
+                                {
                                     mainWindowModel.CheckinServer(ip, personList);
+                                }
                             }
                             try
                             {
@@ -320,7 +327,6 @@ namespace SchoolManagement.Model
                         }
 
                         break;
-
                 }
             }
             catch (Exception ex)

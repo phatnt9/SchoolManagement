@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolManagement", "SchoolManagement\SchoolManagement.csproj", "{B021E000-088D-4EC2-B54F-1C515B11FE45}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup GMS\Setup\Setup.vdproj", "{8114F93F-C6E8-4DF1-96F3-CE1029C1AEC8}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "GateManagementService", "GateManagementService\GateManagementService.vdproj", "{45CC838D-C268-483A-AA3B-90D037B4BDF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,8 +17,8 @@ Global
 		{B021E000-088D-4EC2-B54F-1C515B11FE45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B021E000-088D-4EC2-B54F-1C515B11FE45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B021E000-088D-4EC2-B54F-1C515B11FE45}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8114F93F-C6E8-4DF1-96F3-CE1029C1AEC8}.Debug|Any CPU.ActiveCfg = Debug
-		{8114F93F-C6E8-4DF1-96F3-CE1029C1AEC8}.Release|Any CPU.ActiveCfg = Release
+		{45CC838D-C268-483A-AA3B-90D037B4BDF6}.Debug|Any CPU.ActiveCfg = Debug
+		{45CC838D-C268-483A-AA3B-90D037B4BDF6}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

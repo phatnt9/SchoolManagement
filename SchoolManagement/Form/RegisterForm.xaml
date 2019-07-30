@@ -8,14 +8,14 @@
         Title="Register" Height="480" Width="340"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
-    <Grid 
+    <Grid
         Height="Auto">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel 
+        <StackPanel
             Grid.Row="0"
             Margin="15 5"
             Orientation="Vertical">
@@ -38,12 +38,11 @@
                  VerticalAlignment="Center"
                  TextAlignment="Left"
                  Text=""></TextBox>
-                 <Button 
+                 <Button
                  Height="20"
                  Width="50"
                  Content="..."></Button>
                  </StackPanel>
-                 
                  </Grid>
                  </Grid>
                  </StackPanel>-->
@@ -80,7 +79,7 @@
                                 Text=""></TextBox>
                         </Grid>
                         <Grid Grid.Column="1">
-                            <Button 
+                            <Button
                                 Name="btn_scanId"
                                 FontFamily="Corsiva"
                                 Width="60"
@@ -105,7 +104,7 @@
                          Text=""></TextBox>
                          </Grid>
                          <Grid Grid.Column="1">
-                         <Button 
+                         <Button
                          Name="btn_edit"
                          FontFamily="Corsiva"
                          Width="60"
@@ -114,7 +113,6 @@
                          Click="Btn_edit_Click"></Button>
                          </Grid>
                          </Grid>-->
-
                 </Grid>
             </StackPanel>
             <Separator></Separator>
@@ -166,20 +164,20 @@
                         <Label FontFamily="Corsiva" Content="Gender"></Label>
                     </Grid>
                     <Grid Grid.Column="1">
-                        <StackPanel 
+                        <StackPanel
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left">
                             <StackPanel Orientation="Horizontal">
-                                <RadioButton Name="rb_male" 
-                                             Margin="5 0"  
+                                <RadioButton Name="rb_male"
+                                             Margin="5 0"
                                              FontFamily="Corsiva"
-                                             GroupName="gender" 
-                                             Content="Male" 
+                                             GroupName="gender"
+                                             Content="Male"
                                              IsChecked="True"></RadioButton>
-                                <RadioButton Name="rb_female" 
-                                             Margin="5 0" 
+                                <RadioButton Name="rb_female"
+                                             Margin="5 0"
                                              FontFamily="Corsiva"
-                                             GroupName="gender" 
+                                             GroupName="gender"
                                              Content="Female"></RadioButton>
                             </StackPanel>
                         </StackPanel>
@@ -197,7 +195,7 @@
                     </Grid>
                     <Grid Grid.Column="1">
                         <Grid>
-                            <ComboBox 
+                            <ComboBox
                                 Name="cbb_class"
                                 Width="190"
                                 SelectionChanged="Cbb_class_SelectionChanged"
@@ -208,6 +206,7 @@
                                 <ComboBoxItem>Visitor</ComboBoxItem>
                                 <ComboBoxItem>Long Term Supplier</ComboBoxItem>
                                 <ComboBoxItem>Short Term Supplier</ComboBoxItem>
+                                <ComboBoxItem>Security</ComboBoxItem>
                             </ComboBox>
                         </Grid>
                     </Grid>
@@ -260,7 +259,7 @@
                             VerticalAlignment="Center"
                             Width="175"
                             Text=""></DatePicker>
-                        <CheckBox 
+                        <CheckBox
                             Name="cb_automanicsuspension"
                             IsChecked="False"
                             HorizontalAlignment="Center"
@@ -366,11 +365,11 @@
             </StackPanel>
         </StackPanel>
         <Grid Grid.Row="1">
-            <StackPanel 
+            <StackPanel
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
-                <Button 
+                <Button
                     Margin="5 0"
                     Height="20"
                     FontFamily="Corsiva"

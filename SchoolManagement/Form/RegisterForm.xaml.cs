@@ -2,22 +2,12 @@
 using SchoolManagement.Communication;
 using SchoolManagement.DTO;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SchoolManagement.Form
 {
@@ -28,9 +18,8 @@ namespace SchoolManagement.Form
     {
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-
         public MainWindow mainWindow;
-        
+
         private SerialCOM serial;
         private readonly Stopwatch _stopwatch = new Stopwatch();
 
@@ -67,7 +56,6 @@ namespace SchoolManagement.Form
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
-            
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
@@ -127,7 +115,6 @@ namespace SchoolManagement.Form
                     logFile.Error(ex.Message);
                     Constant.mainWindowPointer.WriteLog(ex.Message);
                 }
-
             }
             // general cleanup code, runs when there was an error or not.
             serial.Close();
@@ -189,14 +176,13 @@ namespace SchoolManagement.Form
                 this.tb_image.Focus();
                 return;
             }
-            
+
             if (String.IsNullOrEmpty(tb_adno.Text.ToString()) || tb_adno.Text.ToString().Trim() == "")
             {
                 System.Windows.Forms.MessageBox.Show(String.Format(Constant.messageValidate, "Adno", "Adno"), Constant.messageTitileWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 this.tb_adno.Focus();
                 return;
             }
-
 
             CreateNewPerson();
         }
@@ -304,7 +290,6 @@ namespace SchoolManagement.Form
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
-
         }
     }
 }

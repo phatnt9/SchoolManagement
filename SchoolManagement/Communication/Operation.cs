@@ -17,21 +17,25 @@ limitations under the License.
 
 namespace SchoolManagement.Communication
 {
-public class Operation
+    public class Operation
     {
-        public virtual string op { get { return "undefined"; } } // required
+        public virtual string op => "undefined";  // required
         public int id; // optional
 
-        public Operation(int Id=0)
+        public Operation(int Id = 0)
         {
             id = Id;
         }
-        public bool ShouldSerializeid() { return (id != 0); }
+
+        public bool ShouldSerializeid()
+        {
+            return (id != 0);
+        }
     }
 
     public class Adverisement : Operation
     {
-        public override string op { get { return "advertise"; } } // required
+        public override string op => "advertise";  // required
         public string topic; // required
         public string type; // required
 
@@ -45,7 +49,7 @@ public class Operation
 
     public class Unadverisement : Operation
     {
-        public override string op { get { return "unadvertise"; } } // required
+        public override string op => "unadvertise";  // required
         public string topic; // required
 
         public Unadverisement(int Id, string Topic) : base(Id)
@@ -56,7 +60,7 @@ public class Operation
 
     public class Publication : Operation
     {
-        public override string op { get { return "publish"; } } // required
+        public override string op => "publish";  // required
         public string topic; // required
         public Message msg; // required
 
@@ -69,7 +73,7 @@ public class Operation
 
     public class Subscription : Operation
     {
-        public override string op { get { return "subscribe"; } } // required
+        public override string op => "subscribe";  // required
         public string topic; // required
         public string type; // optional
         public int throttle_rate; // optional
@@ -86,17 +90,36 @@ public class Operation
             fragment_size = Fragment_size;
             compression = Compression;
         }
-        public bool ShouldSerializetype() { return (type != ""); }
-        public bool ShouldSerializethrottle_rate() { return (throttle_rate != 0); }
-        public bool ShouldSerializequeue_length() { return (queue_length != 1); }
-        public bool ShouldSerializefragment_size() { return (fragment_size != int.MaxValue); }
-        public bool ShouldSerializecompression() { return (compression != "none"); }
 
+        public bool ShouldSerializetype()
+        {
+            return (type != "");
+        }
+
+        public bool ShouldSerializethrottle_rate()
+        {
+            return (throttle_rate != 0);
+        }
+
+        public bool ShouldSerializequeue_length()
+        {
+            return (queue_length != 1);
+        }
+
+        public bool ShouldSerializefragment_size()
+        {
+            return (fragment_size != int.MaxValue);
+        }
+
+        public bool ShouldSerializecompression()
+        {
+            return (compression != "none");
+        }
     }
 
     public class Unsubscription : Operation
     {
-        public override string op { get { return "unsubscribe"; } } // required
+        public override string op => "unsubscribe";  // required
         public string topic; // required
 
         public Unsubscription(int Id, string Topic) : base(Id)
@@ -107,7 +130,7 @@ public class Operation
 
     public class ServiceCall : Operation
     {
-        public override string op { get { return "call_service"; } } // required
+        public override string op => "call_service";  // required
         public string service; // required
         public object args; // optional
         public int fragment_size; // optional
@@ -120,14 +143,26 @@ public class Operation
             fragment_size = Fragment_size;
             compression = Compression;
         }
-        public bool ShouldSerializeargs() { return (args != null); }
-        public bool ShouldSerializefragment_size() { return (fragment_size != int.MaxValue); }
-        public bool ShouldSerializecompression() { return (compression != "none"); }
+
+        public bool ShouldSerializeargs()
+        {
+            return (args != null);
+        }
+
+        public bool ShouldSerializefragment_size()
+        {
+            return (fragment_size != int.MaxValue);
+        }
+
+        public bool ShouldSerializecompression()
+        {
+            return (compression != "none");
+        }
     }
 
     public class ServiceResponse : Operation
     {
-        public override string op { get { return "service_response"; } } // required
+        public override string op => "service_response";  // required
         public string service; // required
         public object values; // optional
 
@@ -136,7 +171,11 @@ public class Operation
             service = Service;
             values = Values;
         }
-        public bool ShouldSerializeargs() { return (values != null); }
+
+        public bool ShouldSerializeargs()
+        {
+            return (values != null);
+        }
     }
 
     /*
@@ -145,7 +184,6 @@ public class Operation
         public override string op { get { return "advertise_service"; } } // required
         public string type; // required
         public string service; // required
-
 
         public ServiceAdverisement(int Id, string Service, string Type) : base(Id)
         {
@@ -165,5 +203,4 @@ public class Operation
         }
     }
     */
-
 }

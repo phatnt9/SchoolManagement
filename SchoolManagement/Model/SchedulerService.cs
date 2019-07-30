@@ -8,8 +8,13 @@ namespace SchoolManagement.Model
     {
         private static SchedulerService _instance;
         private List<Timer> timers = new List<Timer>();
-        private SchedulerService() { }
+
+        private SchedulerService()
+        {
+        }
+
         public static SchedulerService Instance => _instance ?? (_instance = new SchedulerService());
+
         public void ScheduleTask(int hour, int min, double intervalInHour, Action task)
         {
             DateTime now = DateTime.Now;

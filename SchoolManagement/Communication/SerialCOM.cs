@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO.Ports;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagement.Communication
 {
     public class SerialCOM
     {
-        String port;
-        int baudr;
+        private String port;
+        private int baudr;
         public SerialPort _serialPort;
-        public SerialCOM(String port="COM4",int baudr=9600)
+
+        public SerialCOM(String port = "COM4", int baudr = 9600)
         {
             this.port = port;
             this.baudr = baudr;
         }
+
         public bool Open()
         {
             try
@@ -32,14 +30,17 @@ namespace SchoolManagement.Communication
             {
                 return false;
             }
-            
         }
+
         public String ReceiveData()
         {
             try
             {
                 if (!_serialPort.IsOpen)
+                {
                     return "Null";
+                }
+
                 return _serialPort.ReadLine();
             }
             catch
@@ -47,10 +48,13 @@ namespace SchoolManagement.Communication
                 return "Null";
             }
         }
+
         public void Close()
         {
             if (_serialPort.IsOpen)
+            {
                 _serialPort.Close();
+            }
         }
     }
 }

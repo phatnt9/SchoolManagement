@@ -16,16 +16,14 @@ limitations under the License.
 */
 //Install-Package WebSocketSharp -Version 1.0.3-rc11
 
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using WebSocketSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Windows;
-using System.Threading.Tasks;
 using System.Threading;
+using WebSocketSharp;
 
 namespace SchoolManagement.Communication
 {
@@ -37,15 +35,17 @@ namespace SchoolManagement.Communication
             CON_FAILED,
             CON_CLOSED
         }
+
         #region Public
+
         private bool IsDisposed = false;
         protected bool onBinding = true;
         public int timeOutReConnection = 0;
+
         protected virtual void OnClosedEvent(object sender, CloseEventArgs e)
         {
             if (!IsDisposed)
             {
-
                 try
                 {
                     Close();
@@ -54,12 +54,17 @@ namespace SchoolManagement.Communication
                 catch { }
             }
         }
-        protected virtual void OnOpenedEvent() { }
+
+        protected virtual void OnOpenedEvent()
+        {
+        }
+
         public String Url { get; set; }
+
         public RosSocket()
         {
-
         }
+
         public void Start(string url)
         {
             if (webSocket == null)
@@ -74,10 +79,10 @@ namespace SchoolManagement.Communication
                     webSocket.OnMessage += (sender, e) => RecievedOperation((WebSocket)sender, e);
                     webSocket.WaitTime = TimeSpan.FromMilliseconds(1000);
                     webSocket.Connect();
-
                 }).Start();
             }
         }
+
         public virtual void Dispose()
         {
             try
@@ -89,7 +94,10 @@ namespace SchoolManagement.Communication
                     webSocket.OnClose -= (sender, e) => OnClosedEvent((WebSocket)sender, e);
                     //webSocket.OnOpen -= (sender, e) => OnOpenedEvent();
                     if (webSocket.IsAlive)
+                    {
                         Close();
+                    }
+
                     webSocket = null;
                 }
             }
@@ -98,23 +106,28 @@ namespace SchoolManagement.Communication
                 Console.WriteLine("Error Dispose in RosSocket !!");
             }
         }
+
         public void Close()
         {
-            
             while (publishers.Count > 0)
             {
                 Unadvertize(publishers.First().Key);
             }
 
             while (subscribers.Count > 0)
+            {
                 Unsubscribe(subscribers.First().Key);
+            }
+
             try
             {
                 webSocket.Close();
             }
             catch { }
         }
+
         public delegate void ServiceHandler(object obj);
+
         public delegate void MessageHandler(Message message);
 
         public int Advertise(string topic, string type)
@@ -129,7 +142,9 @@ namespace SchoolManagement.Communication
         public void Publish(int id, Message msg)
         {
             if (publishers.TryGetValue(id, out Publisher publisher))
+            {
                 SendOperation(new Publication(id, publisher.Topic, msg));
+            }
         }
 
         public void Unadvertize(int id)
@@ -138,27 +153,27 @@ namespace SchoolManagement.Communication
             publishers.Remove(id);
         }
 
-
-
         public int Subscribe(string topic, string rosMessageType, MessageHandler messageHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
         {
-
             Type messageType = MessageTypes.MessageType(rosMessageType);
             if (messageType == null)
+            {
                 return 0;
+            }
 
             int id = GenerateId();
             subscribers.Add(id, new Subscriber(topic, messageType, messageHandler));
             SendOperation(new Subscription(id, topic, rosMessageType, throttle_rate, queue_length, fragment_size, compression));
             return id;
-
         }
 
         public int Subscribe(string topic, Type messageType, MessageHandler messageHandler, int throttle_rate = 0, int queue_length = 1, int fragment_size = int.MaxValue, string compression = "none")
         {
             string rosMessageType = MessageTypes.RosMessageType(messageType);
             if (rosMessageType == null)
+            {
                 return 0;
+            }
 
             return Subscribe(topic, messageType, messageHandler, throttle_rate, queue_length, fragment_size, compression);
         }
@@ -177,13 +192,15 @@ namespace SchoolManagement.Communication
             SendOperation(new ServiceCall(id, service, args));
             return id;
         }
-        #endregion
+
+        #endregion Public
 
         #region Private
 
         internal struct Publisher
         {
             internal string Topic;
+
             internal Publisher(string topic)
             {
                 Topic = topic;
@@ -195,6 +212,7 @@ namespace SchoolManagement.Communication
             internal string topic;
             internal Type messageType;
             internal MessageHandler messageHandler;
+
             internal Subscriber(string Topic, Type MessageType, MessageHandler MessageHandler)
             {
                 topic = Topic;
@@ -202,11 +220,13 @@ namespace SchoolManagement.Communication
                 messageHandler = MessageHandler;
             }
         }
+
         internal struct ServiceCaller
         {
             internal string service;
             internal Type objectType;
             internal ServiceHandler serviceHandler;
+
             internal ServiceCaller(string Service, Type ObjectType, ServiceHandler ServiceHandler)
             {
                 service = Service;
@@ -225,22 +245,22 @@ namespace SchoolManagement.Communication
             JObject operation = Deserialize(e.RawData);
 
 #if DEBUG
-          //  Console.WriteLine("Recieved " + operation.GetOperation());
-          //  Console.WriteLine(JsonConvert.SerializeObject(operation, Formatting.Indented));
+            //  Console.WriteLine("Recieved " + operation.GetOperation());
+            //  Console.WriteLine(JsonConvert.SerializeObject(operation, Formatting.Indented));
 #endif
 
             switch (operation.GetOperation())
             {
                 case "publish":
-                    {
-                        RecievedPublish(operation, e.RawData);
-                        return;
-                    }
+                {
+                    RecievedPublish(operation, e.RawData);
+                    return;
+                }
                 case "service_response":
-                    {
-                        RecievedServiceResponse(operation, e.RawData);
-                        return;
-                    }
+                {
+                    RecievedServiceResponse(operation, e.RawData);
+                    return;
+                }
             }
         }
 
@@ -249,24 +269,30 @@ namespace SchoolManagement.Communication
             bool foundById = serviceCallers.TryGetValue(serviceResponse.GetServiceId(), out ServiceCaller serviceCaller);
 
             if (!foundById)
+            {
                 serviceCaller = serviceCallers.Values.FirstOrDefault(x => x.service.Equals(serviceResponse.GetService()));
-
+            }
 
             JObject jObject = serviceResponse.GetValues();
             Type type = serviceCaller.objectType;
             if (type != null)
+            {
                 serviceCaller.serviceHandler?.Invoke(jObject.ToObject(type));
+            }
             else
+            {
                 serviceCaller.serviceHandler?.Invoke(jObject);
+            }
         }
 
         private void RecievedPublish(JObject publication, byte[] rawData)
         {
-
             bool foundById = subscribers.TryGetValue(publication.GetServiceId(), out Subscriber subscriber);
 
             if (!foundById)
+            {
                 subscriber = subscribers.Values.FirstOrDefault(x => x.topic.Equals(publication.GetTopic()));
+            }
 
             subscriber.messageHandler?.Invoke((Message)publication.GetMessage().ToObject(subscriber.messageType));
         }
@@ -282,6 +308,7 @@ namespace SchoolManagement.Communication
             }
             catch { }
         }
+
         public static byte[] Serialize(object obj)
         {
             string json = JsonConvert.SerializeObject(obj);
@@ -303,6 +330,7 @@ namespace SchoolManagement.Communication
         {
             return Guid.NewGuid().GetHashCode();
         }
-        #endregion       
+
+        #endregion Private
     }
 }

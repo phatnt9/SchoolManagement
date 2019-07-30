@@ -1,13 +1,10 @@
-﻿using System;
+﻿using SchoolManagement.DTO;
+using System;
+using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Forms;
-using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Collections.Generic;
-using SchoolManagement.DTO;
-using System.ComponentModel;
-using System.Threading;
-using Newtonsoft.Json;
 
 namespace SchoolManagement.Form
 {
@@ -16,13 +13,12 @@ namespace SchoolManagement.Form
     /// </summary>
     public partial class ImportForm : Window
     {
-
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private string importFilePath = "";
         private string importFileFolder = "";
         private bool addorupdate = true; //add-true, update-false
-        BackgroundWorker worker;
-        MainWindow mainW;
+        private BackgroundWorker worker;
+        private MainWindow mainW;
 
         public ImportForm(MainWindow mainW)
         {
@@ -43,7 +39,7 @@ namespace SchoolManagement.Form
                 DefaultExt = "Excel",
                 Filter = "All Excel Files (*.xls;*.xlsx)|*.xls;*.xlsx",
                 FilterIndex = 2,
-                RestoreDirectory = true                
+                RestoreDirectory = true
                 //ReadOnlyChecked = true,
                 //ShowReadOnly = true
             };
@@ -59,8 +55,6 @@ namespace SchoolManagement.Form
                 //Console.WriteLine(fileInfo.DirectoryName);
             }
         }
-
-        
 
         private void Import_Click(object sender, RoutedEventArgs e)
         {
@@ -94,7 +88,6 @@ namespace SchoolManagement.Form
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
-
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -112,8 +105,6 @@ namespace SchoolManagement.Form
             }
             else
             {
-                
-
             }
             // general cleanup code, runs when there was an error or not.
             pbStatus.Value = 0;
@@ -126,7 +117,7 @@ namespace SchoolManagement.Form
             Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(importFilePath);
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets[1];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            
+
             try
             {
                 Constant.CreateFolderToSaveData();
@@ -150,7 +141,7 @@ namespace SchoolManagement.Form
                         }
                         profile.NAME = xlRange.Cells[i, 2].Value2.ToString().ToUpper();
                         profile.ADNO = xlRange.Cells[i, 3].Value2.ToString().ToUpper();
-                        profile.GENDER = (xlRange.Cells[i, 4].Value2.ToString()=="Male"? Constant.Gender.Male : Constant.Gender.Female);
+                        profile.GENDER = (xlRange.Cells[i, 4].Value2.ToString() == "Male" ? Constant.Gender.Male : Constant.Gender.Female);
 
                         string sDate = xlRange.Cells[i, 5].Value2.ToString();
                         double date = double.Parse(sDate);
@@ -162,7 +153,6 @@ namespace SchoolManagement.Form
                         dateTime = DateTime.FromOADate(date).ToString("MMMM dd, yyyy");
                         profile.DISU = DateTime.Parse(dateTime);
 
-
                         profile.IMAGE = xlRange.Cells[i, 7].Value2.ToString();
                         ImportProfileImage(importFileFolder, profile.IMAGE);
 
@@ -171,7 +161,7 @@ namespace SchoolManagement.Form
                         profile.ADDRESS = (xlRange.Cells[i, 11].Value2 == null) ? "" : xlRange.Cells[i, 11].Value2.ToString();
                         profile.PHONE = (xlRange.Cells[i, 12].Value2 == null) ? "" : xlRange.Cells[i, 12].Value2.ToString();
                         profile.STATUS = xlRange.Cells[i, 13].Value2.ToString();
-                        
+
                         if (profile.STATUS == "Suspended")
                         {
                             sDate = xlRange.Cells[i, 14].Value2.ToString();
@@ -192,8 +182,7 @@ namespace SchoolManagement.Form
                         {
                             profile.CHECK_DATE_TO_LOCK = false;
                         }
-                        
-                        
+
                         if (profile.CHECK_DATE_TO_LOCK == true)
                         {
                             if (xlRange.Cells[i, 15].Value2 != null)
@@ -207,7 +196,6 @@ namespace SchoolManagement.Form
                             {
                                 profile.DATE_TO_LOCK = DateTime.MinValue;
                             }
-                            
                         }
                         else
                         {
@@ -249,7 +237,6 @@ namespace SchoolManagement.Form
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
-
             finally
             {
                 //Constant.mainWindowPointer.WriteLog("Dong xlWorkbook.Close();");
@@ -273,13 +260,13 @@ namespace SchoolManagement.Form
         {
             Close();
         }
-        
+
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
             worker.CancelAsync();
         }
 
-        public void ImportProfileImage(string importFolderPath,string imageName)
+        public void ImportProfileImage(string importFolderPath, string imageName)
         {
             try
             {
@@ -290,7 +277,7 @@ namespace SchoolManagement.Form
                     return;
                 }
                 File.Copy(importFolderPath + @"\Image\" + imageName,
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + imageName, 
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + imageName,
                     true);
             }
             catch (Exception ex)

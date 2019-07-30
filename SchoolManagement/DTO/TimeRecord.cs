@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagement.DTO
 {
@@ -14,7 +10,7 @@ namespace SchoolManagement.DTO
         private string _name;
         private string _adno;
         private DateTime _datetime;
-        
+
         public string IP { get => _ip; set => _ip = value; }
         public string NAME { get => _name; set => _name = value; }
         public string ADNO { get => _adno; set => _adno = value; }

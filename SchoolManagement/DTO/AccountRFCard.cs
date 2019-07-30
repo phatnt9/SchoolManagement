@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagement.DTO
 {
@@ -25,7 +21,6 @@ namespace SchoolManagement.DTO
         private bool _checkDateToLock;
         private string _status;
 
-
         public int ID { get => _id; set => _id = value; }
         public string PIN_NO { get => _pinNo; set => _pinNo = value; }
         public string NAME { get => _name; set => _name = value; }
@@ -42,7 +37,5 @@ namespace SchoolManagement.DTO
         public DateTime DATE_TO_LOCK { get => _dateToLock; set => _dateToLock = value; }
         public bool CHECK_DATE_TO_LOCK { get => _checkDateToLock; set => _checkDateToLock = value; }
         public string STATUS { get => _status; set => _status = value; }
-        
-
     }
 }

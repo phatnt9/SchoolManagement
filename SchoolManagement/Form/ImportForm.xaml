@@ -21,16 +21,16 @@
             <Grid Grid.Column="0">
                 <StackPanel VerticalAlignment="Center"
                             HorizontalAlignment="Center">
-                    <RadioButton 
+                    <RadioButton
                         IsChecked="True"
                         Margin="5"
-                        GroupName="addorupdate" 
-                        Name="rb_add" 
+                        GroupName="addorupdate"
+                        Name="rb_add"
                         Content="Add new Profiles"></RadioButton>
-                    <RadioButton 
+                    <RadioButton
                         Margin="5"
-                        GroupName="addorupdate" 
-                        Name="rb_update" 
+                        GroupName="addorupdate"
+                        Name="rb_update"
                         Content="Update Profiles"></RadioButton>
                     <!--<StackPanel Orientation="Horizontal">
                         <CheckBox VerticalContentAlignment="Center" Name="cbx_addnew"></CheckBox>
@@ -44,7 +44,7 @@
             </Grid>
             <Grid Grid.Column="1">
                 <StackPanel>
-                    <!--<StackPanel 
+                    <!--<StackPanel
                      Margin="0,10,0,0"
                      Orientation="Horizontal"
                      HorizontalAlignment="Center"
@@ -54,7 +54,7 @@
                      ></Label>
                      <DatePicker
                      Name="dtpImport"
-                     Width="100"/>
+                     Width="100" />
                      </StackPanel>-->
                     <StackPanel
                     Margin="0,10,0,0"
@@ -62,14 +62,13 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center">
                         <Label
-                        Content="File excel:"
-                        >
+                        Content="File excel:">
                         </Label>
-                        <TextBox 
+                        <TextBox
                         Name="txtFile"
                         IsEnabled="False"
                         Width="100"></TextBox>
-                        <Button 
+                        <Button
                         Margin="10,0,0,0"
                         Width="50"
                         Content="..."
@@ -83,26 +82,26 @@
                     VerticalAlignment="Center">
                         <Button
                         Name="btn_import"
-                        Width="70" 
+                        Width="70"
                         Height="20"
                         Padding="5 0"
-                        Content="Import" 
-                        Margin="10 0" 
+                        Content="Import"
+                        Margin="10 0"
                         Click="Import_Click"></Button>
                         <Button
                         Name="btn_stop"
-                        Width="70" 
+                        Width="70"
                         Height="20"
                         Padding="5 0"
-                        Content="Stop" 
-                        Margin="10 0" 
+                        Content="Stop"
+                        Margin="10 0"
                         Click="Stop_Click"></Button>
                         <Button
-                        Width="70" 
+                        Width="70"
                         Height="20"
                         Padding="5 0"
-                        Content="Close" 
-                        Margin="10 0" 
+                        Content="Close"
+                        Margin="10 0"
                         Click="Close_Click"></Button>
                     </StackPanel>
                 </StackPanel>
@@ -119,7 +118,7 @@
                                 Orientation="Horizontal">
                                 <Label Name="processStatusText" Margin="0 -1" Content="Ready"></Label>
                                 <!--<Grid>
-                                    <Canvas Width="17" 
+                                    <Canvas Width="17"
                                             Margin="0 5"
                                             VerticalAlignment="Top"
                                             HorizontalAlignment="Center">
@@ -142,13 +141,12 @@
                                 Width="200"
                                 Height="20">
                             </ProgressBar>
-                            <TextBlock 
+                            <TextBlock
                                 FontWeight="Bold"
-                                Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" 
-                                HorizontalAlignment="Center" 
+                                Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}"
+                                HorizontalAlignment="Center"
                                 VerticalAlignment="Center" />
                         </Grid>
-                        
                     </StatusBarItem>
                 </StatusBar>
             </DockPanel>
