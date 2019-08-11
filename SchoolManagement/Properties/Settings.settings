@@ -9,7 +9,7 @@
       <Value Profile="(Default)">9600</Value>
     </Setting>
     <Setting Name="RequestTimeCheckInterval" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">5000</Value>
+      <Value Profile="(Default)">60000</Value>
     </Setting>
     <Setting Name="RootUser" Type="System.String" Scope="User">
       <Value Profile="(Default)">admin</Value>

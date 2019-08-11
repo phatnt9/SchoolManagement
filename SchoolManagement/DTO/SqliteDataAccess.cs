@@ -250,7 +250,9 @@ namespace SchoolManagement.DTO
                     {
                         var filter = new DynamicParameters();
                         filter.Add("@CLASS", Class);
-                        var outputFilter = cnn.Query<ProfileRF>("SELECT * FROM RF_PROFILE WHERE (RF_PROFILE.CLASS = @CLASS AND RF_PROFILE.STATUS = 'Active')", filter);
+                        filter.Add("@START_FROM", Class);
+                        filter.Add("@NUM_GET", Class);
+                        var outputFilter = cnn.Query<ProfileRF>("SELECT * FROM RF_PROFILE WHERE (RF_PROFILE.CLASS = @CLASS AND RF_PROFILE.STATUS = 'Active') LIMIT @START_FROM,@NUM_GET", filter);
                         outputFilter.ToList();
                         foreach (ProfileRF item in outputFilter)
                         {

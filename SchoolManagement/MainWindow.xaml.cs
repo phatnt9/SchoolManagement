@@ -2,8 +2,11 @@
 using SchoolManagement.Form;
 using SchoolManagement.Model;
 using System;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,9 +17,30 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Data;
+using System.Globalization;
 
 namespace SchoolManagement
 {
+    public class ImportButtonEnableConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool canEnable = true;
+            if (!value.ToString().Equals("Ready"))
+            {
+                return false;
+            }
+            return canEnable;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -28,9 +52,12 @@ namespace SchoolManagement
         private int lastSec = DateTime.Now.Second;
         public MainWindowModel mainModel;
 
+
+        
         public MainWindow()
         {
             InitializeComponent();
+            CloseModifyDataGrid();
             Constant.mainWindowPointer = this;
             Loaded += MainWindow_Loaded;
             Closed += MainWindow_Closed;
@@ -188,11 +215,8 @@ namespace SchoolManagement
 
                    Dispatcher.Invoke((Action)(() =>
                    {
-                       //rtb_log.Document.Blocks.Add(new Paragraph(new Run(message)));
                        rtb_log.AppendText(message);
                        rtb_log.AppendText("\u2028");
-                       //logConsole.Focus();
-                       //Constant.mainWindowPointer.WriteLog("Dong xlWorkbook.Close();");
                        rtb_log.ScrollToEnd();
                    }))
 
@@ -229,7 +253,7 @@ namespace SchoolManagement
             });
         }
 
-        private void Btn_sendNewListPerson_Click(object sender, RoutedEventArgs e)
+        private void Btn_SyncAllDevice_Click(object sender, RoutedEventArgs e)
         {
             //Update profile for each device
             Task.Run(() =>
@@ -238,7 +262,7 @@ namespace SchoolManagement
                 {
                     foreach (DeviceRF device in mainModel.deviceRFList)
                     {
-                        device.deviceItem.sendProfile(device.IP);
+                        device.deviceItem.sendProfile(device.IP, DeviceItem.SERVERRESPONSE.RESP_PROFILE_ADD, new List<ProfileRF>());
                     }
                 }
                 catch (Exception ex)
@@ -290,25 +314,11 @@ namespace SchoolManagement
             }
         }
 
-        //private void Btn_fakeTimeCheck_Click(object sender, RoutedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        ProfileRF profileRF = AccountListData.SelectedItem as ProfileRF;
-        //        SqliteDataAccess.SaveTimeCheckRF(profileRF.PIN_NO, DateTime.Now);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        logFile.Error(ex.Message);
-        //        Constant.mainWindowPointer.WriteLog(ex.Message);
-        //    }
-        //}
-
         private void Btn_delete_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (AccountListData.SelectedItem == null)
+                if (AccountListLocal.SelectedItem == null)
                 {
                     return;
                 }
@@ -319,7 +329,7 @@ namespace SchoolManagement
                         MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes
                         )
                 {
-                    ProfileRF profileRF = AccountListData.SelectedItem as ProfileRF;
+                    ProfileRF profileRF = AccountListLocal.SelectedItem as ProfileRF;
                     if (profileRF != null)
                     {
                         SqliteDataAccess.RemoveProfileRF(profileRF);
@@ -385,9 +395,9 @@ namespace SchoolManagement
         {
             try
             {
-                if (AccountListData.SelectedItem != null)
+                if (AccountListLocal.SelectedItem != null)
                 {
-                    ProfileRF temp = AccountListData.SelectedItem as ProfileRF;
+                    ProfileRF temp = AccountListLocal.SelectedItem as ProfileRF;
 
                     if (temp.STATUS == "Active")
                     {
@@ -520,7 +530,7 @@ namespace SchoolManagement
         {
             try
             {
-                if (AccountListData.SelectedItem == null)
+                if (AccountListLocal.SelectedItem == null)
                 {
                     return;
                 }
@@ -529,7 +539,7 @@ namespace SchoolManagement
                     editProfile.IsEnabled = false;
                     MainTabControl.IsEnabled = false;
                     save.Visibility = Visibility.Visible;
-                    AccountListData.IsEnabled = false;
+                    AccountListLocal.IsEnabled = false;
                 }
             }
             catch (Exception ex)
@@ -642,7 +652,7 @@ namespace SchoolManagement
                         editProfile.IsEnabled = true;
                         MainTabControl.IsEnabled = true;
                         save.Visibility = Visibility.Hidden;
-                        AccountListData.IsEnabled = true;
+                        AccountListLocal.IsEnabled = true;
                     }
                     catch (Exception ex)
                     {
@@ -651,7 +661,7 @@ namespace SchoolManagement
                         editProfile.IsEnabled = true;
                         MainTabControl.IsEnabled = true;
                         save.Visibility = Visibility.Hidden;
-                        AccountListData.IsEnabled = true;
+                        AccountListLocal.IsEnabled = true;
                     }
                 }
             }
@@ -662,7 +672,7 @@ namespace SchoolManagement
                 editProfile.IsEnabled = true;
                 MainTabControl.IsEnabled = true;
                 save.Visibility = Visibility.Hidden;
-                AccountListData.IsEnabled = true;
+                AccountListLocal.IsEnabled = true;
             }
         }
 
@@ -722,6 +732,7 @@ namespace SchoolManagement
         {
         }
 
+        [STAThread]
         private void Export_Click(object sender, RoutedEventArgs e)
         {
             mainModel.ExportAllProfile();
@@ -769,20 +780,6 @@ namespace SchoolManagement
             mainModel.ExportListTimeCheck();
         }
 
-        private void Btn_sync_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                DeviceRF deviceRF = (sender as System.Windows.Controls.Button).DataContext as DeviceRF;
-                deviceRF.deviceItem.sendProfile(deviceRF.IP);
-            }
-            catch (Exception ex)
-            {
-                logFile.Error(ex.Message);
-                Constant.mainWindowPointer.WriteLog(ex.Message);
-            }
-        }
-
         private void EditDevice_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -816,9 +813,9 @@ namespace SchoolManagement
 
         private void ChangeProfileStatus_Click(object sender, RoutedEventArgs e)
         {
-            if (AccountListData.SelectedItem != null)
+            if (AccountListLocal.SelectedItem != null)
             {
-                ProfileRF profileRF = AccountListData.SelectedItem as ProfileRF;
+                ProfileRF profileRF = AccountListLocal.SelectedItem as ProfileRF;
                 if (profileRF.STATUS == "Active")
                 {
                     //Suspend profile
@@ -873,14 +870,14 @@ namespace SchoolManagement
             }
         }
 
-        private void SyncDeviceRF_Click(object sender, RoutedEventArgs e)
+        private void Btn_SyncDevice_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (DeviceRFListData.SelectedItem != null)
                 {
                     DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
-                    deviceRF.deviceItem.sendProfile(deviceRF.IP);
+                    deviceRF.deviceItem.sendProfile(deviceRF.IP, DeviceItem.SERVERRESPONSE.RESP_PROFILE_ADD, new List<ProfileRF>());
                 }
             }
             catch (Exception ex)
@@ -1034,151 +1031,165 @@ namespace SchoolManagement
         {
             mainModel.CheckSuspendAllProfile();
         }
-    }
 
-    public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
-    {
-        // Indicates whether the current thread is processing work items.
-        [ThreadStatic]
-        private static bool _currentThreadIsProcessingItems;
-
-        // The list of tasks to be executed
-        private readonly LinkedList<Task> _tasks = new LinkedList<Task>(); // protected by lock(_tasks)
-
-        // The maximum concurrency level allowed by this scheduler.
-        private readonly int _maxDegreeOfParallelism;
-
-        // Indicates whether the scheduler is currently processing work items.
-        private int _delegatesQueuedOrRunning = 0;
-
-        // Creates a new instance with the specified degree of parallelism.
-        public LimitedConcurrencyLevelTaskScheduler(int maxDegreeOfParallelism)
+        private void ReplaceNewDatabase_Click(object sender, RoutedEventArgs e)
         {
-            if (maxDegreeOfParallelism < 1)
+            if (System.Windows.Forms.MessageBox.Show
+                        (
+                        String.Format("Do you want to replace the database, all data will be lost?", "Profile"),
+                        "Warning", MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes
+                        )
             {
-                throw new ArgumentOutOfRangeException("maxDegreeOfParallelism");
-            }
-
-            _maxDegreeOfParallelism = maxDegreeOfParallelism;
-        }
-
-        // Queues a task to the scheduler.
-        protected sealed override void QueueTask(Task task)
-        {
-            // Add the task to the list of tasks to be processed.  If there aren't enough
-            // delegates currently queued or running to process tasks, schedule another.
-            lock (_tasks)
-            {
-                _tasks.AddLast(task);
-                if (_delegatesQueuedOrRunning < _maxDegreeOfParallelism)
-                {
-                    ++_delegatesQueuedOrRunning;
-                    NotifyThreadPoolOfPendingWork();
-                }
-            }
-        }
-
-        // Inform the ThreadPool that there's work to be executed for this scheduler.
-        private void NotifyThreadPoolOfPendingWork()
-        {
-            ThreadPool.UnsafeQueueUserWorkItem(_ =>
-            {
-                // Note that the current thread is now processing work items.
-                // This is necessary to enable inlining of tasks into this thread.
-                _currentThreadIsProcessingItems = true;
                 try
                 {
-                    // Process all available items in the queue.
-                    while (true)
+                    if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK"))
                     {
-                        Task item;
-                        lock (_tasks)
-                        {
-                            // When there are no more items to be processed,
-                            // note that we're done processing, and get out.
-                            if (_tasks.Count == 0)
-                            {
-                                --_delegatesQueuedOrRunning;
-                                break;
-                            }
-
-                            // Get the next item from the queue
-                            item = _tasks.First.Value;
-                            _tasks.RemoveFirst();
-                        }
-
-                        // Execute the task we pulled out of the queue
-                        base.TryExecuteTask(item);
+                        Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK");
                     }
+                    if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image"))
+                    {
+                        Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image");
+                    }
+                    if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB"))
+                    {
+                        Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB");
+                        //if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\"+ "Datastore.db"))
+                        //{
+                        //    File.Copy(Environment.CurrentDirectory + @"\Datastore.db",
+                        //        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\Datastore.db",
+                        //        true);
+                        //}
+                    }
+                    File.Copy(Environment.CurrentDirectory + @"\Datastore.db",
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\Datastore.db", true);
+
                 }
-                // We're done processing items on the current thread
-                finally { _currentThreadIsProcessingItems = false; }
-            }, null);
+                catch (Exception ex)
+                {
+                    logFile.Error(ex.Message);
+                    Constant.mainWindowPointer.WriteLog(ex.Message);
+                }
+            }
         }
 
-        // Attempts to execute the specified task on the current thread.
-        protected sealed override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
+        private void OpenFolderDatabase_Click(object sender, RoutedEventArgs e)
         {
-            // If this thread isn't already processing a task, we don't support inlining
-            if (!_currentThreadIsProcessingItems)
-            {
-                return false;
-            }
+            //Process.Start(@"c:\windows\");
+            Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK");
+        }
 
-            // If the task was previously queued, remove it from the queue
-            if (taskWasPreviouslyQueued)
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            ProfileRF selectedProfile = (sender as System.Windows.Controls.CheckBox).DataContext as ProfileRF;
+            Console.WriteLine("sacascas");
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (!IsModifyDataGridOpen())
             {
-                // Try to run the task.
-                if (TryDequeue(task))
-                {
-                    return base.TryExecuteTask(task);
-                }
-                else
-                {
-                    return false;
-                }
+                OpenModifyDataGrid();
             }
             else
             {
-                return base.TryExecuteTask(task);
+                CloseModifyDataGrid();
             }
+            
         }
 
-        // Attempt to remove a previously scheduled task from the scheduler.
-        protected sealed override bool TryDequeue(Task task)
+        public bool IsModifyDataGridOpen()
         {
-            lock (_tasks)
+            if (DGV_ModilyList.Width == new GridLength(0))
             {
-                return _tasks.Remove(task);
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 
-        // Gets the maximum concurrency level supported by this scheduler.
-        public sealed override int MaximumConcurrencyLevel => _maxDegreeOfParallelism;
-
-        // Gets an enumerable of the tasks currently scheduled on this scheduler.
-        protected sealed override IEnumerable<Task> GetScheduledTasks()
+        public void OpenModifyDataGrid()
         {
-            bool lockTaken = false;
             try
             {
-                Monitor.TryEnter(_tasks, ref lockTaken);
-                if (lockTaken)
-                {
-                    return _tasks;
-                }
-                else
-                {
-                    throw new NotSupportedException();
-                }
+                
+            }
+            catch
+            {
+
             }
             finally
             {
-                if (lockTaken)
-                {
-                    Monitor.Exit(_tasks);
-                }
+                DGV_ModilyList.Width = new GridLength(1, GridUnitType.Star);
+                StackButton_ProfileAddUpdateRemove.Height = new GridLength(35);
+                LocalList_ButtonsGrid.Height = SendList_ButtonsGrid.Height = new GridLength(30);
             }
         }
+
+        public void CloseModifyDataGrid()
+        {
+            try
+            {
+                mainModel.ProfilesToSend.Clear();
+                
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                //DGV_ProfileList.Width = new GridLength(1, GridUnitType.Star);
+                DGV_ModilyList.Width = LocalList_ButtonsGrid.Height = SendList_ButtonsGrid.Height = StackButton_ProfileAddUpdateRemove.Height = new GridLength(0);
+            }
+        }
+
+        private void Btn_MoveToModifyList_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (ProfileRF item in AccountListLocal.SelectedItems)
+            {
+                mainModel.AddProfileToModifyList(item);
+            }
+        }
+
+        private void Btn_ModifyList_SendToAdd_Click(object sender, RoutedEventArgs e)
+        {
+            mainModel.SendProfileToDevices(MainWindowModel.Mode.ADD);
+        }
+
+        private void Btn_ModifyList_SendToUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            mainModel.SendProfileToDevices(MainWindowModel.Mode.UPDATE);
+        }
+
+        private void Btn_ModifyList_SendToRemove_Click(object sender, RoutedEventArgs e)
+        {
+            mainModel.SendProfileToDevices(MainWindowModel.Mode.DELETE);
+        }
+        private void Btn_DeselectedProfile_Click(object sender, RoutedEventArgs e)
+        {
+            mainModel.DeselectedProfileFromProfilesToSend(AccountListToSend.SelectedItems);
+        }
+        private void Btn_Test_Click_1(object sender, RoutedEventArgs e)
+        {
+            //var jsonSettings = new JsonSerializerSettings();
+            //jsonSettings.DateFormatString = "yyyy-MM-dd";
+            ////jsonSettings.DateFormatString = "dd/MM/yyyy";
+            //var data = JsonConvert.SerializeObject(mainModel.ProfilesToSend, jsonSettings);
+            //Console.WriteLine(data);
+
+
+
+
+
+
+
+
+
+        }
     }
+
+    
 }

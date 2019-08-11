@@ -198,6 +198,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\default.png" />
     <None Include="Resources\loginBackground.jpg" />
     <None Include="Resources\view-refresh.png" />
     <None Include="Resources\server_go.png" />

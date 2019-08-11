@@ -1,6 +1,7 @@
 ﻿using SchoolManagement.DTO;
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
@@ -134,6 +135,9 @@ namespace SchoolManagement.Form
                     if (xlRange.Cells[i, 2] != null && xlRange.Cells[i, 2].Value2 != null)
                     {
                         ProfileRF profile = new ProfileRF();
+                        DateTime ngayThang = DateTime.MinValue;
+                        double dateD;
+
                         if (xlRange.Cells[i, 8] != null && xlRange.Cells[i, 8].Value2 != null)
                         {
                             serialId = xlRange.Cells[i, 8].Value2.ToString();
@@ -144,14 +148,35 @@ namespace SchoolManagement.Form
                         profile.GENDER = (xlRange.Cells[i, 4].Value2.ToString() == "Male" ? Constant.Gender.Male : Constant.Gender.Female);
 
                         string sDate = xlRange.Cells[i, 5].Value2.ToString();
-                        double date = double.Parse(sDate);
-                        var dateTime = DateTime.FromOADate(date).ToString("MMMM dd, yyyy");
-                        profile.DOB = DateTime.Parse(dateTime);
+                        
+                        try
+                        {
+                            ngayThang = DateTime.MinValue;
+                            ngayThang = DateTime.ParseExact(sDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        }
+                        catch
+                        {
+                            dateD = double.Parse(sDate);
+                            var dateTime = DateTime.FromOADate(dateD).ToString("MMMM dd, yyyy");
+                            ngayThang = DateTime.Parse(dateTime);
+                        }
+                        profile.DOB = ngayThang;
+
 
                         sDate = xlRange.Cells[i, 6].Value2.ToString();
-                        date = double.Parse(sDate);
-                        dateTime = DateTime.FromOADate(date).ToString("MMMM dd, yyyy");
-                        profile.DISU = DateTime.Parse(dateTime);
+
+                        try
+                        {
+                            ngayThang = DateTime.MinValue;
+                            ngayThang = DateTime.ParseExact(sDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        }
+                        catch
+                        {
+                            dateD = double.Parse(sDate);
+                            var dateTime = DateTime.FromOADate(dateD).ToString("MMMM dd, yyyy");
+                            ngayThang = DateTime.Parse(dateTime);
+                        }
+                        profile.DISU = ngayThang;
 
                         profile.IMAGE = xlRange.Cells[i, 7].Value2.ToString();
                         ImportProfileImage(importFileFolder, profile.IMAGE);
@@ -165,9 +190,18 @@ namespace SchoolManagement.Form
                         if (profile.STATUS == "Suspended")
                         {
                             sDate = xlRange.Cells[i, 14].Value2.ToString();
-                            date = double.Parse(sDate);
-                            dateTime = DateTime.FromOADate(date).ToString("MMMM dd, yyyy");
-                            profile.LOCK_DATE = DateTime.Parse(dateTime);
+                            try
+                            {
+                                ngayThang = DateTime.MinValue;
+                                ngayThang = DateTime.ParseExact(sDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                            }
+                            catch
+                            {
+                                dateD = double.Parse(sDate);
+                                var dateTime = DateTime.FromOADate(dateD).ToString("MMMM dd, yyyy");
+                                ngayThang = DateTime.Parse(dateTime);
+                            }
+                            profile.LOCK_DATE = ngayThang;
                         }
                         else
                         {
@@ -188,9 +222,18 @@ namespace SchoolManagement.Form
                             if (xlRange.Cells[i, 15].Value2 != null)
                             {
                                 sDate = xlRange.Cells[i, 15].Value2.ToString();
-                                date = double.Parse(sDate);
-                                dateTime = DateTime.FromOADate(date).ToString("MMMM dd, yyyy");
-                                profile.DATE_TO_LOCK = DateTime.Parse(dateTime);
+                                try
+                                {
+                                    ngayThang = DateTime.MinValue;
+                                    ngayThang = DateTime.ParseExact(sDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                }
+                                catch
+                                {
+                                    dateD = double.Parse(sDate);
+                                    var dateTime = DateTime.FromOADate(dateD).ToString("MMMM dd, yyyy");
+                                    ngayThang = DateTime.Parse(dateTime);
+                                }
+                                profile.DATE_TO_LOCK = ngayThang;
                             }
                             else
                             {

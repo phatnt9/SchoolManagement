@@ -9,6 +9,8 @@ namespace SchoolManagement.DTO
         private string _accountClass;
         private string _gate;
         private string _status;
+        private string _uploadPercent;
+        private DeviceItem _deviceItem;
         private string _connectStatus;
 
         public int ID { get => _id; set => _id = value; }
@@ -17,8 +19,8 @@ namespace SchoolManagement.DTO
         public string CLASS { get => _accountClass; set => _accountClass = value; }
         public string STATUS { get => _status; set => _status = value; }
         public string connectStatus { get => _connectStatus; set { _connectStatus = value; RaisePropertyChanged("connectStatus"); } }
-
-        public DeviceItem deviceItem;
+        public string uploadPercent { get => _uploadPercent; set { _uploadPercent = value; RaisePropertyChanged("uploadPercent"); } }
+        public DeviceItem deviceItem { get => _deviceItem; set { _deviceItem = value; RaisePropertyChanged("deviceItem"); } }
 
         public System.Timers.Timer checkAliveDevice;
 

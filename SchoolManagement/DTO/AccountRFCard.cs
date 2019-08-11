@@ -2,7 +2,7 @@
 
 namespace SchoolManagement.DTO
 {
-    public class ProfileRF
+    public class ProfileRF : NotifyUIBase
     {
         private int _id;
         private string _pinNo;

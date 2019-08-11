@@ -27,7 +27,9 @@ namespace SchoolManagement.Model
 
         public enum CLIENTCMD
         {
-            REQUEST_PROFILE = 110,
+            REQUEST_PROFILE_ADD = 110,
+            REQUEST_PROFILE_UPDATE = 111,
+            REQUEST_PROFILE_DELETE = 112,
             REQUEST_REG_PERSON_LIST = 120,
             REQUEST_SYNC_TIME = 130,
             CONFIRM_SENT_PROFILE_SUCCESS = 310,
@@ -36,7 +38,9 @@ namespace SchoolManagement.Model
         public enum SERVERRESPONSE
         {
             RESP_SUCCESS = 200,
-            RESP_PROFILE_SUCCESS = 210,
+            RESP_PROFILE_ADD = 210,
+            RESP_PROFILE_UPDATE = 211,
+            RESP_PROFILE_DELETE = 212,
             RESP_SYNC_TIME = 220,
             RESP_SEND_NEWPROFILE_IMMEDIATELY = 240,
             RESP_REQ_PERSONLIST_IMMEDIATELY = 250,
@@ -100,25 +104,49 @@ namespace SchoolManagement.Model
         public void ReqImgHandler(Message message)
         {
             StandardString standard = (StandardString)message;
+            dynamic stuff = JObject.Parse(standard.data);
+            string ip = stuff.ip;
+            string name = stuff.img;
+            int percent = (int)stuff.percent;
+
+            Constant.mainWindowPointer.WriteLog("["+ip+"]"+"  Image loaded: "+ percent+"%"); //  [192.168.105.5]  Image loaded: 40%
+
             SensorCompressedImage imgdata = new SensorCompressedImage();
+
             try
             {
                 //  BitmapImage img = new System.Windows.Media.Imaging.BitmapImage(new Uri(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + standard.data));
-                Image img = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + standard.data);
-                imgdata.format = standard.data;
-                
-          //      imgdata.header = standard.data;
-                imgdata.data = ImageToByte(img);
-                if (webSocket.IsAlive)
+                String pathImg = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + name;
+                if (!File.Exists(pathImg))
                 {
-                    this.Publish(publishdataImg, imgdata);
+                    //string test = @"pack://siteoforigin:,,,/Resources/" + "default.png";
+                    //Image img = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + "default.png");
+                    //Image img = null;
+                    imgdata.format = "NoImage";
+                    //imgdata.data = ImageToByte(img);
+                    if (webSocket.IsAlive)
+                    {
+                        this.Publish(publishdataImg, imgdata);
+                    }
+                }
+                else
+                {
+                    Image img = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + name);
+                    Image resizeImg = new Bitmap(img, new Size(300, 400));
+                    imgdata.format = name;
+                    imgdata.data = ImageToByte(resizeImg);
+                    if (webSocket.IsAlive)
+                    {
+                        this.Publish(publishdataImg, imgdata);
+                    }
                 }
             }
             catch
             {
-                Image img = Image.FromFile(@"pack://siteoforigin:,,,/Resources/" + "images.png");
-                imgdata.format = "png";
-                imgdata.data = ImageToByte(img);
+                //Image img = Image.FromFile(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + "default.png");
+                //Image img = null;
+                imgdata.format = "NoImage";
+                //imgdata.data = ImageToByte(img);
                 if (webSocket.IsAlive)
                 {
                     this.Publish(publishdataImg, imgdata);
@@ -148,7 +176,7 @@ namespace SchoolManagement.Model
             int subscription = this.Subscribe("ClientPublish", "std_msgs/String", DataHandler);
         }
 
-        public void sendProfile(string ip)
+        public void sendProfile(string ip, SERVERRESPONSE serverRes, List<ProfileRF> listProfileToSend)
         {
             if (webSocket != null)
             {
@@ -159,9 +187,15 @@ namespace SchoolManagement.Model
                         if (statusProfile != STATUSPROFILE.Updating)
                         {
                             JStringProfile Jprofile = new JStringProfile();
-                            Jprofile.status = (int)SERVERRESPONSE.RESP_PROFILE_SUCCESS;
+                            Jprofile.status = (int)serverRes;
                             Jprofile.data = mainWindowModel.GetListSerialId(ip);
-                            string dataResp = JsonConvert.SerializeObject(Jprofile).ToString();
+                            if (listProfileToSend.Count > 0)
+                            {
+                                Jprofile.data = listProfileToSend;
+                            }
+                            var jsonSettings = new JsonSerializerSettings();
+                            jsonSettings.DateFormatString = "yyyy-MM-dd";
+                            string dataResp = JsonConvert.SerializeObject(Jprofile, jsonSettings);
                             StandardString info = new StandardString();
                             info.data = dataResp;
                             statusProfile = STATUSPROFILE.Updating;
@@ -171,7 +205,7 @@ namespace SchoolManagement.Model
                             new Thread((MainWindowModel) =>
                             {
                                 int cntTimeOut = 0;
-                                while (cntTimeOut++ < 10)
+                                while (cntTimeOut++ < 40)
                                 {
                                     if (OnFlagStatusClient.OnConfirmProfileSuccess)
                                     {
@@ -215,7 +249,7 @@ namespace SchoolManagement.Model
             try
             {
                 JStringProfile Jprofile = new JStringProfile();
-                Jprofile.status = (int)SERVERRESPONSE.RESP_PROFILE_SUCCESS;
+                Jprofile.status = (int)SERVERRESPONSE.RESP_PROFILE_ADD;
                 Jprofile.data = mainWindowModel.GetListSerialId(ip);
                 string dataResp = JsonConvert.SerializeObject(Jprofile).ToString();
                 StandardString info = new StandardString();
@@ -256,8 +290,18 @@ namespace SchoolManagement.Model
                 var ip = (string)stuff["ip"];
                 switch (status)
                 {
-                    case CLIENTCMD.REQUEST_PROFILE:
-                        sendProfile(ip);
+                    case CLIENTCMD.REQUEST_PROFILE_ADD:
+                        sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_ADD, new List<ProfileRF>());
+                        //dynamic product=new JOb
+                        break;
+
+                    case CLIENTCMD.REQUEST_PROFILE_UPDATE:
+                        sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_UPDATE, new List<ProfileRF>());
+                        //dynamic product=new JOb
+                        break;
+
+                    case CLIENTCMD.REQUEST_PROFILE_DELETE:
+                        sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_DELETE, new List<ProfileRF>());
                         //dynamic product=new JOb
                         break;
 

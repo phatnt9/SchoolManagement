@@ -110,6 +110,11 @@
                                           Content="Security"
                                           FontFamily="Corsiva" />
                             </Grid>
+                            <Grid Grid.Row="3" Grid.Column="1">
+                                <CheckBox Name="cb_admin"
+                                          Content="Admin"
+                                          FontFamily="Corsiva" />
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
