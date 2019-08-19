@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using SchoolManagement.Model;
+using SchoolManagement.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,15 +10,32 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Forms;
-
+using System.Globalization;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace SchoolManagement.ViewModel
 {
+    public class ImportButtonEnableConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool canEnable = true;
+            if (!value.ToString().Equals("Ready"))
+            {
+                return false;
+            }
+            return canEnable;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
     public class MainWindowModel:ViewModelBase
     {
-        private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         public enum Mode
         {
             ADD = 0,
@@ -34,47 +52,52 @@ namespace SchoolManagement.ViewModel
             Cancelled,
             Error,
         }
-
+        public System.Timers.Timer timerSyncTimeSheet;
+        //public System.Timers.Timer SuspendStudentCheckTimer;
+        private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BackgroundWorker worker;
         private bool _isModifyDataGridOpen;
-        public bool IsModifyDataGridOpen { get => _isModifyDataGridOpen; set { _isModifyDataGridOpen = value; RaisePropertyChanged("IsModifyDataGridOpen"); } }
         private AppStatus _pgbStatus;
+        public bool IsModifyDataGridOpen { get => _isModifyDataGridOpen; set { _isModifyDataGridOpen = value; RaisePropertyChanged("IsModifyDataGridOpen"); } }
         public AppStatus PgbStatus { get => _pgbStatus; set { _pgbStatus = value; RaisePropertyChanged("PgbStatus"); } }
 
-        public System.Timers.Timer timerSyncTimeSheet;
-        public System.Timers.Timer SuspendStudentCheckTimer;
-        public MainWindow mainW;
+        
 
-        public ListCollectionView groupedAccount { get; private set; }
-        public ListCollectionView groupedTimeCheck { get; private set; }
-        public ListCollectionView groupedDevice { get; private set; }
+        //public ListCollectionView groupedAccount { get; private set; }
+        //public ListCollectionView groupedTimeCheck { get; private set; }
+        //public ListCollectionView groupedDevice { get; private set; }
 
         private ObservableCollection<Profile> _profilestosend = new ObservableCollection<Profile>();
+        private ObservableCollection<Profile> _profiles = new ObservableCollection<Profile>();
+        private ObservableCollection<TimeRecord> _timeChecks = new ObservableCollection<TimeRecord>();
+        private ObservableCollection<Device> _devices = new ObservableCollection<Device>();
         public ObservableCollection<Profile> ProfilesToSend => _profilestosend;
-        //public ICollectionView collectionView;
+        public ObservableCollection<Profile> Profiles => _profiles;
+        public ObservableCollection<TimeRecord> TimeChecks => _timeChecks;
+        public ObservableCollection<Device> Devices => _devices;
 
-        public List<Profile> accountRFList;
-        public List<Device> deviceRFList;
-        public List<TimeRecord> timeCheckRFList;
+        //public List<Profile> accountRFList;
+        //public List<Device> deviceRFList;
+        //public List<TimeRecord> timeCheckRFList;
 
         //public DeviceItem deviceItem;
-        public MainWindowModel(MainWindow mainW)
+        public MainWindowModel()
         {
-            this.mainW = mainW;
             PgbStatus = AppStatus.Ready;
+
             timerSyncTimeSheet = new System.Timers.Timer();
             timerSyncTimeSheet.Interval = Properties.Settings.Default.RequestTimeCheckInterval;
             timerSyncTimeSheet.Elapsed += TimerSyncTimeSheet_Elapsed;
             timerSyncTimeSheet.AutoReset = true;
             timerSyncTimeSheet.Start();
 
-            accountRFList = new List<Profile>();
-            deviceRFList = new List<Device>();
-            timeCheckRFList = new List<TimeRecord>();
+            //accountRFList = new List<Profile>();
+            //deviceRFList = new List<Device>();
+            //timeCheckRFList = new List<TimeRecord>();
 
-            groupedAccount = (ListCollectionView)CollectionViewSource.GetDefaultView(accountRFList);
-            groupedTimeCheck = (ListCollectionView)CollectionViewSource.GetDefaultView(timeCheckRFList);
-            groupedDevice = (ListCollectionView)CollectionViewSource.GetDefaultView(deviceRFList);
+            //groupedAccount = (ListCollectionView)CollectionViewSource.GetDefaultView(accountRFList);
+            //groupedTimeCheck = (ListCollectionView)CollectionViewSource.GetDefaultView(timeCheckRFList);
+            //groupedDevice = (ListCollectionView)CollectionViewSource.GetDefaultView(deviceRFList);
             //collectionView = CollectionViewSource.GetDefaultView(ProfilesToSend);
 
             //DeviceItem deviceItem = new DeviceItem(this);
@@ -90,7 +113,7 @@ namespace SchoolManagement.ViewModel
             {
                 try
                 {
-                    foreach (Device device in deviceRFList)
+                    foreach (Device device in Devices)
                     {
                         device.deviceItem.requestPersonListImmediately();
                     }
@@ -135,23 +158,12 @@ namespace SchoolManagement.ViewModel
         {
             try
             {
-                accountRFList.Clear();
+                Profiles.Clear();
                 List<Profile> profileList = SqliteDataAccess.LoadProfileRF(name, pinno, adno);
                 foreach (Profile item in profileList)
                 {
-                    accountRFList.Add(item);
+                    Profiles.Add(item);
                 }
-                if (groupedAccount.IsEditingItem)
-                {
-                    groupedAccount.CommitEdit();
-                }
-
-                if (groupedAccount.IsAddingNew)
-                {
-                    groupedAccount.CommitNew();
-                }
-
-                groupedAccount.Refresh();
             }
             catch (Exception ex)
             {
@@ -160,7 +172,7 @@ namespace SchoolManagement.ViewModel
             }
         }
 
-        public bool CheckExistDeviceRF(List<Device> list, Device deviceRF)
+        public bool CheckExistDeviceRF(ObservableCollection<Device> list, Device deviceRF)
         {
             foreach (Device item in list)
             {
@@ -177,49 +189,34 @@ namespace SchoolManagement.ViewModel
 
         public void ReloadListDeviceRFDGV(Device removedDevice = null)
         {
-            mainW.DeviceRFListData.Dispatcher.BeginInvoke(new ThreadStart(() =>
-             {
-                 try
-                 {
-                     List<Device> deviceList = SqliteDataAccess.LoadDeviceRF();
-                     foreach (Device item in deviceList)
-                     {
-                         if (!CheckExistDeviceRF(deviceRFList, item))
-                         {
-                             item.deviceItem = new DeviceItem(this);
-                             deviceRFList.Add(item);
-                         }
-                     }
-                     if (removedDevice != null)
-                     {
-                         deviceRFList.Remove(removedDevice);
-                     }
-
-                     if (groupedDevice.IsEditingItem)
-                     {
-                         groupedDevice.CommitEdit();
-                     }
-
-                     if (groupedDevice.IsAddingNew)
-                     {
-                         groupedDevice.CommitNew();
-                     }
-
-                     groupedDevice.Refresh();
-                 }
-                 catch (Exception ex)
-                 {
-                     logFile.Error(ex.Message);
-                     Constant.mainWindowPointer.WriteLog(ex.Message);
-                 }
-             }));
+            try
+            {
+                List<Device> deviceList = SqliteDataAccess.LoadDeviceRF();
+                foreach (Device item in deviceList)
+                {
+                    if (!CheckExistDeviceRF(Devices, item))
+                    {
+                        item.deviceItem = new DeviceItem(this);
+                        Devices.Add(item);
+                    }
+                }
+                if (removedDevice != null)
+                {
+                    Devices.Remove(removedDevice);
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+            }
         }
 
         public void ReloadListTimeCheckDGV(int tabIndex)
         {
             try
             {
-                timeCheckRFList.Clear();
+                TimeChecks.Clear();
                 switch (tabIndex)
                 {
                     case 0: // tab profile
@@ -279,18 +276,6 @@ namespace SchoolManagement.ViewModel
                         break;
                     }
                 }
-
-                if (groupedTimeCheck.IsEditingItem)
-                {
-                    groupedTimeCheck.CommitEdit();
-                }
-
-                if (groupedTimeCheck.IsAddingNew)
-                {
-                    groupedTimeCheck.CommitNew();
-                }
-
-                groupedTimeCheck.Refresh();
             }
             catch (Exception ex)
             {
@@ -376,7 +361,7 @@ namespace SchoolManagement.ViewModel
 
         public void ExportListTimeCheck()
         {
-            if (timeCheckRFList.Count <= 0)
+            if (TimeChecks.Count <= 0)
             {
                 return;
             }
@@ -404,22 +389,22 @@ namespace SchoolManagement.ViewModel
                     int cellRowIndex = 2;
                     int cellColumnIndex = 1;
 
-                    for (int i = 0; i < timeCheckRFList.Count; i++)
+                    for (int i = 0; i < TimeChecks.Count; i++)
                     {
                         for (int j = 0; j < 6; j++)
                         {
                             if (j == 0)//No
                             { worksheet.Cells[cellRowIndex, cellColumnIndex] = i + 1; }
                             if (j == 1)//PIN No.
-                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = timeCheckRFList[i].PIN_NO; }
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = TimeChecks[i].PIN_NO; }
                             if (j == 2)//Adno
-                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = timeCheckRFList[i].ADNO; }
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = TimeChecks[i].ADNO; }
                             if (j == 3)//Name
-                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = timeCheckRFList[i].NAME; }
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = TimeChecks[i].NAME; }
                             if (j == 4)//Gate
-                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = timeCheckRFList[i].GATE.ToString(); }
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = TimeChecks[i].GATE.ToString(); }
                             if (j == 5)//Time
-                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = timeCheckRFList[i].TIME_CHECK.ToString("MM/dd/yyyy HH:mm:ss"); }
+                            { worksheet.Cells[cellRowIndex, cellColumnIndex] = TimeChecks[i].TIME_CHECK.ToString("MM/dd/yyyy HH:mm:ss"); }
 
                             cellColumnIndex++;
                         }
@@ -471,7 +456,7 @@ namespace SchoolManagement.ViewModel
         {
             if (ProfilesToSend.Count > 0)
             {
-                foreach (Device device in deviceRFList)
+                foreach (Device device in Devices)
                 {
                     List<Profile> listProfileToSendForThisDevice = new List<Profile>();
                     foreach (Profile profileToSend in ProfilesToSend)

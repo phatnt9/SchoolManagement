@@ -1,8 +1,6 @@
 ﻿using SchoolManagement.Model;
-using SchoolManagement.View;
 using SchoolManagement.ViewModel;
 using System;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -17,28 +15,11 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Data;
-using System.Globalization;
+using SchoolManagement.View;
 
 namespace SchoolManagement
 {
-    public class ImportButtonEnableConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            bool canEnable = true;
-            if (!value.ToString().Equals("Ready"))
-            {
-                return false;
-            }
-            return canEnable;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    
 
 
     /// <summary>
@@ -60,8 +41,6 @@ namespace SchoolManagement
             Constant.mainWindowPointer = this;
             Loaded += MainWindow_Loaded;
             Closed += MainWindow_Closed;
-            mainModel = new MainWindowModel(this);
-            DataContext = mainModel;
             mainModel.CloseModifyDataGrid();
             System.Timers.Timer SuspendStudentCheckTimer = new System.Timers.Timer(30000); //One second, (use less to add precision, use more to consume less processor time
             lastHour = DateTime.Now.Hour;
