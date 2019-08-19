@@ -5,7 +5,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 
-namespace SchoolManagement.DTO
+namespace SchoolManagement.Model
 {
     public class SqliteDataAccess
     {
@@ -19,16 +19,16 @@ namespace SchoolManagement.DTO
             return test;
         }
 
-        public static List<DeviceRF> LoadDeviceRF()
+        public static List<Device> LoadDeviceRF()
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
-                var output = cnn.Query<DeviceRF>("SELECT * FROM RF_DEVICE", new DynamicParameters());
+                var output = cnn.Query<Device>("SELECT * FROM RF_DEVICE", new DynamicParameters());
                 return output.ToList();
             }
         }
 
-        public static List<ProfileRF> LoadProfileRF(string name = "", string pinno = "", string adno = "")
+        public static List<Profile> LoadProfileRF(string name = "", string pinno = "", string adno = "")
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -37,7 +37,7 @@ namespace SchoolManagement.DTO
                 p.Add("@PIN_NO", "%" + pinno + "%");
                 p.Add("@ADNO", "%" + adno + "%");
 
-                var output = cnn.Query<ProfileRF>("SELECT * FROM RF_PROFILE WHERE ((NAME LIKE (@NAME)) AND (PIN_NO LIKE (@PIN_NO)) AND (ADNO LIKE (@ADNO)))", p);
+                var output = cnn.Query<Profile>("SELECT * FROM RF_PROFILE WHERE ((NAME LIKE (@NAME)) AND (PIN_NO LIKE (@PIN_NO)) AND (ADNO LIKE (@ADNO)))", p);
                 return output.ToList();
             }
         }
@@ -119,7 +119,7 @@ namespace SchoolManagement.DTO
             }
         }
 
-        public static void SaveDeviceRF(DeviceRF deviceRF)
+        public static void SaveDeviceRF(Device deviceRF)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -127,7 +127,7 @@ namespace SchoolManagement.DTO
             }
         }
 
-        public static void SaveProfileRF(ProfileRF accountRFCard)
+        public static void SaveProfileRF(Profile accountRFCard)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -186,7 +186,7 @@ namespace SchoolManagement.DTO
             }
         }
 
-        public static void UpdateProfileRF(ProfileRF profileRF, string Status = null)
+        public static void UpdateProfileRF(Profile profileRF, string Status = null)
         {
             try
             {
@@ -217,7 +217,7 @@ namespace SchoolManagement.DTO
             }
         }
 
-        public static void RemoveDeviceRF(DeviceRF deviceRF)
+        public static void RemoveDeviceRF(Device deviceRF)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -225,7 +225,7 @@ namespace SchoolManagement.DTO
             }
         }
 
-        public static void RemoveProfileRF(ProfileRF profileRF)
+        public static void RemoveProfileRF(Profile profileRF)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -234,7 +234,7 @@ namespace SchoolManagement.DTO
             }
         }
 
-        public static List<ProfileRF> LoadListProfileRFSerialId(string ip)
+        public static List<Profile> LoadListProfileRFSerialId(string ip)
         {
             using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
             {
@@ -243,7 +243,7 @@ namespace SchoolManagement.DTO
 
                 var output = cnn.Query<string>("SELECT CLASS FROM RF_DEVICE WHERE (RF_DEVICE.IP = @IP)", p);
                 string[] classArray = output.ToList()[0].Split(',');
-                List<ProfileRF> returnProfileList = new List<ProfileRF>();
+                List<Profile> returnProfileList = new List<Profile>();
                 foreach (string Class in classArray)
                 {
                     if (Class != "")
@@ -252,9 +252,9 @@ namespace SchoolManagement.DTO
                         filter.Add("@CLASS", Class);
                         filter.Add("@START_FROM", Class);
                         filter.Add("@NUM_GET", Class);
-                        var outputFilter = cnn.Query<ProfileRF>("SELECT * FROM RF_PROFILE WHERE (RF_PROFILE.CLASS = @CLASS AND RF_PROFILE.STATUS = 'Active') LIMIT @START_FROM,@NUM_GET", filter);
+                        var outputFilter = cnn.Query<Profile>("SELECT * FROM RF_PROFILE WHERE (RF_PROFILE.CLASS = @CLASS AND RF_PROFILE.STATUS = 'Active') LIMIT @START_FROM,@NUM_GET", filter);
                         outputFilter.ToList();
-                        foreach (ProfileRF item in outputFilter)
+                        foreach (Profile item in outputFilter)
                         {
                             returnProfileList.Add(item);
                         }

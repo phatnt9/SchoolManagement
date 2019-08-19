@@ -1,19 +1,20 @@
 ﻿using Microsoft.Office.Interop.Excel;
-using SchoolManagement.DTO;
+using SchoolManagement.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Forms;
 
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace SchoolManagement.Model
+namespace SchoolManagement.ViewModel
 {
-    public class MainWindowModel : NotifyUIBase
+    public class MainWindowModel:ViewModelBase
     {
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -35,6 +36,8 @@ namespace SchoolManagement.Model
         }
 
         private BackgroundWorker worker;
+        private bool _isModifyDataGridOpen;
+        public bool IsModifyDataGridOpen { get => _isModifyDataGridOpen; set { _isModifyDataGridOpen = value; RaisePropertyChanged("IsModifyDataGridOpen"); } }
         private AppStatus _pgbStatus;
         public AppStatus PgbStatus { get => _pgbStatus; set { _pgbStatus = value; RaisePropertyChanged("PgbStatus"); } }
 
@@ -46,12 +49,12 @@ namespace SchoolManagement.Model
         public ListCollectionView groupedTimeCheck { get; private set; }
         public ListCollectionView groupedDevice { get; private set; }
 
-        private ObservableCollection<ProfileRF> _profilestosend = new ObservableCollection<ProfileRF>();
-        public ObservableCollection<ProfileRF> ProfilesToSend => _profilestosend;
+        private ObservableCollection<Profile> _profilestosend = new ObservableCollection<Profile>();
+        public ObservableCollection<Profile> ProfilesToSend => _profilestosend;
         //public ICollectionView collectionView;
 
-        public List<ProfileRF> accountRFList;
-        public List<DeviceRF> deviceRFList;
+        public List<Profile> accountRFList;
+        public List<Device> deviceRFList;
         public List<TimeRecord> timeCheckRFList;
 
         //public DeviceItem deviceItem;
@@ -65,8 +68,8 @@ namespace SchoolManagement.Model
             timerSyncTimeSheet.AutoReset = true;
             timerSyncTimeSheet.Start();
 
-            accountRFList = new List<ProfileRF>();
-            deviceRFList = new List<DeviceRF>();
+            accountRFList = new List<Profile>();
+            deviceRFList = new List<Device>();
             timeCheckRFList = new List<TimeRecord>();
 
             groupedAccount = (ListCollectionView)CollectionViewSource.GetDefaultView(accountRFList);
@@ -78,27 +81,7 @@ namespace SchoolManagement.Model
             //deviceItem.Start("ws://192.168.1.121:9090");
         }
 
-        public void UpdateProcessedImage(string ip, int percent)
-        {
-            foreach (DeviceRF device in deviceRFList)
-            {
-                if (device.IP == ip)
-                {
-                    try
-                    {
-                        device.uploadPercent = percent + "%";
-                        //if (percent >=99)
-                        //{
-                        //    device.uploadPercent = "Finished!";
-                        //}
-                    }
-                    catch
-                    {
-                        device.uploadPercent = "Failed";
-                    }
-                }
-            }
-        }
+        
 
         private void TimerSyncTimeSheet_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
@@ -107,7 +90,7 @@ namespace SchoolManagement.Model
             {
                 try
                 {
-                    foreach (DeviceRF device in deviceRFList)
+                    foreach (Device device in deviceRFList)
                     {
                         device.deviceItem.requestPersonListImmediately();
                     }
@@ -125,10 +108,10 @@ namespace SchoolManagement.Model
             try
             {
                 //Get all Profile
-                List<ProfileRF> profiles = SqliteDataAccess.LoadProfileRF();
+                List<Profile> profiles = SqliteDataAccess.LoadProfileRF();
 
                 //Check status --> check date to Suspend --> Suspend(active)
-                foreach (ProfileRF profile in profiles)
+                foreach (Profile profile in profiles)
                 {
                     if (profile.STATUS == "Active" && profile.CHECK_DATE_TO_LOCK == true)
                     {
@@ -153,8 +136,8 @@ namespace SchoolManagement.Model
             try
             {
                 accountRFList.Clear();
-                List<ProfileRF> profileList = SqliteDataAccess.LoadProfileRF(name, pinno, adno);
-                foreach (ProfileRF item in profileList)
+                List<Profile> profileList = SqliteDataAccess.LoadProfileRF(name, pinno, adno);
+                foreach (Profile item in profileList)
                 {
                     accountRFList.Add(item);
                 }
@@ -177,9 +160,9 @@ namespace SchoolManagement.Model
             }
         }
 
-        public bool CheckExistDeviceRF(List<DeviceRF> list, DeviceRF deviceRF)
+        public bool CheckExistDeviceRF(List<Device> list, Device deviceRF)
         {
-            foreach (DeviceRF item in list)
+            foreach (Device item in list)
             {
                 if ((item.IP == deviceRF.IP))
                 {
@@ -192,14 +175,14 @@ namespace SchoolManagement.Model
             return false;
         }
 
-        public void ReloadListDeviceRFDGV(DeviceRF removedDevice = null)
+        public void ReloadListDeviceRFDGV(Device removedDevice = null)
         {
             mainW.DeviceRFListData.Dispatcher.BeginInvoke(new ThreadStart(() =>
              {
                  try
                  {
-                     List<DeviceRF> deviceList = SqliteDataAccess.LoadDeviceRF();
-                     foreach (DeviceRF item in deviceList)
+                     List<Device> deviceList = SqliteDataAccess.LoadDeviceRF();
+                     foreach (Device item in deviceList)
                      {
                          if (!CheckExistDeviceRF(deviceRFList, item))
                          {
@@ -243,7 +226,7 @@ namespace SchoolManagement.Model
                     {
                         if (mainW.AccountListLocal.SelectedItem != null && mainW.dp_search.SelectedDate != null)
                         {
-                            ProfileRF profileRF = mainW.AccountListLocal.SelectedItem as ProfileRF;
+                            Profile profileRF = mainW.AccountListLocal.SelectedItem as Profile;
                             DateTime date = (DateTime)mainW.dp_search.SelectedDate;
                             List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF(profileRF.PIN_NO, date);
                             foreach (TimeRecord item in timeList)
@@ -255,7 +238,7 @@ namespace SchoolManagement.Model
                         {
                             if (mainW.AccountListLocal.SelectedItem != null)
                             {
-                                ProfileRF profileRF = mainW.AccountListLocal.SelectedItem as ProfileRF;
+                                Profile profileRF = mainW.AccountListLocal.SelectedItem as Profile;
                                 List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF(profileRF.PIN_NO, DateTime.MinValue);
                                 foreach (TimeRecord item in timeList)
                                 {
@@ -269,7 +252,7 @@ namespace SchoolManagement.Model
                     {
                         if (mainW.DeviceRFListData.SelectedItem != null && mainW.dp_search.SelectedDate != null)
                         {
-                            DeviceRF deviceRF = mainW.DeviceRFListData.SelectedItem as DeviceRF;
+                            Device deviceRF = mainW.DeviceRFListData.SelectedItem as Device;
                             DateTime date = (DateTime)mainW.dp_search.SelectedDate;
                             List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF("", date, deviceRF.IP);
                             foreach (TimeRecord item in timeList)
@@ -281,7 +264,7 @@ namespace SchoolManagement.Model
                         {
                             if (mainW.DeviceRFListData.SelectedItem != null)
                             {
-                                DeviceRF deviceRF = mainW.DeviceRFListData.SelectedItem as DeviceRF;
+                                Device deviceRF = mainW.DeviceRFListData.SelectedItem as Device;
                                 List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF("", DateTime.MinValue, deviceRF.IP);
                                 foreach (TimeRecord item in timeList)
                                 {
@@ -343,22 +326,22 @@ namespace SchoolManagement.Model
             }
         }
 
-        public List<ProfileRF> GetListSerialId(string ip)
+        public List<Profile> GetListSerialId(string ip)
         {
             try
             {
-                List<ProfileRF> returnSerialId = SqliteDataAccess.LoadListProfileRFSerialId(ip);
+                List<Profile> returnSerialId = SqliteDataAccess.LoadListProfileRFSerialId(ip);
                 return returnSerialId;
             }
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
-                return new List<ProfileRF>();
+                return new List<Profile>();
             }
         }
 
-        public void AddProfileToModifyList(ProfileRF item)
+        public void AddProfileToModifyList(Profile item)
         {
             if (!CheckIfProfileContainInModifyList(item))
             {
@@ -379,9 +362,9 @@ namespace SchoolManagement.Model
             }
         }
 
-        public bool CheckIfProfileContainInModifyList(ProfileRF item)
+        public bool CheckIfProfileContainInModifyList(Profile item)
         {
-            foreach (ProfileRF profile in ProfilesToSend)
+            foreach (Profile profile in ProfilesToSend)
             {
                 if (profile.PIN_NO == item.PIN_NO)
                 {
@@ -465,12 +448,12 @@ namespace SchoolManagement.Model
 
         public void DeselectedProfileFromProfilesToSend(System.Collections.IList profiles)
         {
-            List<ProfileRF> tempList = new List<ProfileRF>();
-            foreach (ProfileRF item in profiles)
+            List<Profile> tempList = new List<Profile>();
+            foreach (Profile item in profiles)
             {
                 tempList.Add(item);
             }
-            foreach (ProfileRF item in tempList)
+            foreach (Profile item in tempList)
             {
                 for (int indexOfProfile = 0; indexOfProfile < ProfilesToSend.Count; indexOfProfile++)
                 {
@@ -488,10 +471,10 @@ namespace SchoolManagement.Model
         {
             if (ProfilesToSend.Count > 0)
             {
-                foreach (DeviceRF device in deviceRFList)
+                foreach (Device device in deviceRFList)
                 {
-                    List<ProfileRF> listProfileToSendForThisDevice = new List<ProfileRF>();
-                    foreach (ProfileRF profileToSend in ProfilesToSend)
+                    List<Profile> listProfileToSendForThisDevice = new List<Profile>();
+                    foreach (Profile profileToSend in ProfilesToSend)
                     {
                         if (device.CLASS.Contains(profileToSend.CLASS))
                         {
@@ -530,6 +513,48 @@ namespace SchoolManagement.Model
                     }
                 }
                 ProfilesToSend.Clear();
+            }
+        }
+
+        public void OpenModifyDataGrid()
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                if (!IsModifyDataGridOpen)
+                {
+                    mainW.DGV_ModilyList.Width = new GridLength(1, GridUnitType.Star);
+                    mainW.LocalList_ButtonsGrid.Height = mainW.SendList_ButtonsGrid.Height = new GridLength(30);
+                    mainW.StackButton_ProfileAddUpdateRemove.Height = new GridLength(35);
+                    IsModifyDataGridOpen = true;
+                }
+            }
+        }
+
+        public void CloseModifyDataGrid()
+        {
+            try
+            {
+                ProfilesToSend.Clear();
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                IsModifyDataGridOpen = false;
+                mainW.DGV_ModilyList.Width =
+                    mainW.LocalList_ButtonsGrid.Height =
+                    mainW.SendList_ButtonsGrid.Height =
+                    mainW.StackButton_ProfileAddUpdateRemove.Height = new GridLength(0);
             }
         }
 
@@ -611,7 +636,7 @@ namespace SchoolManagement.Model
                 int cellRowIndex = 2;
                 int cellColumnIndex = 1;
 
-                List<ProfileRF> profileList = SqliteDataAccess.LoadProfileRF();
+                List<Profile> profileList = SqliteDataAccess.LoadProfileRF();
 
                 for (int i = 0; i < profileList.Count; i++)
                 {

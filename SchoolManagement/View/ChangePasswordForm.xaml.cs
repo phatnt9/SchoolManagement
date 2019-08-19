@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace SchoolManagement.Form
+namespace SchoolManagement.View
 {
     /// <summary>
     /// Interaction logic for ChangePasswordForm.xaml

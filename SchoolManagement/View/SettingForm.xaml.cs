@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 
-namespace SchoolManagement.Form
+namespace SchoolManagement.View
 {
     /// <summary>
     /// Interaction logic for SettingForm.xaml

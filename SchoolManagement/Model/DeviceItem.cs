@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SchoolManagement.Communication;
-using SchoolManagement.DTO;
+using SchoolManagement.Model;
+using SchoolManagement.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -51,7 +52,7 @@ namespace SchoolManagement.Model
         public class JStringProfile
         {
             public int status;
-            public List<ProfileRF> data;
+            public List<Profile> data;
         }
 
         public class JStringClient
@@ -176,7 +177,7 @@ namespace SchoolManagement.Model
             int subscription = this.Subscribe("ClientPublish", "std_msgs/String", DataHandler);
         }
 
-        public void sendProfile(string ip, SERVERRESPONSE serverRes, List<ProfileRF> listProfileToSend)
+        public void sendProfile(string ip, SERVERRESPONSE serverRes, List<Profile> listProfileToSend)
         {
             if (webSocket != null)
             {
@@ -188,10 +189,14 @@ namespace SchoolManagement.Model
                         {
                             JStringProfile Jprofile = new JStringProfile();
                             Jprofile.status = (int)serverRes;
-                            Jprofile.data = mainWindowModel.GetListSerialId(ip);
+                            
                             if (listProfileToSend.Count > 0)
                             {
                                 Jprofile.data = listProfileToSend;
+                            }
+                            else
+                            {
+                                Jprofile.data = mainWindowModel.GetListSerialId(ip);
                             }
                             var jsonSettings = new JsonSerializerSettings();
                             jsonSettings.DateFormatString = "yyyy-MM-dd";
@@ -205,7 +210,7 @@ namespace SchoolManagement.Model
                             new Thread((MainWindowModel) =>
                             {
                                 int cntTimeOut = 0;
-                                while (cntTimeOut++ < 40)
+                                while (cntTimeOut++ < 60)
                                 {
                                     if (OnFlagStatusClient.OnConfirmProfileSuccess)
                                     {
@@ -291,17 +296,17 @@ namespace SchoolManagement.Model
                 switch (status)
                 {
                     case CLIENTCMD.REQUEST_PROFILE_ADD:
-                        sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_ADD, new List<ProfileRF>());
+                        sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_ADD, new List<Profile>());
                         //dynamic product=new JOb
                         break;
 
                     case CLIENTCMD.REQUEST_PROFILE_UPDATE:
-                        sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_UPDATE, new List<ProfileRF>());
+                        sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_UPDATE, new List<Profile>());
                         //dynamic product=new JOb
                         break;
 
                     case CLIENTCMD.REQUEST_PROFILE_DELETE:
-                        sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_DELETE, new List<ProfileRF>());
+                        sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_DELETE, new List<Profile>());
                         //dynamic product=new JOb
                         break;
 

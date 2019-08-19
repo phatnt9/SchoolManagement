@@ -1,6 +1,6 @@
-﻿using SchoolManagement.DTO;
-using SchoolManagement.Form;
-using SchoolManagement.Model;
+﻿using SchoolManagement.Model;
+using SchoolManagement.View;
+using SchoolManagement.ViewModel;
 using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -47,7 +47,7 @@ namespace SchoolManagement
     public partial class MainWindow : Window
     {
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        
         private int lastHour = DateTime.Now.Hour;
         private int lastSec = DateTime.Now.Second;
         public MainWindowModel mainModel;
@@ -57,13 +57,12 @@ namespace SchoolManagement
         public MainWindow()
         {
             InitializeComponent();
-            CloseModifyDataGrid();
             Constant.mainWindowPointer = this;
             Loaded += MainWindow_Loaded;
             Closed += MainWindow_Closed;
             mainModel = new MainWindowModel(this);
             DataContext = mainModel;
-
+            mainModel.CloseModifyDataGrid();
             System.Timers.Timer SuspendStudentCheckTimer = new System.Timers.Timer(30000); //One second, (use less to add precision, use more to consume less processor time
             lastHour = DateTime.Now.Hour;
             lastSec = DateTime.Now.Second;
@@ -240,7 +239,7 @@ namespace SchoolManagement
             {
                 try
                 {
-                    foreach (DeviceRF device in mainModel.deviceRFList)
+                    foreach (Device device in mainModel.deviceRFList)
                     {
                         device.deviceItem.requestPersonListImmediately();
                     }
@@ -260,9 +259,9 @@ namespace SchoolManagement
             {
                 try
                 {
-                    foreach (DeviceRF device in mainModel.deviceRFList)
+                    foreach (Device device in mainModel.deviceRFList)
                     {
-                        device.deviceItem.sendProfile(device.IP, DeviceItem.SERVERRESPONSE.RESP_PROFILE_ADD, new List<ProfileRF>());
+                        device.deviceItem.sendProfile(device.IP, DeviceItem.SERVERRESPONSE.RESP_PROFILE_ADD, new List<Profile>());
                     }
                 }
                 catch (Exception ex)
@@ -329,7 +328,7 @@ namespace SchoolManagement
                         MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes
                         )
                 {
-                    ProfileRF profileRF = AccountListLocal.SelectedItem as ProfileRF;
+                    Profile profileRF = AccountListLocal.SelectedItem as Profile;
                     if (profileRF != null)
                     {
                         SqliteDataAccess.RemoveProfileRF(profileRF);
@@ -348,7 +347,7 @@ namespace SchoolManagement
         {
             try
             {
-                DeviceRF deviceRF = (sender as System.Windows.Controls.Button).DataContext as DeviceRF;
+                Device deviceRF = (sender as System.Windows.Controls.Button).DataContext as Device;
                 deviceRF.deviceItem.Start("ws://" + deviceRF.IP + ":9090");
             }
             catch (Exception ex)
@@ -362,7 +361,7 @@ namespace SchoolManagement
         {
             try
             {
-                DeviceRF deviceRF = (sender as System.Windows.Controls.Button).DataContext as DeviceRF;
+                Device deviceRF = (sender as System.Windows.Controls.Button).DataContext as Device;
                 deviceRF.deviceItem.Dispose();
             }
             catch (Exception ex)
@@ -376,10 +375,10 @@ namespace SchoolManagement
         {
             try
             {
-                DeviceRF deviceRF = (sender as System.Windows.Controls.Button).DataContext as DeviceRF;
-                List<ProfileRF> test = SqliteDataAccess.LoadListProfileRFSerialId(deviceRF.IP);
+                Device deviceRF = (sender as System.Windows.Controls.Button).DataContext as Device;
+                List<Profile> test = SqliteDataAccess.LoadListProfileRFSerialId(deviceRF.IP);
                 Console.WriteLine("============");
-                foreach (ProfileRF item in test)
+                foreach (Profile item in test)
                 {
                     Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(item));
                 }
@@ -397,7 +396,7 @@ namespace SchoolManagement
             {
                 if (AccountListLocal.SelectedItem != null)
                 {
-                    ProfileRF temp = AccountListLocal.SelectedItem as ProfileRF;
+                    Profile temp = AccountListLocal.SelectedItem as Profile;
 
                     if (temp.STATUS == "Active")
                     {
@@ -614,7 +613,7 @@ namespace SchoolManagement
 
                 if (DisableEditProfile())
                 {
-                    ProfileRF person = new ProfileRF();
+                    Profile person = new Profile();
                     person.PIN_NO = tb_serialID.Text;
                     person.ADNO = tb_adno.Text;
                     person.NAME = tb_name.Text;
@@ -712,7 +711,7 @@ namespace SchoolManagement
                         MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes
                         )
                 {
-                    DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
+                    Device deviceRF = DeviceRFListData.SelectedItem as Device;
                     if (deviceRF != null)
                     {
                         deviceRF.deviceItem.Dispose();
@@ -786,7 +785,7 @@ namespace SchoolManagement
             {
                 if (DeviceRFListData.SelectedItem != null)
                 {
-                    DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
+                    Device deviceRF = DeviceRFListData.SelectedItem as Device;
                     AddDeviceRFForm frm = new AddDeviceRFForm(this, deviceRF);
                     frm.ShowDialog();
                     mainModel.ReloadListDeviceRFDGV();
@@ -801,7 +800,7 @@ namespace SchoolManagement
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            foreach (DeviceRF item in mainModel.deviceRFList)
+            foreach (Device item in mainModel.deviceRFList)
             {
                 if (item.deviceItem != null)
                 {
@@ -815,7 +814,7 @@ namespace SchoolManagement
         {
             if (AccountListLocal.SelectedItem != null)
             {
-                ProfileRF profileRF = AccountListLocal.SelectedItem as ProfileRF;
+                Profile profileRF = AccountListLocal.SelectedItem as Profile;
                 if (profileRF.STATUS == "Active")
                 {
                     //Suspend profile
@@ -847,7 +846,7 @@ namespace SchoolManagement
                     return;
                 }
                 CheckSelectedDeviceRF();
-                DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
+                Device deviceRF = DeviceRFListData.SelectedItem as Device;
                 if (lb_controlDevice.Content.ToString().Equals("Start") || lb_controlDevice.Content.ToString().Equals("Connect"))
                 {
                     deviceRF.deviceItem.Start("ws://" + deviceRF.IP + ":9090");
@@ -876,8 +875,8 @@ namespace SchoolManagement
             {
                 if (DeviceRFListData.SelectedItem != null)
                 {
-                    DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
-                    deviceRF.deviceItem.sendProfile(deviceRF.IP, DeviceItem.SERVERRESPONSE.RESP_PROFILE_ADD, new List<ProfileRF>());
+                    Device deviceRF = DeviceRFListData.SelectedItem as Device;
+                    deviceRF.deviceItem.sendProfile(deviceRF.IP, DeviceItem.SERVERRESPONSE.RESP_PROFILE_ADD, new List<Profile>());
                 }
             }
             catch (Exception ex)
@@ -898,7 +897,7 @@ namespace SchoolManagement
             {
                 if (DeviceRFListData.SelectedItem != null)
                 {
-                    DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
+                    Device deviceRF = DeviceRFListData.SelectedItem as Device;
                     if (deviceRF.deviceItem != null)
                     {
                         if (deviceRF.deviceItem.webSocket != null)
@@ -1081,74 +1080,26 @@ namespace SchoolManagement
 
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
-            ProfileRF selectedProfile = (sender as System.Windows.Controls.CheckBox).DataContext as ProfileRF;
+            Profile selectedProfile = (sender as System.Windows.Controls.CheckBox).DataContext as Profile;
             Console.WriteLine("sacascas");
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (!IsModifyDataGridOpen())
+            if (!mainModel.IsModifyDataGridOpen)
             {
-                OpenModifyDataGrid();
+                mainModel.OpenModifyDataGrid();
             }
             else
             {
-                CloseModifyDataGrid();
-            }
-            
-        }
-
-        public bool IsModifyDataGridOpen()
-        {
-            if (DGV_ModilyList.Width == new GridLength(0))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
+                mainModel.CloseModifyDataGrid();
             }
         }
-
-        public void OpenModifyDataGrid()
-        {
-            try
-            {
-                
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                DGV_ModilyList.Width = new GridLength(1, GridUnitType.Star);
-                StackButton_ProfileAddUpdateRemove.Height = new GridLength(35);
-                LocalList_ButtonsGrid.Height = SendList_ButtonsGrid.Height = new GridLength(30);
-            }
-        }
-
-        public void CloseModifyDataGrid()
-        {
-            try
-            {
-                mainModel.ProfilesToSend.Clear();
-                
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                //DGV_ProfileList.Width = new GridLength(1, GridUnitType.Star);
-                DGV_ModilyList.Width = LocalList_ButtonsGrid.Height = SendList_ButtonsGrid.Height = StackButton_ProfileAddUpdateRemove.Height = new GridLength(0);
-            }
-        }
+        
 
         private void Btn_MoveToModifyList_Click(object sender, RoutedEventArgs e)
         {
-            foreach (ProfileRF item in AccountListLocal.SelectedItems)
+            foreach (Profile item in AccountListLocal.SelectedItems)
             {
                 mainModel.AddProfileToModifyList(item);
             }
@@ -1179,15 +1130,6 @@ namespace SchoolManagement
             ////jsonSettings.DateFormatString = "dd/MM/yyyy";
             //var data = JsonConvert.SerializeObject(mainModel.ProfilesToSend, jsonSettings);
             //Console.WriteLine(data);
-
-
-
-
-
-
-
-
-
         }
     }
 

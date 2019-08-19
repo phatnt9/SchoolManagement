@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace SchoolManagement.Form
+namespace SchoolManagement.View
 {
     /// <summary>
     /// Interaction logic for About.xaml

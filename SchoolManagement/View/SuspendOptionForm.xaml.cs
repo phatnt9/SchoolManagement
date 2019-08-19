@@ -1,8 +1,8 @@
-﻿using SchoolManagement.DTO;
+﻿using SchoolManagement.Model;
 using System;
 using System.Windows;
 
-namespace SchoolManagement.Form
+namespace SchoolManagement.View
 {
     /// <summary>
     /// Interaction logic for SuspendOptionForm.xaml
@@ -12,9 +12,9 @@ namespace SchoolManagement.Form
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private MainWindow mainW;
-        private ProfileRF profileRF;
+        private Profile profileRF;
 
-        public SuspendOptionForm(MainWindow mainW, ProfileRF profileRF)
+        public SuspendOptionForm(MainWindow mainW, Profile profileRF)
         {
             this.mainW = mainW;
             this.profileRF = profileRF;

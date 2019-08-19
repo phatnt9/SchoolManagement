@@ -1,4 +1,4 @@
-﻿using SchoolManagement.DTO;
+﻿using SchoolManagement.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -74,7 +74,7 @@ namespace SchoolManagement
             }
         }
 
-        public static Dictionary<string, ProfileRF> listData = new Dictionary<string, ProfileRF>();
+        public static Dictionary<string, Profile> listData = new Dictionary<string, Profile>();
 
         //public enum AccountClass
         //{

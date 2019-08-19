@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 
-namespace SchoolManagement.Form
+namespace SchoolManagement.View
 {
     /// <summary>
     /// Interaction logic for ScanForm.xaml

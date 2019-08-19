@@ -1,4 +1,4 @@
-﻿using SchoolManagement.DTO;
+﻿using SchoolManagement.Model;
 using System;
 using System.ComponentModel;
 using System.Globalization;
@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace SchoolManagement.Form
+namespace SchoolManagement.View
 {
     /// <summary>
     /// Interaction logic for ImportForm.xaml
@@ -134,7 +134,7 @@ namespace SchoolManagement.Form
                 {
                     if (xlRange.Cells[i, 2] != null && xlRange.Cells[i, 2].Value2 != null)
                     {
-                        ProfileRF profile = new ProfileRF();
+                        Profile profile = new Profile();
                         DateTime ngayThang = DateTime.MinValue;
                         double dateD;
 

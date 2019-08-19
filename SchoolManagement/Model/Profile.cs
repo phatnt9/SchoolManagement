@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SchoolManagement.DTO
+namespace SchoolManagement.Model
 {
-    public class ProfileRF : NotifyUIBase
+    public class Profile
     {
         private int _id;
         private string _pinNo;

@@ -96,35 +96,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Form\About.xaml">
+    <Page Include="View\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Form\AddDeviceRFForm.xaml">
+    <Page Include="View\AddDeviceRFForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Form\ChangePasswordForm.xaml">
+    <Page Include="View\ChangePasswordForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Form\ImportForm.xaml">
+    <Page Include="View\ImportForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Form\RegisterForm.xaml">
+    <Page Include="View\RegisterForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Form\ScanForm.xaml">
+    <Page Include="View\ScanForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Form\SettingForm.xaml">
+    <Page Include="View\SettingForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Form\SuspendOptionForm.xaml">
+    <Page Include="View\SuspendOptionForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -144,35 +144,34 @@
     <Compile Include="Communication\RosSocket.cs" />
     <Compile Include="Communication\SerialCOM.cs" />
     <Compile Include="Constant.cs" />
-    <Compile Include="DTO\DeviceRF.cs" />
-    <Compile Include="DTO\CheckinData.cs" />
-    <Compile Include="DTO\AccountRFCard.cs" />
-    <Compile Include="DTO\NotifyUIBase.cs" />
-    <Compile Include="DTO\SqliteDataAccess.cs" />
-    <Compile Include="DTO\TimeCheckRF.cs" />
-    <Compile Include="DTO\TimeRecord.cs" />
-    <Compile Include="Form\About.xaml.cs">
+    <Compile Include="Model\Device.cs" />
+    <Compile Include="Model\CheckinData.cs" />
+    <Compile Include="Model\Profile.cs" />
+    <Compile Include="Model\SqliteDataAccess.cs" />
+    <Compile Include="Model\TimeRecord.cs" />
+    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form\AddDeviceRFForm.xaml.cs">
+    <Compile Include="View\AddDeviceRFForm.xaml.cs">
       <DependentUpon>AddDeviceRFForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form\ChangePasswordForm.xaml.cs">
+    <Compile Include="View\ChangePasswordForm.xaml.cs">
       <DependentUpon>ChangePasswordForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form\ImportForm.xaml.cs">
+    <Compile Include="View\ImportForm.xaml.cs">
       <DependentUpon>ImportForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form\RegisterForm.xaml.cs">
+    <Compile Include="View\RegisterForm.xaml.cs">
       <DependentUpon>RegisterForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form\ScanForm.xaml.cs">
+    <Compile Include="View\ScanForm.xaml.cs">
       <DependentUpon>ScanForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form\SettingForm.xaml.cs">
+    <Compile Include="View\SettingForm.xaml.cs">
       <DependentUpon>SettingForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Form\SuspendOptionForm.xaml.cs">
+    <Compile Include="View\SuspendOptionForm.xaml.cs">
       <DependentUpon>SuspendOptionForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
@@ -182,9 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\DeviceItem.cs" />
-    <Compile Include="Model\MainWindowModel.cs" />
-    <Compile Include="MyScheduler.cs" />
-    <Compile Include="Model\SchedulerService.cs" />
+    <Compile Include="ViewModel\MainWindowModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

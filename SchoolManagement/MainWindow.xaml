@@ -556,7 +556,8 @@
                                                             Padding="0"
                                                             HorizontalContentAlignment="Center"
                                                             VerticalContentAlignment="Center"
-                                                            Click="Btn_MoveToModifyList_Click">
+                                                            Click="Btn_MoveToModifyList_Click"
+                                                            IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
                                                             Select
                                                         </Button>
                                                     </StackPanel>
@@ -710,7 +711,8 @@
                                                                 Padding="0"
                                                                 HorizontalContentAlignment="Center"
                                                                 VerticalContentAlignment="Center"
-                                                                Click="Btn_DeselectedProfile_Click">
+                                                                Click="Btn_DeselectedProfile_Click"
+                                                                IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
                                                                 Deselected
                                                             </Button>
                                                         </DockPanel>
@@ -743,7 +745,8 @@
                                                     Padding="0"
                                                     HorizontalContentAlignment="Center"
                                                     VerticalContentAlignment="Center"
-                                                    Click="Btn_ModifyList_SendToAdd_Click">
+                                                    Click="Btn_ModifyList_SendToAdd_Click"
+                                                    IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
                                                     Add
                                                 </Button>
                                                 <Button
@@ -754,7 +757,8 @@
                                                     Padding="0"
                                                     HorizontalContentAlignment="Center"
                                                     VerticalContentAlignment="Center"
-                                                    Click="Btn_ModifyList_SendToUpdate_Click">
+                                                    Click="Btn_ModifyList_SendToUpdate_Click"
+                                                    IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
                                                     Update
                                                 </Button>
                                                 <Button
@@ -765,7 +769,8 @@
                                                     Padding="0"
                                                     HorizontalContentAlignment="Center"
                                                     VerticalContentAlignment="Center"
-                                                    Click="Btn_ModifyList_SendToRemove_Click">
+                                                    Click="Btn_ModifyList_SendToRemove_Click"
+                                                    IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
                                                     Remove
                                                 </Button>
                                                 <!--<Button

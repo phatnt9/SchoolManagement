@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SchoolManagement.DTO
+namespace SchoolManagement.Model
 {
     public class TimeRecord
     {

@@ -1,9 +1,9 @@
-﻿using SchoolManagement.DTO;
+﻿using SchoolManagement.Model;
 using System;
 using System.Windows;
 using System.Windows.Forms;
 
-namespace SchoolManagement.Form
+namespace SchoolManagement.View
 {
     /// <summary>
     /// Interaction logic for AddDeviceRFForm.xaml
@@ -20,7 +20,7 @@ namespace SchoolManagement.Form
             this.mainW = mainW;
         }
 
-        public AddDeviceRFForm(MainWindow mainW, DeviceRF deviceRF)
+        public AddDeviceRFForm(MainWindow mainW, Device deviceRF)
         {
             InitializeComponent();
             this.mainW = mainW;
@@ -74,7 +74,7 @@ namespace SchoolManagement.Form
                     return;
                 }
 
-                DeviceRF deviceRF = new DeviceRF();
+                Device deviceRF = new Device();
                 deviceRF.GATE = tb_gate.Text;
                 deviceRF.IP = tb_ip.Text;
                 deviceRF.STATUS = "Pending";

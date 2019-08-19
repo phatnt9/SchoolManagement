@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SchoolManagement.Communication;
-using SchoolManagement.DTO;
+using SchoolManagement.Model;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 
-namespace SchoolManagement.Form
+namespace SchoolManagement.View
 {
     /// <summary>
     /// Interaction logic for RegisterForm.xaml
@@ -191,7 +191,7 @@ namespace SchoolManagement.Form
         {
             try
             {
-                ProfileRF person = new ProfileRF();
+                Profile person = new Profile();
                 person.PIN_NO = tb_serialId.Text;
                 person.NAME = tb_name.Text;
                 person.CLASS = cbb_class.Text;
