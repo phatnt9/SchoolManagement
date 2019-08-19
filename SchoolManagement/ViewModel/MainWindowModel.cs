@@ -53,55 +53,57 @@ namespace SchoolManagement.ViewModel
             Error,
         }
         public System.Timers.Timer timerSyncTimeSheet;
-        //public System.Timers.Timer SuspendStudentCheckTimer;
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BackgroundWorker worker;
+
         private bool _isModifyDataGridOpen;
-        private AppStatus _pgbStatus;
         public bool IsModifyDataGridOpen { get => _isModifyDataGridOpen; set { _isModifyDataGridOpen = value; RaisePropertyChanged("IsModifyDataGridOpen"); } }
+
+        private AppStatus _pgbStatus;
         public AppStatus PgbStatus { get => _pgbStatus; set { _pgbStatus = value; RaisePropertyChanged("PgbStatus"); } }
 
         
 
-        //public ListCollectionView groupedAccount { get; private set; }
-        //public ListCollectionView groupedTimeCheck { get; private set; }
-        //public ListCollectionView groupedDevice { get; private set; }
-
-        private ObservableCollection<Profile> _profilestosend = new ObservableCollection<Profile>();
         private ObservableCollection<Profile> _profiles = new ObservableCollection<Profile>();
-        private ObservableCollection<TimeRecord> _timeChecks = new ObservableCollection<TimeRecord>();
+        private ObservableCollection<Profile> _profilestosend = new ObservableCollection<Profile>();
         private ObservableCollection<Device> _devices = new ObservableCollection<Device>();
-        public ObservableCollection<Profile> ProfilesToSend => _profilestosend;
+        private ObservableCollection<TimeRecord> _timeChecks = new ObservableCollection<TimeRecord>();
         public ObservableCollection<Profile> Profiles => _profiles;
-        public ObservableCollection<TimeRecord> TimeChecks => _timeChecks;
+        public ObservableCollection<Profile> ProfilesToSend => _profilestosend;
         public ObservableCollection<Device> Devices => _devices;
+        public ObservableCollection<TimeRecord> TimeChecks => _timeChecks;
 
-        //public List<Profile> accountRFList;
-        //public List<Device> deviceRFList;
-        //public List<TimeRecord> timeCheckRFList;
+
+
+        //public ObservableCollection<Profile> _profiles { get; set; }
+
+        //public ICollectionView Profiles
+        //{
+        //    get { return CollectionViewSource.GetDefaultView(_profiles); }
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
 
         //public DeviceItem deviceItem;
         public MainWindowModel()
         {
             PgbStatus = AppStatus.Ready;
-
+            ReloadListProfileRFDGV();
             timerSyncTimeSheet = new System.Timers.Timer();
             timerSyncTimeSheet.Interval = Properties.Settings.Default.RequestTimeCheckInterval;
             timerSyncTimeSheet.Elapsed += TimerSyncTimeSheet_Elapsed;
             timerSyncTimeSheet.AutoReset = true;
             timerSyncTimeSheet.Start();
-
-            //accountRFList = new List<Profile>();
-            //deviceRFList = new List<Device>();
-            //timeCheckRFList = new List<TimeRecord>();
-
-            //groupedAccount = (ListCollectionView)CollectionViewSource.GetDefaultView(accountRFList);
-            //groupedTimeCheck = (ListCollectionView)CollectionViewSource.GetDefaultView(timeCheckRFList);
-            //groupedDevice = (ListCollectionView)CollectionViewSource.GetDefaultView(deviceRFList);
-            //collectionView = CollectionViewSource.GetDefaultView(ProfilesToSend);
-
-            //DeviceItem deviceItem = new DeviceItem(this);
-            //deviceItem.Start("ws://192.168.1.121:9090");
         }
 
         
@@ -212,7 +214,7 @@ namespace SchoolManagement.ViewModel
             }
         }
 
-        public void ReloadListTimeCheckDGV(int tabIndex)
+        public void ReloadListTimeCheckDGV(MainWindow mainW, int tabIndex)
         {
             try
             {
@@ -228,7 +230,7 @@ namespace SchoolManagement.ViewModel
                             List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF(profileRF.PIN_NO, date);
                             foreach (TimeRecord item in timeList)
                             {
-                                timeCheckRFList.Add(item);
+                                TimeChecks.Add(item);
                             }
                         }
                         else
@@ -239,7 +241,7 @@ namespace SchoolManagement.ViewModel
                                 List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF(profileRF.PIN_NO, DateTime.MinValue);
                                 foreach (TimeRecord item in timeList)
                                 {
-                                    timeCheckRFList.Add(item);
+                                    TimeChecks.Add(item);
                                 }
                             }
                         }
@@ -254,7 +256,7 @@ namespace SchoolManagement.ViewModel
                             List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF("", date, deviceRF.IP);
                             foreach (TimeRecord item in timeList)
                             {
-                                timeCheckRFList.Add(item);
+                                TimeChecks.Add(item);
                             }
                         }
                         else
@@ -265,7 +267,7 @@ namespace SchoolManagement.ViewModel
                                 List<TimeRecord> timeList = SqliteDataAccess.LoadTimeCheckRF("", DateTime.MinValue, deviceRF.IP);
                                 foreach (TimeRecord item in timeList)
                                 {
-                                    timeCheckRFList.Add(item);
+                                    TimeChecks.Add(item);
                                 }
                             }
                         }
@@ -501,47 +503,7 @@ namespace SchoolManagement.ViewModel
             }
         }
 
-        public void OpenModifyDataGrid()
-        {
-            try
-            {
-
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                if (!IsModifyDataGridOpen)
-                {
-                    mainW.DGV_ModilyList.Width = new GridLength(1, GridUnitType.Star);
-                    mainW.LocalList_ButtonsGrid.Height = mainW.SendList_ButtonsGrid.Height = new GridLength(30);
-                    mainW.StackButton_ProfileAddUpdateRemove.Height = new GridLength(35);
-                    IsModifyDataGridOpen = true;
-                }
-            }
-        }
-
-        public void CloseModifyDataGrid()
-        {
-            try
-            {
-                ProfilesToSend.Clear();
-            }
-            catch
-            {
-
-            }
-            finally
-            {
-                IsModifyDataGridOpen = false;
-                mainW.DGV_ModilyList.Width =
-                    mainW.LocalList_ButtonsGrid.Height =
-                    mainW.SendList_ButtonsGrid.Height =
-                    mainW.StackButton_ProfileAddUpdateRemove.Height = new GridLength(0);
-            }
-        }
+        
 
         public void ExportAllProfile()
         {
@@ -563,7 +525,7 @@ namespace SchoolManagement.ViewModel
 
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            mainW.pbStatus.Value = e.ProgressPercentage;
+            //mainW.pbStatus.Value = e.ProgressPercentage;
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -583,7 +545,7 @@ namespace SchoolManagement.ViewModel
                 PgbStatus = AppStatus.Completed;
             }
             // general cleanup code, runs when there was an error or not.
-            mainW.pbStatus.Value = 0;
+            //mainW.pbStatus.Value = 0;
             PgbStatus = AppStatus.Ready;
         }
 

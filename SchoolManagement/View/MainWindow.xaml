@@ -54,8 +54,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <CollectionViewSource x:Key="myCollectionViewListProfileToSend" Source="{Binding Path=ProfilesToSend}" />
-        <CollectionViewSource x:Key="myCollectionViewListProfile" Source="{Binding Path=ProfilesToSend}" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -436,17 +434,15 @@
                                                 <Grid Grid.Row="1">
                                                     <DataGrid
                                                         Name="AccountListLocal"
-                                                        AutoGenerateColumns="False"
+                                                        AutoGenerateColumns="True"
                                                         CanUserAddRows="False"
                                                         CanUserDeleteRows="False"
-                                                        CanUserReorderColumns="False"
-                                                        CanUserResizeRows="False"
                                                         FontSize="12"
-                                                        ItemsSource="{Binding Source={StaticResource myCollectionViewListProfile}}"
+                                                        ItemsSource="{Binding Profiles, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                         SelectedCellsChanged="AccountListData_SelectedCellsChanged"
                                                         SelectionMode="Extended"
                                                         SelectionUnit="FullRow">
-                                                        <DataGrid.Columns>
+                                                        <!--<DataGrid.Columns>
                                                             <DataGridTextColumn
                                                                 Width="Auto"
                                                                 Binding="{Binding Path=ID}"
@@ -543,7 +539,7 @@
                                                                 Header="Status"
                                                                 IsReadOnly="True"
                                                                 Visibility="Visible" />
-                                                        </DataGrid.Columns>
+                                                        </DataGrid.Columns>-->
                                                     </DataGrid>
                                                 </Grid>
                                                 <Grid Grid.Row="2" Background="#f1f1f1">
@@ -590,16 +586,14 @@
                                                 <Grid Grid.Row="1">
                                                     <DataGrid
                                                         Name="AccountListToSend"
-                                                        AutoGenerateColumns="False"
+                                                        AutoGenerateColumns="True"
                                                         CanUserAddRows="False"
                                                         CanUserDeleteRows="False"
-                                                        CanUserReorderColumns="False"
-                                                        CanUserResizeRows="False"
                                                         FontSize="12"
-                                                        ItemsSource="{Binding Source={StaticResource myCollectionViewListProfileToSend}}"
+                                                        ItemsSource="{Binding ProfilesToSend, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                         SelectionMode="Extended"
                                                         SelectionUnit="FullRow">
-                                                        <DataGrid.Columns>
+                                                        <!--<DataGrid.Columns>
                                                             <DataGridTextColumn
                                                                 Width="Auto"
                                                                 Binding="{Binding Path=ID}"
@@ -696,7 +690,7 @@
                                                                 Header="Status"
                                                                 IsReadOnly="True"
                                                                 Visibility="Visible" />
-                                                        </DataGrid.Columns>
+                                                        </DataGrid.Columns>-->
                                                     </DataGrid>
                                                 </Grid>
                                                 <Grid Grid.Row="2" Background="#f1f1f1">

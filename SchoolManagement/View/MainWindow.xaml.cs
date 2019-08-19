@@ -38,10 +38,18 @@ namespace SchoolManagement
         public MainWindow()
         {
             InitializeComponent();
+            Constant.CreateFolderToSaveData();
             Constant.mainWindowPointer = this;
             Loaded += MainWindow_Loaded;
             Closed += MainWindow_Closed;
-            mainModel.CloseModifyDataGrid();
+            mainModel = new MainWindowModel();
+
+
+
+            //mainModel.CloseModifyDataGrid();
+
+
+
             System.Timers.Timer SuspendStudentCheckTimer = new System.Timers.Timer(30000); //One second, (use less to add precision, use more to consume less processor time
             lastHour = DateTime.Now.Hour;
             lastSec = DateTime.Now.Second;
@@ -65,7 +73,6 @@ namespace SchoolManagement
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Constant.CreateFolderToSaveData();
             ChangeToLoginScreen();
             try
             {
@@ -141,11 +148,6 @@ namespace SchoolManagement
             Environment.Exit(Environment.ExitCode);
         }
 
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
         private void Registration_Click(object sender, RoutedEventArgs e)
         {
             RegisterForm regForm = new RegisterForm(this);
@@ -165,24 +167,6 @@ namespace SchoolManagement
             ImportForm importForm = new ImportForm(this);
             importForm.ShowDialog();
             mainModel.ReloadListProfileRFDGV();
-        }
-
-        private void test_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string array = "0";
-                string[] test = array.Split(',');
-                Console.WriteLine(test.Length);
-                rtb_log.Document.Blocks.Add(new Paragraph(new Run("test")));
-                //DeviceRF deviceRF = DeviceRFListData.SelectedItem as DeviceRF;
-                //List<string> test = SqliteDataAccess.LoadListProfileRFSerialId(deviceRF.IP);
-            }
-            catch (Exception ex)
-            {
-                logFile.Error(ex.Message);
-                Constant.mainWindowPointer.WriteLog(ex.Message);
-            }
         }
 
         public void WriteLog(string message)
@@ -209,26 +193,49 @@ namespace SchoolManagement
 
         private void Btn_search_Click(object sender, RoutedEventArgs e)
         {
-            mainModel.ReloadListTimeCheckDGV(MainTabControl.SelectedIndex);
+            mainModel.ReloadListTimeCheckDGV(this,MainTabControl.SelectedIndex);
         }
 
-        private void Btn_requestListTimeCheck_Click(object sender, RoutedEventArgs e)
+        public void OpenModifyDataGrid()
         {
-            Task.Run(() =>
+            try
             {
-                try
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                if (!mainModel.IsModifyDataGridOpen)
                 {
-                    foreach (Device device in mainModel.deviceRFList)
-                    {
-                        device.deviceItem.requestPersonListImmediately();
-                    }
+                    DGV_ModilyList.Width = new GridLength(1, GridUnitType.Star);
+                    LocalList_ButtonsGrid.Height = SendList_ButtonsGrid.Height = new GridLength(30);
+                    StackButton_ProfileAddUpdateRemove.Height = new GridLength(35);
+                    mainModel.IsModifyDataGridOpen = true;
                 }
-                catch (Exception ex)
-                {
-                    logFile.Error(ex.Message);
-                    Constant.mainWindowPointer.WriteLog(ex.Message);
-                }
-            });
+            }
+        }
+
+        public void CloseModifyDataGrid()
+        {
+            try
+            {
+                mainModel.ProfilesToSend.Clear();
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                mainModel.IsModifyDataGridOpen = false;
+                DGV_ModilyList.Width =
+                    LocalList_ButtonsGrid.Height =
+                    SendList_ButtonsGrid.Height =
+                    StackButton_ProfileAddUpdateRemove.Height = new GridLength(0);
+            }
         }
 
         private void Btn_SyncAllDevice_Click(object sender, RoutedEventArgs e)
@@ -238,7 +245,7 @@ namespace SchoolManagement
             {
                 try
                 {
-                    foreach (Device device in mainModel.deviceRFList)
+                    foreach (Device device in mainModel.Devices)
                     {
                         device.deviceItem.sendProfile(device.IP, DeviceItem.SERVERRESPONSE.RESP_PROFILE_ADD, new List<Profile>());
                     }
@@ -322,52 +329,7 @@ namespace SchoolManagement
             }
         }
 
-        private void Btn_start_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Device deviceRF = (sender as System.Windows.Controls.Button).DataContext as Device;
-                deviceRF.deviceItem.Start("ws://" + deviceRF.IP + ":9090");
-            }
-            catch (Exception ex)
-            {
-                logFile.Error(ex.Message);
-                Constant.mainWindowPointer.WriteLog(ex.Message);
-            }
-        }
-
-        private void Btn_stop_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Device deviceRF = (sender as System.Windows.Controls.Button).DataContext as Device;
-                deviceRF.deviceItem.Dispose();
-            }
-            catch (Exception ex)
-            {
-                logFile.Error(ex.Message);
-                Constant.mainWindowPointer.WriteLog(ex.Message);
-            }
-        }
-
-        private void Btn_test_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Device deviceRF = (sender as System.Windows.Controls.Button).DataContext as Device;
-                List<Profile> test = SqliteDataAccess.LoadListProfileRFSerialId(deviceRF.IP);
-                Console.WriteLine("============");
-                foreach (Profile item in test)
-                {
-                    Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(item));
-                }
-            }
-            catch (Exception ex)
-            {
-                logFile.Error(ex.Message);
-                Constant.mainWindowPointer.WriteLog(ex.Message);
-            }
-        }
+        
 
         private void AccountListData_SelectedCellsChanged(object sender, System.Windows.Controls.SelectedCellsChangedEventArgs e)
         {
@@ -705,44 +667,20 @@ namespace SchoolManagement
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
-
-        private void Btn_export_Click(object sender, RoutedEventArgs e)
-        {
-        }
+        
 
         [STAThread]
         private void Export_Click(object sender, RoutedEventArgs e)
         {
             mainModel.ExportAllProfile();
         }
-
-        private void Cbb_status_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-
-        //private void Btn_changeStatus_Click(object sender, RoutedEventArgs e)
-        //{
-        //    ProfileRF profileRF = (sender as System.Windows.Controls.Button).DataContext as ProfileRF;
-        //    if(profileRF.STATUS == "Active")
-        //    {
-        //        profileRF.STATUS = "Suspended";
-        //        profileRF.LOCK_DATE = DateTime.Now;
-        //    }
-        //    else
-        //    {
-        //        if (profileRF.STATUS == "Suspended")
-        //        {
-        //            profileRF.STATUS = "Active";
-        //            profileRF.LOCK_DATE = DateTime.MinValue;
-        //        }
-        //    }
-        //    SqliteDataAccess.UpdateProfileRF(profileRF, profileRF.STATUS);
-        //    mainModel.ReloadListProfileRFDGV();
-        //}
+        
+        
 
         private void Filter_Click(object sender, RoutedEventArgs e)
         {
-            mainModel.ReloadListProfileRFDGV(tb_nameSearch.Text, tb_pinSearch.Text, tb_adnoSearch.Text);
+            //mainModel.ReloadListProfileRFDGV(tb_nameSearch.Text, tb_pinSearch.Text, tb_adnoSearch.Text);
+            AccountListLocal.Items.Filter = (obj) => ((Profile)obj).ID < 10;
         }
 
         private void Tb_Search_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -779,7 +717,7 @@ namespace SchoolManagement
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            foreach (Device item in mainModel.deviceRFList)
+            foreach (Device item in mainModel.Devices)
             {
                 if (item.deviceItem != null)
                 {
@@ -975,10 +913,7 @@ namespace SchoolManagement
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-        }
+        
 
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
@@ -991,24 +926,7 @@ namespace SchoolManagement
             frm.ShowDialog();
         }
 
-        private void btn_1_click(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
-            Console.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.LocalizedResources));
-        }
-
-        private void btn_2_click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void btn_3_click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            mainModel.CheckSuspendAllProfile();
-        }
+        
 
         private void ReplaceNewDatabase_Click(object sender, RoutedEventArgs e)
         {
@@ -1056,22 +974,17 @@ namespace SchoolManagement
             //Process.Start(@"c:\windows\");
             Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK");
         }
-
-        private void CheckBox_Click(object sender, RoutedEventArgs e)
-        {
-            Profile selectedProfile = (sender as System.Windows.Controls.CheckBox).DataContext as Profile;
-            Console.WriteLine("sacascas");
-        }
+        
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             if (!mainModel.IsModifyDataGridOpen)
             {
-                mainModel.OpenModifyDataGrid();
+                OpenModifyDataGrid();
             }
             else
             {
-                mainModel.CloseModifyDataGrid();
+                CloseModifyDataGrid();
             }
         }
         
@@ -1101,14 +1014,6 @@ namespace SchoolManagement
         private void Btn_DeselectedProfile_Click(object sender, RoutedEventArgs e)
         {
             mainModel.DeselectedProfileFromProfilesToSend(AccountListToSend.SelectedItems);
-        }
-        private void Btn_Test_Click_1(object sender, RoutedEventArgs e)
-        {
-            //var jsonSettings = new JsonSerializerSettings();
-            //jsonSettings.DateFormatString = "yyyy-MM-dd";
-            ////jsonSettings.DateFormatString = "dd/MM/yyyy";
-            //var data = JsonConvert.SerializeObject(mainModel.ProfilesToSend, jsonSettings);
-            //Console.WriteLine(data);
         }
     }
 
