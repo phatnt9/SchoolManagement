@@ -30,16 +30,24 @@ namespace SchoolManagement.Model
 
         public static List<Profile> LoadProfileRF(string name = "", string pinno = "", string adno = "")
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            try
             {
-                var p = new DynamicParameters();
-                p.Add("@NAME", "%" + name + "%");
-                p.Add("@PIN_NO", "%" + pinno + "%");
-                p.Add("@ADNO", "%" + adno + "%");
+                using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                {
+                    var p = new DynamicParameters();
+                    p.Add("@NAME", "%" + name + "%");
+                    p.Add("@PIN_NO", "%" + pinno + "%");
+                    p.Add("@ADNO", "%" + adno + "%");
 
-                var output = cnn.Query<Profile>("SELECT * FROM RF_PROFILE WHERE ((NAME LIKE (@NAME)) AND (PIN_NO LIKE (@PIN_NO)) AND (ADNO LIKE (@ADNO)))", p);
-                return output.ToList();
+                    var output = cnn.Query<Profile>("SELECT * FROM RF_PROFILE WHERE ((NAME LIKE (@NAME)) AND (PIN_NO LIKE (@PIN_NO)) AND (ADNO LIKE (@ADNO)))", p);
+                    return output.ToList();
+                }
             }
+            catch
+            {
+                return new List<Profile>();
+            }
+            
         }
 
         public static List<TimeRecord> LoadTimeCheckRF(string PIN_NO, DateTime time, string ip = null)
@@ -119,20 +127,40 @@ namespace SchoolManagement.Model
             }
         }
 
-        public static void SaveDeviceRF(Device deviceRF)
+        public static bool SaveDeviceRF(Device deviceRF)
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            try
             {
-                cnn.Execute("INSERT INTO RF_DEVICE (IP,GATE,CLASS,STATUS) VALUES (@IP, @GATE, @CLASS,@STATUS)", deviceRF);
+                using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                {
+                    cnn.Execute("INSERT INTO RF_DEVICE (IP,GATE,CLASS,STATUS) VALUES (@IP, @GATE, @CLASS,@STATUS)", deviceRF);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+                return false;
             }
         }
 
-        public static void SaveProfileRF(Profile accountRFCard)
+        public static bool SaveProfileRF(Profile accountRFCard)
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            try
             {
-                cnn.Execute("INSERT INTO RF_PROFILE (PIN_NO,NAME,CLASS,GENDER,DOB,EMAIL,ADDRESS,PHONE,ADNO,DISU,STATUS,LOCK_DATE,IMAGE,DATE_TO_LOCK,CHECK_DATE_TO_LOCK) " +
-                    "VALUES (@PIN_NO,@NAME,@CLASS,@GENDER,@DOB,@EMAIL,@ADDRESS,@PHONE,@ADNO,@DISU,@STATUS,@LOCK_DATE,@IMAGE,@DATE_TO_LOCK,@CHECK_DATE_TO_LOCK)", accountRFCard);
+                using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                {
+                    cnn.Execute("INSERT INTO RF_PROFILE (PIN_NO,NAME,CLASS,GENDER,DOB,EMAIL,ADDRESS,PHONE,ADNO,DISU,STATUS,LOCK_DATE,IMAGE,DATE_TO_LOCK,CHECK_DATE_TO_LOCK) " +
+                        "VALUES (@PIN_NO,@NAME,@CLASS,@GENDER,@DOB,@EMAIL,@ADDRESS,@PHONE,@ADNO,@DISU,@STATUS,@LOCK_DATE,@IMAGE,@DATE_TO_LOCK,@CHECK_DATE_TO_LOCK)", accountRFCard);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+                return false;
             }
         }
 
@@ -148,7 +176,7 @@ namespace SchoolManagement.Model
             }
         }
 
-        public static void UpdateDeviceRF(string ip, string status = "", string CLASS = "", string GATE = "")
+        public static bool UpdateDeviceRF(string ip, string status = "", string CLASS = "", string GATE = "")
         {
             try
             {
@@ -178,59 +206,84 @@ namespace SchoolManagement.Model
                                 "WHERE IP = @IP", p);
                     }
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
+                return false;
             }
         }
 
-        public static void UpdateProfileRF(Profile profileRF, string Status = null)
+        public static bool UpdateProfileRF(Profile profileRF, string Status = null)
         {
             try
             {
                 using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
                 {
                     cnn.Execute("UPDATE RF_PROFILE SET " +
+                        "ADNO = @ADNO, " +
                         "name = @NAME, " +
                         "CLASS = @CLASS, " +
                         "GENDER = @GENDER, " +
                         "DOB = @DOB, " +
-                        "EMAIL = @EMAIL, " +
-                        "ADDRESS = @ADDRESS, " +
-                        "PHONE = @PHONE, " +
-                        "ADNO = @ADNO, " +
                         "DISU = @DISU, " +
-                        ((Status == null) ? "" : "LOCK_DATE = @LOCK_DATE, ") +
-                        ((Status == null) ? "" : "STATUS = @STATUS, ") +
                         "DATE_TO_LOCK = @DATE_TO_LOCK, " +
                         "CHECK_DATE_TO_LOCK = @CHECK_DATE_TO_LOCK, " +
-                        "IMAGE = @IMAGE " +
+                        ((Status == null) ? "" : "LOCK_DATE = @LOCK_DATE, ") +
+                        ((Status == null) ? "" : "STATUS = @STATUS, ") +
+                        "IMAGE = @IMAGE, " +
+                        "EMAIL = @EMAIL, " +
+                        "ADDRESS = @ADDRESS, " +
+                        "PHONE = @PHONE " +
                         "WHERE PIN_NO = @PIN_NO", profileRF);
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
+                return false;
             }
         }
 
-        public static void RemoveDeviceRF(Device deviceRF)
+        public static bool RemoveDeviceRF(Device deviceRF)
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            try
             {
-                cnn.Execute("DELETE FROM RF_DEVICE WHERE IP=@IP", deviceRF);
+                using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                {
+                    cnn.Execute("DELETE FROM RF_DEVICE WHERE IP=@IP", deviceRF);
+                }
+                return true;
             }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+                return false;
+            }
+            
         }
 
-        public static void RemoveProfileRF(Profile profileRF)
+        public static bool RemoveProfileRF(Profile profileRF)
         {
-            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            try
             {
-                cnn.Execute("DELETE FROM RF_TIMECHECK WHERE PIN_NO=@PIN_NO", profileRF);
-                cnn.Execute("DELETE FROM RF_PROFILE WHERE PIN_NO=@PIN_NO", profileRF);
+                using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+                {
+                    cnn.Execute("DELETE FROM RF_TIMECHECK WHERE PIN_NO=@PIN_NO", profileRF);
+                    cnn.Execute("DELETE FROM RF_PROFILE WHERE PIN_NO=@PIN_NO", profileRF);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+                return false;
             }
         }
 

@@ -9,15 +9,12 @@
     Name="mainWindow"
     Title="Gate Access Control System"
     Width="900"
-    Height="600"
+    Height="800"
     MinWidth="800"
     MinHeight="500"
     Closing="Window_Closing"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <Window.DataContext>
-        <local:MainWindowModel x:Name="ViewModel" />
-    </Window.DataContext>
     <Window.Resources>
         <local:ImportButtonEnableConverter x:Key="myImportButtonEnableConverter" />
         <Style
@@ -30,10 +27,13 @@
                         <Grid>
                             <TextBox
                                 x:Name="textSource"
+                                VerticalContentAlignment="Center"
                                 Panel.ZIndex="2"
                                 Background="Transparent"
+                                BorderThickness="0"
                                 Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBox
+                                VerticalContentAlignment="Center"
                                 Panel.ZIndex="1"
                                 Background="{TemplateBinding Background}"
                                 Text="{TemplateBinding Tag}">
@@ -212,7 +212,7 @@
                 </Border>
             </Grid>
             <Grid Grid.Row="2" Background="#F1F1F1">
-                <Grid Margin="10,0,10,10">
+                <Grid Margin="10,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="6*" />
                         <ColumnDefinition Width="3" />
@@ -331,77 +331,6 @@
                                             </Button>
                                             <!--<Button Width="100" Click="Button_Click"></Button>-->
                                         </StackPanel>
-                                        <StackPanel
-                                            Grid.Row="1"
-                                            Margin="10,0"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            Orientation="Horizontal">
-                                            <StackPanel
-                                                Margin="0,0"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Orientation="Horizontal">
-                                                <TextBox
-                                                    Name="tb_nameSearch"
-                                                    Width="90"
-                                                    Height="20"
-                                                    Padding="0"
-                                                    BorderThickness="0"
-                                                    PreviewKeyDown="Tb_Search_PreviewKeyDown"
-                                                    Style="{StaticResource placeHolder}"
-                                                    Tag="Name" />
-                                            </StackPanel>
-                                            <StackPanel
-                                                Margin="10,0,0,0"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Orientation="Horizontal">
-                                                <TextBox
-                                                    Name="tb_pinSearch"
-                                                    Width="90"
-                                                    Height="20"
-                                                    BorderThickness="0"
-                                                    PreviewKeyDown="Tb_Search_PreviewKeyDown"
-                                                    Style="{StaticResource placeHolder}"
-                                                    Tag="PIN No." />
-                                            </StackPanel>
-                                            <StackPanel
-                                                Margin="10,0,0,0"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Orientation="Horizontal">
-                                                <TextBox
-                                                    Name="tb_adnoSearch"
-                                                    Width="90"
-                                                    Height="20"
-                                                    BorderThickness="0"
-                                                    PreviewKeyDown="Tb_Search_PreviewKeyDown"
-                                                    Style="{StaticResource placeHolder}"
-                                                    Tag="AD No." />
-                                            </StackPanel>
-                                            <StackPanel
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                Orientation="Horizontal">
-                                                <Button
-                                                    Name="btn_filter"
-                                                    Width="90"
-                                                    Height="25"
-                                                    Margin="0,0,0,0"
-                                                    Padding="0,0,0,0"
-                                                    Background="Transparent"
-                                                    BorderThickness="0"
-                                                    Click="Filter_Click">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Image Width="12" Source="pack://siteoforigin:,,,/Resources/page_find.png" />
-                                                        <Label FontSize="10">Search</Label>
-                                                    </StackPanel>
-                                                    <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed" />-->
-                                                </Button>
-
-                                            </StackPanel>
-                                        </StackPanel>
                                     </Grid>
                                     <Grid
                                         Name="GridDGVProfile"
@@ -418,6 +347,7 @@
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="20" />
+                                                    <RowDefinition Height="25" />
                                                     <RowDefinition />
                                                     <RowDefinition Name="LocalList_ButtonsGrid" Height="30" />
                                                 </Grid.RowDefinitions>
@@ -432,9 +362,21 @@
                                                         Foreground="DarkGreen" />
                                                 </Grid>
                                                 <Grid Grid.Row="1">
+                                                    <DockPanel VerticalAlignment="Center">
+                                                        <TextBox
+                                                            Name="tb_localSearch"
+                                                            Height="25"
+                                                            BorderThickness="0"
+                                                            PreviewKeyDown="Tb_LocalSearch_PreviewKeyDown"
+                                                            Style="{StaticResource placeHolder}"
+                                                            Tag="Enter to search" />
+                                                    </DockPanel>
+                                                </Grid>
+                                                <Grid Grid.Row="2">
                                                     <DataGrid
                                                         Name="AccountListLocal"
-                                                        AutoGenerateColumns="True"
+                                                        AutoGenerateColumns="False"
+                                                        Background="White"
                                                         CanUserAddRows="False"
                                                         CanUserDeleteRows="False"
                                                         FontSize="12"
@@ -442,7 +384,7 @@
                                                         SelectedCellsChanged="AccountListData_SelectedCellsChanged"
                                                         SelectionMode="Extended"
                                                         SelectionUnit="FullRow">
-                                                        <!--<DataGrid.Columns>
+                                                        <DataGrid.Columns>
                                                             <DataGridTextColumn
                                                                 Width="Auto"
                                                                 Binding="{Binding Path=ID}"
@@ -539,10 +481,10 @@
                                                                 Header="Status"
                                                                 IsReadOnly="True"
                                                                 Visibility="Visible" />
-                                                        </DataGrid.Columns>-->
+                                                        </DataGrid.Columns>
                                                     </DataGrid>
                                                 </Grid>
-                                                <Grid Grid.Row="2" Background="#f1f1f1">
+                                                <Grid Grid.Row="3" Background="#f1f1f1">
                                                     <StackPanel
                                                         HorizontalAlignment="Center"
                                                         VerticalAlignment="Center"
@@ -555,7 +497,7 @@
                                                             HorizontalContentAlignment="Center"
                                                             VerticalContentAlignment="Center"
                                                             Click="Btn_MoveToModifyList_Click"
-                                                            IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                                                            IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                                             Select
                                                         </Button>
                                                     </StackPanel>
@@ -570,6 +512,7 @@
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="20" />
+                                                    <RowDefinition Height="25" />
                                                     <RowDefinition />
                                                     <RowDefinition Name="SendList_ButtonsGrid" Height="30" />
                                                 </Grid.RowDefinitions>
@@ -584,16 +527,28 @@
                                                         Foreground="#e33b3b" />
                                                 </Grid>
                                                 <Grid Grid.Row="1">
+                                                    <DockPanel VerticalAlignment="Center">
+                                                        <TextBox
+                                                            Name="tb_remoteSearch"
+                                                            Height="25"
+                                                            BorderThickness="0"
+                                                            PreviewKeyDown="Tb_RemoteSearch_PreviewKeyDown"
+                                                            Style="{StaticResource placeHolder}"
+                                                            Tag="Enter to search" />
+                                                    </DockPanel>
+                                                </Grid>
+                                                <Grid Grid.Row="2">
                                                     <DataGrid
                                                         Name="AccountListToSend"
-                                                        AutoGenerateColumns="True"
+                                                        AutoGenerateColumns="False"
+                                                        Background="White"
                                                         CanUserAddRows="False"
                                                         CanUserDeleteRows="False"
                                                         FontSize="12"
                                                         ItemsSource="{Binding ProfilesToSend, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                         SelectionMode="Extended"
                                                         SelectionUnit="FullRow">
-                                                        <!--<DataGrid.Columns>
+                                                        <DataGrid.Columns>
                                                             <DataGridTextColumn
                                                                 Width="Auto"
                                                                 Binding="{Binding Path=ID}"
@@ -690,10 +645,10 @@
                                                                 Header="Status"
                                                                 IsReadOnly="True"
                                                                 Visibility="Visible" />
-                                                        </DataGrid.Columns>-->
+                                                        </DataGrid.Columns>
                                                     </DataGrid>
                                                 </Grid>
-                                                <Grid Grid.Row="2" Background="#f1f1f1">
+                                                <Grid Grid.Row="3" Background="#f1f1f1">
                                                     <StackPanel Orientation="Vertical">
                                                         <DockPanel
                                                             Margin="0,5"
@@ -720,68 +675,48 @@
                                         </Border>
                                     </Grid>
                                     <Grid Grid.Row="2" Background="#f1f1f1">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition Height="5" />
-                                        </Grid.RowDefinitions>
-                                        <Grid Grid.Row="1">
-                                            <ProgressBar Name="pgb_SendProfile" Value="{Binding PgbSendProfilePercent, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
-                                        </Grid>
-                                        <Grid Grid.Row="0">
-                                            <DockPanel
-                                                Margin="0,5"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center">
+                                        <DockPanel
+                                            Margin="0,5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
 
-                                                <Button
-                                                    Name="btn_ModifyList_SendToAdd"
-                                                    Width="50"
-                                                    Height="20"
-                                                    Margin="5,0"
-                                                    Padding="0"
-                                                    HorizontalContentAlignment="Center"
-                                                    VerticalContentAlignment="Center"
-                                                    Click="Btn_ModifyList_SendToAdd_Click"
-                                                    IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
-                                                    Add
-                                                </Button>
-                                                <Button
-                                                    Name="btn_ModifyList_SendToUpdate"
-                                                    Width="50"
-                                                    Height="20"
-                                                    Margin="5,0"
-                                                    Padding="0"
-                                                    HorizontalContentAlignment="Center"
-                                                    VerticalContentAlignment="Center"
-                                                    Click="Btn_ModifyList_SendToUpdate_Click"
-                                                    IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
-                                                    Update
-                                                </Button>
-                                                <Button
-                                                    Name="btn_ModifyList_SendToRemove"
-                                                    Width="50"
-                                                    Height="20"
-                                                    Margin="5,0"
-                                                    Padding="0"
-                                                    HorizontalContentAlignment="Center"
-                                                    VerticalContentAlignment="Center"
-                                                    Click="Btn_ModifyList_SendToRemove_Click"
-                                                    IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
-                                                    Remove
-                                                </Button>
-                                                <!--<Button
-                                                            Name="btn_Test"
-                                                            Width="50"
-                                                            Height="20"
-                                                            Margin="5,0"
-                                                            Padding="0"
-                                                            HorizontalContentAlignment="Center"
-                                                            VerticalContentAlignment="Center"
-                                                            Click="Btn_Test_Click_1">
-                                                            Test
-                                                        </Button>-->
-                                            </DockPanel>
-                                        </Grid>
+                                            <Button
+                                                Name="btn_ModifyList_SendToAdd"
+                                                Width="50"
+                                                Height="20"
+                                                Margin="5,0"
+                                                Padding="0"
+                                                HorizontalContentAlignment="Center"
+                                                VerticalContentAlignment="Center"
+                                                Click="Btn_ModifyList_SendToAdd_Click"
+                                                IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                                                Add
+                                            </Button>
+                                            <Button
+                                                Name="btn_ModifyList_SendToUpdate"
+                                                Width="50"
+                                                Height="20"
+                                                Margin="5,0"
+                                                Padding="0"
+                                                HorizontalContentAlignment="Center"
+                                                VerticalContentAlignment="Center"
+                                                Click="Btn_ModifyList_SendToUpdate_Click"
+                                                IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                                                Update
+                                            </Button>
+                                            <Button
+                                                Name="btn_ModifyList_SendToRemove"
+                                                Width="50"
+                                                Height="20"
+                                                Margin="5,0"
+                                                Padding="0"
+                                                HorizontalContentAlignment="Center"
+                                                VerticalContentAlignment="Center"
+                                                Click="Btn_ModifyList_SendToRemove_Click"
+                                                IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                                                Remove
+                                            </Button>
+                                        </DockPanel>
 
                                     </Grid>
                                 </Grid>
@@ -919,7 +854,7 @@
                                             CanUserReorderColumns="False"
                                             CanUserResizeRows="False"
                                             FontSize="12"
-                                            ItemsSource="{Binding groupedDevice}"
+                                            ItemsSource="{Binding Devices, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                             SelectedCellsChanged="DeviceRFListData_SelectedCellsChanged"
                                             SelectionMode="Single"
                                             SelectionUnit="FullRow">
@@ -1094,7 +1029,7 @@
                                                                             Name="tb_adno"
                                                                             Margin="5,0"
                                                                             VerticalAlignment="Center"
-                                                                            IsReadOnly="True"
+                                                                            IsReadOnly="False"
                                                                             Text=""
                                                                             TextAlignment="Left" />
                                                                     </Grid>
@@ -1506,7 +1441,7 @@
                                                 FontFamily="Corsiva"
                                                 FontSize="12"
                                                 FontWeight="Normal"
-                                                ItemsSource="{Binding groupedTimeCheck}"
+                                                ItemsSource="{Binding TimeChecks, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                 SelectionMode="Single"
                                                 SelectionUnit="FullRow">
                                                 <DataGrid.Columns>
@@ -1534,7 +1469,7 @@
             </Grid>
             <Grid Grid.Row="3">
                 <DockPanel>
-                    <StatusBar DockPanel.Dock="Bottom">
+                    <StatusBar>
                         <!--<StatusBarItem>
                             <Grid>
                                 <StackPanel
@@ -1559,7 +1494,6 @@
                         </StatusBarItem>
                         <Separator />-->
                         <StatusBarItem>
-
                             <Grid>
                                 <StackPanel
                                     HorizontalAlignment="Center"
@@ -1579,7 +1513,6 @@
                                     Name="pbStatus"
                                     Width="200"
                                     Height="20"
-                                    Margin="5,0"
                                     Maximum="100"
                                     Minimum="0" />
                                 <TextBlock

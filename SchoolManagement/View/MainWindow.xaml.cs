@@ -43,13 +43,7 @@ namespace SchoolManagement
             Loaded += MainWindow_Loaded;
             Closed += MainWindow_Closed;
             mainModel = new MainWindowModel();
-
-
-
-            //mainModel.CloseModifyDataGrid();
-
-
-
+            DataContext = mainModel;
             System.Timers.Timer SuspendStudentCheckTimer = new System.Timers.Timer(30000); //One second, (use less to add precision, use more to consume less processor time
             lastHour = DateTime.Now.Hour;
             lastSec = DateTime.Now.Second;
@@ -73,6 +67,7 @@ namespace SchoolManagement
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            CloseModifyDataGrid();
             ChangeToLoginScreen();
             try
             {
@@ -159,7 +154,6 @@ namespace SchoolManagement
         {
             AddDeviceRFForm frm = new AddDeviceRFForm(this);
             frm.ShowDialog();
-            mainModel.ReloadListDeviceRFDGV();
         }
 
         private void Import_Click(object sender, RoutedEventArgs e)
@@ -281,22 +275,22 @@ namespace SchoolManagement
 
         private void MainTabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (e.Source is System.Windows.Controls.TabControl)
-            {
-                switch (((e.Source as System.Windows.Controls.TabControl).SelectedIndex))
-                {
-                    case 0:
-                    {
-                        mainModel.ReloadListProfileRFDGV();
-                        break;
-                    }
-                    case 1:
-                    {
-                        mainModel.ReloadListDeviceRFDGV();
-                        break;
-                    }
-                }
-            }
+            //if (e.Source is System.Windows.Controls.TabControl)
+            //{
+            //    switch (((e.Source as System.Windows.Controls.TabControl).SelectedIndex))
+            //    {
+            //        case 0:
+            //        {
+            //            mainModel.ReloadListProfileRFDGV();
+            //            break;
+            //        }
+            //        case 1:
+            //        {
+            //            mainModel.ReloadListDeviceRFDGV();
+            //            break;
+            //        }
+            //    }
+            //}
         }
 
         private void Btn_delete_Click(object sender, RoutedEventArgs e)
@@ -430,7 +424,6 @@ namespace SchoolManagement
                     dp_datetolock.IsEnabled =
                     rb_male.IsEnabled =
                     rb_female.IsEnabled =
-                    //cbb_status.IsEnabled =
                     cb_automanicsuspension.IsEnabled =
                     cbb_class.IsEnabled = true;
                 tb_address.IsReadOnly =
@@ -438,10 +431,7 @@ namespace SchoolManagement
                     tb_image.IsReadOnly =
                     tb_adno.IsReadOnly =
                     tb_name.IsReadOnly =
-                    tb_phone.IsReadOnly =
-                    //tb_student.IsReadOnly =
-                    //cbb_status.IsReadOnly =
-                    cbb_class.IsReadOnly = false;
+                    tb_phone.IsReadOnly = false;
                 tb_name.Focus();
                 return true;
             }
@@ -560,17 +550,8 @@ namespace SchoolManagement
                     person.NAME = tb_name.Text;
                     person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
                     person.CLASS = cbb_class.Text;
-                    //person.STATUS = cbb_status.Text;
                     person.DOB = (DateTime)dp_dateofbirth.SelectedDate;
                     person.DISU = (DateTime)dp_disu.SelectedDate;
-                    //if (person.CLASS == "Student")
-                    //{
-                    //    person.STUDENT = tb_student.Text;
-                    //}
-                    //else
-                    //{
-                    //    person.STUDENT = "";
-                    //}
                     person.EMAIL = tb_email.Text;
                     person.IMAGE = tb_image.Text;
                     person.ADDRESS = tb_address.Text;
@@ -584,11 +565,12 @@ namespace SchoolManagement
                     {
                         person.DATE_TO_LOCK = DateTime.MinValue;
                     }
-                    person.PHONE = tb_phone.Text;
                     try
                     {
-                        SqliteDataAccess.UpdateProfileRF(person);
-                        mainModel.ReloadListProfileRFDGV();
+                        if(SqliteDataAccess.UpdateProfileRF(person))
+                        {
+                            mainModel.ReloadListProfileRFDGV();
+                        }
                         editProfile.IsEnabled = true;
                         MainTabControl.IsEnabled = true;
                         save.Visibility = Visibility.Hidden;
@@ -656,8 +638,10 @@ namespace SchoolManagement
                     if (deviceRF != null)
                     {
                         deviceRF.deviceItem.Dispose();
-                        SqliteDataAccess.RemoveDeviceRF(deviceRF);
-                        mainModel.ReloadListDeviceRFDGV(deviceRF);
+                        if(SqliteDataAccess.RemoveDeviceRF(deviceRF))
+                        {
+                            mainModel.ReloadListDeviceRFDGV(deviceRF);
+                        }
                     }
                 }
             }
@@ -674,20 +658,86 @@ namespace SchoolManagement
         {
             mainModel.ExportAllProfile();
         }
-        
-        
 
-        private void Filter_Click(object sender, RoutedEventArgs e)
+        private void FilterLocal_Click(object sender, RoutedEventArgs e)
         {
-            //mainModel.ReloadListProfileRFDGV(tb_nameSearch.Text, tb_pinSearch.Text, tb_adnoSearch.Text);
-            AccountListLocal.Items.Filter = (obj) => ((Profile)obj).ID < 10;
+            try
+            {
+                //mainModel.ReloadListProfileRFDGV(tb_nameSearch.Text, tb_pinSearch.Text, tb_adnoSearch.Text);
+                AccountListLocal.Items.Filter = (obj) =>
+                (
+                (((Profile)obj).ID.ToString().ToLower().Contains(tb_localSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).ADDRESS.ToLower().Contains(tb_localSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).ADNO.ToLower().Contains(tb_localSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).CLASS.ToLower().Contains(tb_localSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).EMAIL.ToLower().Contains(tb_localSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).NAME.ToLower().Contains(tb_localSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).PHONE.ToLower().Contains(tb_localSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).PIN_NO.ToLower().Contains(tb_localSearch.Text.ToString().ToLower()))
+                );
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+            }
         }
 
-        private void Tb_Search_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void FilterRemote_Click(object sender, RoutedEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            try
             {
-                Filter_Click(sender, e);
+                //mainModel.ReloadListProfileRFDGV(tb_nameSearch.Text, tb_pinSearch.Text, tb_adnoSearch.Text);
+                AccountListToSend.Items.Filter = (obj) =>
+                (
+                (((Profile)obj).ID.ToString().ToLower().Contains(tb_remoteSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).ADDRESS.ToLower().Contains(tb_remoteSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).ADNO.ToLower().Contains(tb_remoteSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).CLASS.ToLower().Contains(tb_remoteSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).EMAIL.ToLower().Contains(tb_remoteSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).NAME.ToLower().Contains(tb_remoteSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).PHONE.ToLower().Contains(tb_remoteSearch.Text.ToString().ToLower())) ||
+                (((Profile)obj).PIN_NO.ToLower().Contains(tb_remoteSearch.Text.ToString().ToLower()))
+                );
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+            }
+        }
+
+        private void Tb_LocalSearch_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Key == Key.Enter)
+                {
+                    FilterLocal_Click(sender, e);
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+            }
+        }
+
+        private void Tb_RemoteSearch_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Key == Key.Enter)
+                {
+                    FilterRemote_Click(sender, e);
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
             }
         }
 
@@ -705,7 +755,6 @@ namespace SchoolManagement
                     Device deviceRF = DeviceRFListData.SelectedItem as Device;
                     AddDeviceRFForm frm = new AddDeviceRFForm(this, deviceRF);
                     frm.ShowDialog();
-                    mainModel.ReloadListDeviceRFDGV();
                 }
             }
             catch (Exception ex)
@@ -742,15 +791,26 @@ namespace SchoolManagement
                 }
                 else
                 {
-                    //Active profile
-                    profileRF.STATUS = "Active";
-                    //Release lock date and expire date
-                    profileRF.LOCK_DATE = DateTime.MinValue;
-                    profileRF.CHECK_DATE_TO_LOCK = false;
-                    profileRF.DATE_TO_LOCK = DateTime.MinValue;
+                    if (System.Windows.Forms.MessageBox.Show
+                           (
+                           String.Format("Do you want to replace the database, all data will be lost?", "Profile"),
+                           "Warning", MessageBoxButtons.YesNo,
+                           MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes
+                           )
+                    {
+                        //Active profile
+                        profileRF.STATUS = "Active";
+                        //Release lock date and expire date
+                        profileRF.LOCK_DATE = DateTime.MinValue;
+                        profileRF.CHECK_DATE_TO_LOCK = false;
+                        profileRF.DATE_TO_LOCK = DateTime.MinValue;
+                    }
+                        
                 }
-                SqliteDataAccess.UpdateProfileRF(profileRF, profileRF.STATUS);
-                mainModel.ReloadListProfileRFDGV();
+                if(SqliteDataAccess.UpdateProfileRF(profileRF, profileRF.STATUS))
+                {
+                    mainModel.ReloadListProfileRFDGV();
+                }
             }
         }
 

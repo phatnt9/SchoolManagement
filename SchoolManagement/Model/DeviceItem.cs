@@ -204,8 +204,10 @@ namespace SchoolManagement.Model
                             StandardString info = new StandardString();
                             info.data = dataResp;
                             statusProfile = STATUSPROFILE.Updating;
-                            SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString());
-                            mainWindowModel.ReloadListDeviceRFDGV();
+                            if(SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString()))
+                            {
+                                mainWindowModel.ReloadListDeviceRFDGV();
+                            }
                             this.Publish(publishdata, info);
                             new Thread((MainWindowModel) =>
                             {
@@ -223,15 +225,21 @@ namespace SchoolManagement.Model
                                 {
                                     OnFlagStatusClient.OnConfirmProfileSuccess = false;
                                     statusProfile = STATUSPROFILE.Updated;
-                                    SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString() + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm:ss tt"));
+                                    if(SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString() + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm:ss tt")))
+                                    {
+                                        mainWindowModel.ReloadListDeviceRFDGV();
+                                    }
                                 }
                                 else
                                 {
                                     statusProfile = STATUSPROFILE.Failed;
-                                    SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString());
+                                    if(SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString()))
+                                    {
+                                        mainWindowModel.ReloadListDeviceRFDGV();
+                                    }
                                 }
 
-                                mainWindowModel.ReloadListDeviceRFDGV();
+                                
                             }
 
                             ).Start(mainWindowModel);
@@ -240,8 +248,10 @@ namespace SchoolManagement.Model
                     catch (Exception ex)
                     {
                         statusProfile = STATUSPROFILE.Error;
-                        SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString());
-                        mainWindowModel.ReloadListDeviceRFDGV();
+                        if(SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString()))
+                        {
+                            mainWindowModel.ReloadListDeviceRFDGV();
+                        }
                         logFile.Error(ex.Message);
                         Constant.mainWindowPointer.WriteLog(ex.Message);
                     }

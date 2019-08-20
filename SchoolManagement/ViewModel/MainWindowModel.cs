@@ -33,6 +33,24 @@ namespace SchoolManagement.ViewModel
         }
     }
 
+    public class EditProfileButtonEnableConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (targetType == typeof(bool))
+            {
+                bool canEdit = bool.Parse(value.ToString());
+                return !canEdit;
+            }
+            return DependencyProperty.UnsetValue;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
 
     public class MainWindowModel:ViewModelBase
     {
@@ -57,9 +75,9 @@ namespace SchoolManagement.ViewModel
         private BackgroundWorker worker;
 
         private bool _isModifyDataGridOpen;
-        public bool IsModifyDataGridOpen { get => _isModifyDataGridOpen; set { _isModifyDataGridOpen = value; RaisePropertyChanged("IsModifyDataGridOpen"); } }
-
         private AppStatus _pgbStatus;
+
+        public bool IsModifyDataGridOpen { get => _isModifyDataGridOpen; set { _isModifyDataGridOpen = value; RaisePropertyChanged("IsModifyDataGridOpen"); } }
         public AppStatus PgbStatus { get => _pgbStatus; set { _pgbStatus = value; RaisePropertyChanged("PgbStatus"); } }
 
         
@@ -72,33 +90,15 @@ namespace SchoolManagement.ViewModel
         public ObservableCollection<Profile> ProfilesToSend => _profilestosend;
         public ObservableCollection<Device> Devices => _devices;
         public ObservableCollection<TimeRecord> TimeChecks => _timeChecks;
-
-
-
-        //public ObservableCollection<Profile> _profiles { get; set; }
-
-        //public ICollectionView Profiles
-        //{
-        //    get { return CollectionViewSource.GetDefaultView(_profiles); }
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
         //public DeviceItem deviceItem;
         public MainWindowModel()
         {
             PgbStatus = AppStatus.Ready;
+            //
             ReloadListProfileRFDGV();
+            ReloadListDeviceRFDGV();
+            //
             timerSyncTimeSheet = new System.Timers.Timer();
             timerSyncTimeSheet.Interval = Properties.Settings.Default.RequestTimeCheckInterval;
             timerSyncTimeSheet.Elapsed += TimerSyncTimeSheet_Elapsed;
@@ -144,7 +144,10 @@ namespace SchoolManagement.ViewModel
                         {
                             profile.STATUS = "Suspended";
                             profile.LOCK_DATE = DateTime.Now;
-                            SqliteDataAccess.UpdateProfileRF(profile, profile.STATUS);
+                            if(SqliteDataAccess.UpdateProfileRF(profile, profile.STATUS))
+                            {
+                                ReloadListProfileRFDGV();
+                            }
                         }
                     }
                 }
@@ -160,11 +163,14 @@ namespace SchoolManagement.ViewModel
         {
             try
             {
-                Profiles.Clear();
                 List<Profile> profileList = SqliteDataAccess.LoadProfileRF(name, pinno, adno);
-                foreach (Profile item in profileList)
+                if(profileList.Count>0)
                 {
-                    Profiles.Add(item);
+                    Profiles.Clear();
+                    foreach (Profile item in profileList)
+                    {
+                        Profiles.Add(item);
+                    }
                 }
             }
             catch (Exception ex)

@@ -48,8 +48,10 @@ namespace SchoolManagement.View
                     profileRF.CHECK_DATE_TO_LOCK = false;
                     profileRF.DATE_TO_LOCK = DateTime.MinValue;
 
-                    SqliteDataAccess.UpdateProfileRF(profileRF, profileRF.STATUS);
-                    mainW.mainModel.ReloadListProfileRFDGV();
+                    if(SqliteDataAccess.UpdateProfileRF(profileRF, profileRF.STATUS))
+                    {
+                        mainW.mainModel.ReloadListProfileRFDGV();
+                    }
                     return;
                 }
                 if (rb_later.IsChecked == true)
@@ -57,8 +59,10 @@ namespace SchoolManagement.View
                     profileRF.CHECK_DATE_TO_LOCK = true;
                     profileRF.DATE_TO_LOCK = (DateTime)dp_laterOn.SelectedDate;
 
-                    SqliteDataAccess.UpdateProfileRF(profileRF, profileRF.STATUS);
-                    mainW.mainModel.ReloadListProfileRFDGV();
+                    if(SqliteDataAccess.UpdateProfileRF(profileRF, profileRF.STATUS))
+                    {
+                        mainW.mainModel.ReloadListProfileRFDGV();
+                    }
                     return;
                 }
             }

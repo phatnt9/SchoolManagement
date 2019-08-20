@@ -98,17 +98,21 @@ namespace SchoolManagement.View
 
                 if (Title.Equals("Edit Device"))
                 {
-                    SqliteDataAccess.UpdateDeviceRF(deviceRF.IP, "", deviceRF.CLASS, deviceRF.GATE);
-                    mainW.mainModel.ReloadListDeviceRFDGV();
+                    if(SqliteDataAccess.UpdateDeviceRF(deviceRF.IP, "", deviceRF.CLASS, deviceRF.GATE))
+                    {
+                        mainW.mainModel.ReloadListDeviceRFDGV();
+                    }
                     Close();
                 }
                 else
                 {
-                    SqliteDataAccess.SaveDeviceRF(deviceRF);
+                    if(SqliteDataAccess.SaveDeviceRF(deviceRF))
+                    {
+                        mainW.mainModel.ReloadListDeviceRFDGV();
+                    }
                 }
                 lb_status.Content = "New Device Added";
                 ClearForm();
-                mainW.mainModel.ReloadListDeviceRFDGV();
             }
             catch (Exception ex)
             {
