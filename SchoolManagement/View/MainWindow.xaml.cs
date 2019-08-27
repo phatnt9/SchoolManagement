@@ -711,11 +711,7 @@ namespace SchoolManagement
         {
             try
             {
-                if (e.Key == Key.Enter)
-                {
-                    FilterLocal_Click(sender, e);
-                    return;
-                }
+                FilterLocal_Click(sender, e);
             }
             catch (Exception ex)
             {
@@ -728,11 +724,7 @@ namespace SchoolManagement
         {
             try
             {
-                if (e.Key == Key.Enter)
-                {
-                    FilterRemote_Click(sender, e);
-                    return;
-                }
+                FilterRemote_Click(sender, e);
             }
             catch (Exception ex)
             {

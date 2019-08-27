@@ -367,7 +367,7 @@
                                                             Name="tb_localSearch"
                                                             Height="25"
                                                             BorderThickness="0"
-                                                            PreviewKeyDown="Tb_LocalSearch_PreviewKeyDown"
+                                                            PreviewKeyUp="Tb_LocalSearch_PreviewKeyDown"
                                                             Style="{StaticResource placeHolder}"
                                                             Tag="Enter to search" />
                                                     </DockPanel>
@@ -532,7 +532,7 @@
                                                             Name="tb_remoteSearch"
                                                             Height="25"
                                                             BorderThickness="0"
-                                                            PreviewKeyDown="Tb_RemoteSearch_PreviewKeyDown"
+                                                            PreviewKeyUp="Tb_RemoteSearch_PreviewKeyDown"
                                                             Style="{StaticResource placeHolder}"
                                                             Tag="Enter to search" />
                                                     </DockPanel>
