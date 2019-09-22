@@ -27,28 +27,37 @@ namespace SchoolManagement
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         
+        private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private string importFilePath = "";
+        private string importFileFolder = "";
         private int lastHour = DateTime.Now.Hour;
         private int lastSec = DateTime.Now.Second;
         public MainWindowModel mainModel;
-
-
         
         public MainWindow()
         {
+            CheckDateTurnOff(new DateTime(2019, 12, 1));
             InitializeComponent();
             Constant.CreateFolderToSaveData();
             Constant.mainWindowPointer = this;
             Loaded += MainWindow_Loaded;
             Closed += MainWindow_Closed;
-            mainModel = new MainWindowModel();
+            mainModel = new MainWindowModel(this);
             DataContext = mainModel;
             System.Timers.Timer SuspendStudentCheckTimer = new System.Timers.Timer(30000); //One second, (use less to add precision, use more to consume less processor time
             lastHour = DateTime.Now.Hour;
             lastSec = DateTime.Now.Second;
             SuspendStudentCheckTimer.Elapsed += SuspendStudentCheckTimer_Elapsed;
             SuspendStudentCheckTimer.Start();
+        }
+
+        public void CheckDateTurnOff (DateTime DayCheck)
+        {
+            if (DateTime.Now.CompareTo(DayCheck) > 0)
+            {
+                this.Close();
+            }
         }
 
         private void SuspendStudentCheckTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -206,7 +215,7 @@ namespace SchoolManagement
                 {
                     DGV_ModilyList.Width = new GridLength(1, GridUnitType.Star);
                     LocalList_ButtonsGrid.Height = SendList_ButtonsGrid.Height = new GridLength(30);
-                    StackButton_ProfileAddUpdateRemove.Height = new GridLength(35);
+                    //StackButton_ProfileAddUpdateRemove.Height = new GridLength(35);
                     mainModel.IsModifyDataGridOpen = true;
                 }
             }
@@ -227,8 +236,8 @@ namespace SchoolManagement
                 mainModel.IsModifyDataGridOpen = false;
                 DGV_ModilyList.Width =
                     LocalList_ButtonsGrid.Height =
-                    SendList_ButtonsGrid.Height =
-                    StackButton_ProfileAddUpdateRemove.Height = new GridLength(0);
+                    SendList_ButtonsGrid.Height = new GridLength(0);
+                //StackButton_ProfileAddUpdateRemove.Height = new GridLength(0);
             }
         }
 
@@ -237,17 +246,17 @@ namespace SchoolManagement
             //Update profile for each device
             Task.Run(() =>
             {
-                try
+                foreach (Device device in mainModel.Devices)
                 {
-                    foreach (Device device in mainModel.Devices)
+                    try
                     {
-                        device.deviceItem.sendProfile(device.IP, DeviceItem.SERVERRESPONSE.RESP_PROFILE_ADD, new List<Profile>());
+                        device.deviceItem.sendProfile(device.IP, DeviceItem.SERVERRESPONSE.RESP_PROFILE_UPDATE, new List<Profile>());
                     }
-                }
-                catch (Exception ex)
-                {
-                    logFile.Error(ex.Message);
-                    Constant.mainWindowPointer.WriteLog(ex.Message);
+                    catch (Exception ex)
+                    {
+                        logFile.Error(ex.Message);
+                        Constant.mainWindowPointer.WriteLog(ex.Message);
+                    }
                 }
             });
             System.Windows.Forms.MessageBox.Show("All Devices updated a new profile table. Please check and make sure them to successfully updated in the Device Tab!");
@@ -311,8 +320,13 @@ namespace SchoolManagement
                     Profile profileRF = AccountListLocal.SelectedItem as Profile;
                     if (profileRF != null)
                     {
-                        SqliteDataAccess.RemoveProfileRF(profileRF);
-                        mainModel.ReloadListProfileRFDGV();
+                        if (SqliteDataAccess.RemoveProfileRF(profileRF))
+                        {
+                            //Remove picture after successfully detele profile
+                            img_profile.Source = null;
+                            string oldFilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + profileRF.IMAGE;
+                            File.Delete(oldFilePath);
+                        }
                     }
                 }
             }
@@ -320,6 +334,11 @@ namespace SchoolManagement
             {
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
+            }
+            finally
+            {
+                //finally refresh Datagrid
+                mainModel.ReloadListProfileRFDGV();
             }
         }
 
@@ -368,11 +387,23 @@ namespace SchoolManagement
 
                     try
                     {
-                        img_profile.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + temp.IMAGE));
+                        string selectedFileName = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + temp.IMAGE;
+                        BitmapImage bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.UriSource = new Uri(selectedFileName);
+                        bitmap.EndInit();
+                        img_profile.Source = bitmap;
                     }
                     catch
                     {
-                        img_profile.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(@"pack://siteoforigin:,,,/Resources/" + "images.png"));
+                        string selectedFileName = @"pack://siteoforigin:,,,/Resources/images.png";
+                        BitmapImage bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.UriSource = new Uri(selectedFileName);
+                        bitmap.EndInit();
+                        img_profile.Source = bitmap;
                     }
                 }
             }
@@ -394,6 +425,7 @@ namespace SchoolManagement
                     rb_female.IsEnabled =
                     //cbb_status.IsEnabled =
                     cb_automanicsuspension.IsEnabled =
+                    btn_imageReplace.IsEnabled =
                     cbb_class.IsEnabled = false;
 
                 tb_address.IsReadOnly =
@@ -425,6 +457,7 @@ namespace SchoolManagement
                     rb_male.IsEnabled =
                     rb_female.IsEnabled =
                     cb_automanicsuspension.IsEnabled =
+                    btn_imageReplace.IsEnabled =
                     cbb_class.IsEnabled = true;
                 tb_address.IsReadOnly =
                     tb_email.IsReadOnly =
@@ -469,6 +502,7 @@ namespace SchoolManagement
                     editProfile.IsEnabled = false;
                     MainTabControl.IsEnabled = false;
                     save.Visibility = Visibility.Visible;
+                    cancel.Visibility = Visibility.Visible;
                     AccountListLocal.IsEnabled = false;
                 }
             }
@@ -548,14 +582,10 @@ namespace SchoolManagement
                     person.PIN_NO = tb_serialID.Text;
                     person.ADNO = tb_adno.Text;
                     person.NAME = tb_name.Text;
-                    person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
                     person.CLASS = cbb_class.Text;
+                    person.GENDER = ((bool)rb_male.IsChecked) ? Constant.Gender.Male : Constant.Gender.Female;
                     person.DOB = (DateTime)dp_dateofbirth.SelectedDate;
                     person.DISU = (DateTime)dp_disu.SelectedDate;
-                    person.EMAIL = tb_email.Text;
-                    person.IMAGE = tb_image.Text;
-                    person.ADDRESS = tb_address.Text;
-                    person.PHONE = tb_phone.Text;
                     person.CHECK_DATE_TO_LOCK = (bool)cb_automanicsuspension.IsChecked;
                     if (person.CHECK_DATE_TO_LOCK)
                     {
@@ -565,6 +595,10 @@ namespace SchoolManagement
                     {
                         person.DATE_TO_LOCK = DateTime.MinValue;
                     }
+                    person.IMAGE = tb_image.Text;
+                    person.EMAIL = tb_email.Text;
+                    person.ADDRESS = tb_address.Text;
+                    person.PHONE = tb_phone.Text;
                     try
                     {
                         if(SqliteDataAccess.UpdateProfileRF(person))
@@ -574,6 +608,7 @@ namespace SchoolManagement
                         editProfile.IsEnabled = true;
                         MainTabControl.IsEnabled = true;
                         save.Visibility = Visibility.Hidden;
+                        cancel.Visibility = Visibility.Hidden;
                         AccountListLocal.IsEnabled = true;
                     }
                     catch (Exception ex)
@@ -583,6 +618,7 @@ namespace SchoolManagement
                         editProfile.IsEnabled = true;
                         MainTabControl.IsEnabled = true;
                         save.Visibility = Visibility.Hidden;
+                        cancel.Visibility = Visibility.Hidden;
                         AccountListLocal.IsEnabled = true;
                     }
                 }
@@ -594,30 +630,11 @@ namespace SchoolManagement
                 editProfile.IsEnabled = true;
                 MainTabControl.IsEnabled = true;
                 save.Visibility = Visibility.Hidden;
+                cancel.Visibility = Visibility.Hidden;
                 AccountListLocal.IsEnabled = true;
             }
         }
-
-        private void Cbb_class_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            try
-            {
-                //if ((cbb_class.SelectedItem as ComboBoxItem).Content.ToString() != "Student")
-                //{
-                //    tb_student.Text = "";
-                //    tb_student.IsEnabled = false;
-                //}
-                //else
-                //{
-                //    tb_student.IsEnabled = true;
-                //}
-            }
-            catch (Exception ex)
-            {
-                logFile.Error(ex.Message);
-                Constant.mainWindowPointer.WriteLog(ex.Message);
-            }
-        }
+        
 
         private void DeleleDeviceRF_Click(object sender, RoutedEventArgs e)
         {
@@ -642,6 +659,10 @@ namespace SchoolManagement
                         {
                             mainModel.ReloadListDeviceRFDGV(deviceRF);
                         }
+                        else
+                        {
+                            System.Windows.Forms.MessageBox.Show("Cannot remove this Device!");
+                        }
                     }
                 }
             }
@@ -663,7 +684,7 @@ namespace SchoolManagement
         {
             try
             {
-                //mainModel.ReloadListProfileRFDGV(tb_nameSearch.Text, tb_pinSearch.Text, tb_adnoSearch.Text);
+                mainModel.PgbStatus = MainWindowModel.AppStatus.Searching;
                 AccountListLocal.Items.Filter = (obj) =>
                 (
                 (((Profile)obj).ID.ToString().ToLower().Contains(tb_localSearch.Text.ToString().ToLower())) ||
@@ -681,13 +702,17 @@ namespace SchoolManagement
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
             }
+            finally
+            {
+                mainModel.PgbStatus = MainWindowModel.AppStatus.Ready;
+            }
         }
 
         private void FilterRemote_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //mainModel.ReloadListProfileRFDGV(tb_nameSearch.Text, tb_pinSearch.Text, tb_adnoSearch.Text);
+                mainModel.PgbStatus = MainWindowModel.AppStatus.Searching;
                 AccountListToSend.Items.Filter = (obj) =>
                 (
                 (((Profile)obj).ID.ToString().ToLower().Contains(tb_remoteSearch.Text.ToString().ToLower())) ||
@@ -704,6 +729,10 @@ namespace SchoolManagement
             {
                 logFile.Error(ex.Message);
                 Constant.mainWindowPointer.WriteLog(ex.Message);
+            }
+            finally
+            {
+                mainModel.PgbStatus = MainWindowModel.AppStatus.Ready;
             }
         }
 
@@ -845,7 +874,7 @@ namespace SchoolManagement
                 if (DeviceRFListData.SelectedItem != null)
                 {
                     Device deviceRF = DeviceRFListData.SelectedItem as Device;
-                    deviceRF.deviceItem.sendProfile(deviceRF.IP, DeviceItem.SERVERRESPONSE.RESP_PROFILE_ADD, new List<Profile>());
+                    deviceRF.deviceItem.sendProfile(deviceRF.IP, DeviceItem.SERVERRESPONSE.RESP_PROFILE_UPDATE, new List<Profile>());
                 }
             }
             catch (Exception ex)
@@ -924,6 +953,7 @@ namespace SchoolManagement
 
         private void Btn_submit_Click(object sender, RoutedEventArgs e)
         {
+            //SqliteDataAccess.CreateTables();
             try
             {
                 if (string.IsNullOrEmpty(this.tb_username.Text) || this.tb_username.Text.Trim() == "")
@@ -1066,6 +1096,66 @@ namespace SchoolManagement
         private void Btn_DeselectedProfile_Click(object sender, RoutedEventArgs e)
         {
             mainModel.DeselectedProfileFromProfilesToSend(AccountListToSend.SelectedItems);
+        }
+
+        private void Btn_imageReplace_Click(object sender, RoutedEventArgs e)
+        {
+            if (AccountListLocal.SelectedItem == null)
+            {
+                return;
+            }
+            OpenFileDialog openFileDialog1 = new OpenFileDialog
+            {
+                Title = "Browse JPEG Image",
+                Multiselect = false,
+                CheckFileExists = true,
+                CheckPathExists = true,
+
+                DefaultExt = "JPEG",
+                Filter = "All JPEG Files (*.jpg)|*.jpg",
+                FilterIndex = 1,
+                RestoreDirectory = true
+                //ReadOnlyChecked = true,
+                //ShowReadOnly = true
+            };
+
+            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                img_profile.Source = null;
+                //string oldFilePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + tb_image.Text;
+                //File.Delete(oldFilePath);
+                importFilePath = openFileDialog1.FileName;
+                File.Copy(importFilePath,
+               Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + tb_image.Text,
+               true);
+
+            }
+        }
+
+        private void Btn_cancel_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (DisableEditProfile())
+                {
+                    editProfile.IsEnabled = true;
+                    MainTabControl.IsEnabled = true;
+                    save.Visibility = Visibility.Hidden;
+                    cancel.Visibility = Visibility.Hidden;
+                    AccountListLocal.IsEnabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                logFile.Error(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message);
+                editProfile.IsEnabled = true;
+                MainTabControl.IsEnabled = true;
+                save.Visibility = Visibility.Hidden;
+                cancel.Visibility = Visibility.Hidden;
+                AccountListLocal.IsEnabled = true;
+            }
+           
         }
     }
 

@@ -8,8 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Name="mainWindow"
     Title="Gate Access Control System"
-    Width="900"
-    Height="800"
+    Width="700"
+    Height="500"
     MinWidth="800"
     MinHeight="500"
     Closing="Window_Closing"
@@ -207,6 +207,27 @@
                                 </StackPanel>
                                 <!--<iconPacks:PackIconMaterial Kind="Plus" Foreground="Green" />-->
                             </Button>
+
+                            <Button
+                                Name="syncProfiles"
+                                Width="90"
+                                Height="25"
+                                Padding="0,0,0,0"
+                                Background="#F1F1F1"
+                                BorderThickness="0"
+                                Click="Button_Click_1">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image
+                                        Name="img_syncProfiles"
+                                        Width="12"
+                                        Source="pack://siteoforigin:,,,/Resources/server_go.png" />
+                                    <Label
+                                        Name="btn_syncprofilelb"
+                                        Content="Sync Profiles"
+                                        FontSize="10" />
+                                </StackPanel>
+                            </Button>
+
                         </ToolBar>
                     </ToolBarTray>
                 </Border>
@@ -229,113 +250,10 @@
                             <TabItem FontWeight="Normal" Header="Profiles">
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="50" />
                                         <RowDefinition />
-                                        <RowDefinition Name="StackButton_ProfileAddUpdateRemove" Height="35" />
+                                        <!--<RowDefinition Name="StackButton_ProfileAddUpdateRemove" Height="0" />-->
                                     </Grid.RowDefinitions>
-                                    <Grid Grid.Row="0">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                        <StackPanel
-                                            Grid.Row="0"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            Orientation="Horizontal">
-                                            <Button
-                                                Name="registrationProfile"
-                                                Width="90"
-                                                Height="25"
-                                                Margin="5,0,5,0"
-                                                Padding="0,0,0,0"
-                                                Background="Transparent"
-                                                BorderThickness="0"
-                                                Click="Registration_Click">
-                                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                                                    <Image Width="12" Source="pack://siteoforigin:,,,/Resources/table_add.png" />
-                                                    <Label FontSize="10">Add Profile</Label>
-                                                </StackPanel>
-                                            </Button>
-
-                                            <Button
-                                                Name="editProfile"
-                                                Width="90"
-                                                Height="25"
-                                                Margin="0,0,0,0"
-                                                Padding="0,0,0,0"
-                                                Background="Transparent"
-                                                BorderThickness="0"
-                                                Click="Btn_edit_Click">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Width="12" Source="pack://siteoforigin:,,,/Resources/table_edit.png" />
-                                                    <Label FontSize="10">Edit Profile</Label>
-                                                </StackPanel>
-                                            </Button>
-
-                                            <Button
-                                                Name="delProfile"
-                                                Width="90"
-                                                Height="25"
-                                                Margin="5,0,5,0"
-                                                Padding="0,0,0,0"
-                                                Background="Transparent"
-                                                BorderThickness="0"
-                                                Click="Btn_delete_Click">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Width="12" Source="pack://siteoforigin:,,,/Resources/table_delete.png" />
-                                                    <Label FontSize="10">Remove Profile</Label>
-                                                </StackPanel>
-                                            </Button>
-
-                                            <Button
-                                                Name="changeProfileStatus"
-                                                Width="90"
-                                                Height="25"
-                                                Margin="5,0,5,0"
-                                                Padding="0,0,0,0"
-                                                Background="Transparent"
-                                                BorderThickness="0"
-                                                Click="ChangeProfileStatus_Click">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image
-                                                        Name="img_profileStatus"
-                                                        Width="12"
-                                                        Source="pack://siteoforigin:,,,/Resources/cancel.png" />
-                                                    <Label
-                                                        Name="btn_changestatuslb"
-                                                        Content="Suspend Profile"
-                                                        FontSize="10" />
-                                                </StackPanel>
-                                            </Button>
-
-                                            <Button
-                                                Name="syncProfiles"
-                                                Width="90"
-                                                Height="25"
-                                                Margin="5,0,5,0"
-                                                Padding="0,0,0,0"
-                                                Background="Transparent"
-                                                BorderThickness="0"
-                                                Click="Button_Click_1">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image
-                                                        Name="img_syncProfiles"
-                                                        Width="12"
-                                                        Source="pack://siteoforigin:,,,/Resources/server_go.png" />
-                                                    <Label
-                                                        Name="btn_syncprofilelb"
-                                                        Content="Sync Profiles"
-                                                        FontSize="10" />
-                                                </StackPanel>
-                                            </Button>
-                                            <!--<Button Width="100" Click="Button_Click"></Button>-->
-                                        </StackPanel>
-                                    </Grid>
-                                    <Grid
-                                        Name="GridDGVProfile"
-                                        Grid.Row="1"
-                                        Margin="0,5,0,0">
+                                    <Grid Name="GridDGVProfile" Grid.Row="0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Name="DGV_ProfileList" Width="1*" />
                                             <ColumnDefinition Name="DGV_ModilyList" Width="1*" />
@@ -346,12 +264,83 @@
                                             BorderThickness="0,0,2,0">
                                             <Grid>
                                                 <Grid.RowDefinitions>
+                                                    <RowDefinition Height="30" />
                                                     <RowDefinition Height="20" />
                                                     <RowDefinition Height="25" />
                                                     <RowDefinition />
-                                                    <RowDefinition Name="LocalList_ButtonsGrid" Height="30" />
                                                 </Grid.RowDefinitions>
                                                 <Grid Grid.Row="0">
+                                                    <ToolBarTray Background="#F1F1F1">
+                                                        <ToolBar Background="#F1F1F1">
+                                                            <Button
+                                                                Name="registrationProfile"
+                                                                Width="90"
+                                                                Height="25"
+                                                                Margin="5,0,5,0"
+                                                                Padding="0,0,0,0"
+                                                                Background="Transparent"
+                                                                BorderThickness="0"
+                                                                Click="Registration_Click">
+                                                                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                                                    <Image Width="12" Source="pack://siteoforigin:,,,/Resources/table_add.png" />
+                                                                    <Label FontSize="10">Add Profile</Label>
+                                                                </StackPanel>
+                                                            </Button>
+
+                                                            <Button
+                                                                Name="editProfile"
+                                                                Width="90"
+                                                                Height="25"
+                                                                Margin="0,0,0,0"
+                                                                Padding="0,0,0,0"
+                                                                Background="Transparent"
+                                                                BorderThickness="0"
+                                                                Click="Btn_edit_Click">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image Width="12" Source="pack://siteoforigin:,,,/Resources/table_edit.png" />
+                                                                    <Label FontSize="10">Edit Profile</Label>
+                                                                </StackPanel>
+                                                            </Button>
+
+                                                            <Button
+                                                                Name="delProfile"
+                                                                Width="90"
+                                                                Height="25"
+                                                                Margin="5,0,5,0"
+                                                                Padding="0,0,0,0"
+                                                                Background="Transparent"
+                                                                BorderThickness="0"
+                                                                Click="Btn_delete_Click">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image Width="12" Source="pack://siteoforigin:,,,/Resources/table_delete.png" />
+                                                                    <Label FontSize="10">Remove Profile</Label>
+                                                                </StackPanel>
+                                                            </Button>
+
+                                                            <Button
+                                                                Name="changeProfileStatus"
+                                                                Width="90"
+                                                                Height="25"
+                                                                Margin="5,0,5,0"
+                                                                Padding="0,0,0,0"
+                                                                Background="Transparent"
+                                                                BorderThickness="0"
+                                                                Click="ChangeProfileStatus_Click">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image
+                                                                        Name="img_profileStatus"
+                                                                        Width="12"
+                                                                        Source="pack://siteoforigin:,,,/Resources/cancel.png" />
+                                                                    <Label
+                                                                        Name="btn_changestatuslb"
+                                                                        Content="Suspend Profile"
+                                                                        FontSize="10" />
+                                                                </StackPanel>
+                                                            </Button>
+                                                        </ToolBar>
+                                                    </ToolBarTray>
+                                                </Grid>
+                                                <Grid Grid.Row="1">
                                                     <Label
                                                         Padding="0"
                                                         HorizontalContentAlignment="Center"
@@ -361,7 +350,7 @@
                                                         FontSize="12"
                                                         Foreground="DarkGreen" />
                                                 </Grid>
-                                                <Grid Grid.Row="1">
+                                                <Grid Grid.Row="2">
                                                     <DockPanel VerticalAlignment="Center">
                                                         <TextBox
                                                             Name="tb_localSearch"
@@ -372,135 +361,138 @@
                                                             Tag="Enter to search" />
                                                     </DockPanel>
                                                 </Grid>
-                                                <Grid Grid.Row="2">
-                                                    <DataGrid
-                                                        Name="AccountListLocal"
-                                                        AutoGenerateColumns="False"
-                                                        Background="White"
-                                                        CanUserAddRows="False"
-                                                        CanUserDeleteRows="False"
-                                                        FontSize="12"
-                                                        ItemsSource="{Binding Profiles, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                                        SelectedCellsChanged="AccountListData_SelectedCellsChanged"
-                                                        SelectionMode="Extended"
-                                                        SelectionUnit="FullRow">
-                                                        <DataGrid.Columns>
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=ID}"
-                                                                Header="ID"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=PIN_NO}"
-                                                                Header="PIN No"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=NAME}"
-                                                                Header="Name"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=CLASS}"
-                                                                Header="Class"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=GENDER}"
-                                                                Header="Gender"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=DOB, StringFormat=\{0:dd-MM-yyyy\}}"
-                                                                Header="DOB"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=EMAIL}"
-                                                                Header="Email"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=ADDRESS}"
-                                                                Header="Address"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=PHONE}"
-                                                                Header="Phone"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=ADNO}"
-                                                                Header="ADNo"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=IMAGE}"
-                                                                Header="Image"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=DISU, StringFormat=\{0:dd-MM-yyyy\}}"
-                                                                Header="Disu"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=LOCK_DATE, StringFormat=\{0:dd-MM-yyyy\}}"
-                                                                Header="Suspended Date"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=DATE_TO_LOCK, StringFormat=\{0:dd-MM-yyyy\}}"
-                                                                Header="Expire Date"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=CHECK_DATE_TO_LOCK}"
-                                                                Header="Auto Suspension"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=STATUS}"
-                                                                Header="Status"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                        </DataGrid.Columns>
-                                                    </DataGrid>
-                                                </Grid>
-                                                <Grid Grid.Row="3" Background="#f1f1f1">
-                                                    <StackPanel
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        Orientation="Horizontal">
-                                                        <Button
-                                                            Name="btn_MoveToModilyList"
-                                                            Width="50"
-                                                            Height="20"
-                                                            Padding="0"
-                                                            HorizontalContentAlignment="Center"
-                                                            VerticalContentAlignment="Center"
-                                                            Click="Btn_MoveToModifyList_Click"
-                                                            IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                                            Select
-                                                        </Button>
-                                                    </StackPanel>
+                                                <Grid Grid.Row="3">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                        <RowDefinition Name="LocalList_ButtonsGrid" Height="30" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid Grid.Row="0">
+                                                        <DataGrid
+                                                            Name="AccountListLocal"
+                                                            AutoGenerateColumns="False"
+                                                            Background="White"
+                                                            CanUserAddRows="False"
+                                                            CanUserDeleteRows="False"
+                                                            FontSize="12"
+                                                            ItemsSource="{Binding Profiles, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                                            SelectedCellsChanged="AccountListData_SelectedCellsChanged"
+                                                            SelectionMode="Extended"
+                                                            SelectionUnit="FullRow">
+                                                            <DataGrid.Columns>
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=ID}"
+                                                                    Header="ID"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=PIN_NO}"
+                                                                    Header="PIN No"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=NAME}"
+                                                                    Header="Name"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=CLASS}"
+                                                                    Header="Class"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=GENDER}"
+                                                                    Header="Gender"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=DOB, StringFormat=\{0:dd-MM-yyyy\}}"
+                                                                    Header="DOB"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=EMAIL}"
+                                                                    Header="Email"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=ADDRESS}"
+                                                                    Header="Address"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=PHONE}"
+                                                                    Header="Phone"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=ADNO}"
+                                                                    Header="ADNo"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=IMAGE}"
+                                                                    Header="Image"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=DISU, StringFormat=\{0:dd-MM-yyyy\}}"
+                                                                    Header="Disu"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=LOCK_DATE, StringFormat=\{0:dd-MM-yyyy\}}"
+                                                                    Header="Suspended Date"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=DATE_TO_LOCK, StringFormat=\{0:dd-MM-yyyy\}}"
+                                                                    Header="Expire Date"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=CHECK_DATE_TO_LOCK}"
+                                                                    Header="Auto Suspension"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=STATUS}"
+                                                                    Header="Status"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                            </DataGrid.Columns>
+                                                        </DataGrid>
+                                                    </Grid>
+                                                    <Grid Grid.Row="1">
+                                                        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                            <Button
+                                                                Name="btn_MoveToModilyList"
+                                                                Padding="0"
+                                                                HorizontalContentAlignment="Center"
+                                                                VerticalContentAlignment="Center"
+                                                                BorderThickness="0"
+                                                                Click="Btn_MoveToModifyList_Click"
+                                                                FontSize="16"
+                                                                IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                                                Select
+                                                            </Button>
+                                                        </DockPanel>
+                                                    </Grid>
 
                                                 </Grid>
                                             </Grid>
@@ -511,12 +503,61 @@
                                             BorderThickness="2,0,0,0">
                                             <Grid>
                                                 <Grid.RowDefinitions>
+                                                    <RowDefinition Height="30" />
                                                     <RowDefinition Height="20" />
                                                     <RowDefinition Height="25" />
                                                     <RowDefinition />
-                                                    <RowDefinition Name="SendList_ButtonsGrid" Height="30" />
                                                 </Grid.RowDefinitions>
                                                 <Grid Grid.Row="0">
+                                                    <ToolBarTray Background="#F1F1F1">
+                                                        <ToolBar Background="#F1F1F1">
+                                                            <Button
+                                                                Name="btn_ModifyList_SendToAdd"
+                                                                Width="60"
+                                                                Height="25"
+                                                                Margin="0,0,0,0"
+                                                                Padding="0,0,0,0"
+                                                                HorizontalContentAlignment="Center"
+                                                                VerticalContentAlignment="Center"
+                                                                Background="Transparent"
+                                                                BorderThickness="0"
+                                                                Click="Btn_ModifyList_SendToAdd_Click"
+                                                                IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                                                                Add
+                                                            </Button>
+                                                            <Button
+                                                                Name="btn_ModifyList_SendToUpdate"
+                                                                Width="60"
+                                                                Height="25"
+                                                                Margin="0,0,0,0"
+                                                                Padding="0,0,0,0"
+                                                                HorizontalContentAlignment="Center"
+                                                                VerticalContentAlignment="Center"
+                                                                Background="Transparent"
+                                                                BorderThickness="0"
+                                                                Click="Btn_ModifyList_SendToUpdate_Click"
+                                                                IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                                                                Update
+                                                            </Button>
+                                                            <Button
+                                                                Name="btn_ModifyList_SendToRemove"
+                                                                Width="60"
+                                                                Height="25"
+                                                                Margin="0,0,0,0"
+                                                                Padding="0,0,0,0"
+                                                                HorizontalContentAlignment="Center"
+                                                                VerticalContentAlignment="Center"
+                                                                Background="Transparent"
+                                                                BorderThickness="0"
+                                                                Click="Btn_ModifyList_SendToRemove_Click"
+                                                                IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                                                                Remove
+                                                            </Button>
+                                                        </ToolBar>
+                                                    </ToolBarTray>
+
+                                                </Grid>
+                                                <Grid Grid.Row="1">
                                                     <Label
                                                         Padding="0"
                                                         HorizontalContentAlignment="Center"
@@ -526,7 +567,7 @@
                                                         FontSize="12"
                                                         Foreground="#e33b3b" />
                                                 </Grid>
-                                                <Grid Grid.Row="1">
+                                                <Grid Grid.Row="2">
                                                     <DockPanel VerticalAlignment="Center">
                                                         <TextBox
                                                             Name="tb_remoteSearch"
@@ -537,187 +578,142 @@
                                                             Tag="Enter to search" />
                                                     </DockPanel>
                                                 </Grid>
-                                                <Grid Grid.Row="2">
-                                                    <DataGrid
-                                                        Name="AccountListToSend"
-                                                        AutoGenerateColumns="False"
-                                                        Background="White"
-                                                        CanUserAddRows="False"
-                                                        CanUserDeleteRows="False"
-                                                        FontSize="12"
-                                                        ItemsSource="{Binding ProfilesToSend, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                                        SelectionMode="Extended"
-                                                        SelectionUnit="FullRow">
-                                                        <DataGrid.Columns>
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=ID}"
-                                                                Header="ID"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=PIN_NO}"
-                                                                Header="PIN No"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=NAME}"
-                                                                Header="Name"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=CLASS}"
-                                                                Header="Class"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=GENDER}"
-                                                                Header="Gender"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=DOB, StringFormat=\{0:dd-MM-yyyy\}}"
-                                                                Header="DOB"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=EMAIL}"
-                                                                Header="Email"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=ADDRESS}"
-                                                                Header="Address"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=PHONE}"
-                                                                Header="Phone"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=ADNO}"
-                                                                Header="ADNo"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=IMAGE}"
-                                                                Header="Image"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=DISU, StringFormat=\{0:dd-MM-yyyy\}}"
-                                                                Header="Disu"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=LOCK_DATE, StringFormat=\{0:dd-MM-yyyy\}}"
-                                                                Header="Suspended Date"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=DATE_TO_LOCK, StringFormat=\{0:dd-MM-yyyy\}}"
-                                                                Header="Expire Date"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=CHECK_DATE_TO_LOCK}"
-                                                                Header="Auto Suspension"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                            <DataGridTextColumn
-                                                                Width="Auto"
-                                                                Binding="{Binding Path=STATUS}"
-                                                                Header="Status"
-                                                                IsReadOnly="True"
-                                                                Visibility="Visible" />
-                                                        </DataGrid.Columns>
-                                                    </DataGrid>
-                                                </Grid>
-                                                <Grid Grid.Row="3" Background="#f1f1f1">
-                                                    <StackPanel Orientation="Vertical">
-                                                        <DockPanel
-                                                            Margin="0,5"
-                                                            HorizontalAlignment="Center"
-                                                            VerticalAlignment="Center">
+                                                <Grid Grid.Row="3">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                        <RowDefinition Name="SendList_ButtonsGrid" Height="30" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid Grid.Row="0">
+                                                        <DataGrid
+                                                            Name="AccountListToSend"
+                                                            AutoGenerateColumns="False"
+                                                            Background="White"
+                                                            CanUserAddRows="False"
+                                                            CanUserDeleteRows="False"
+                                                            FontSize="12"
+                                                            ItemsSource="{Binding ProfilesToSend, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                                            SelectionMode="Extended"
+                                                            SelectionUnit="FullRow">
+                                                            <DataGrid.Columns>
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=ID}"
+                                                                    Header="ID"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=PIN_NO}"
+                                                                    Header="PIN No"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=NAME}"
+                                                                    Header="Name"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=CLASS}"
+                                                                    Header="Class"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=GENDER}"
+                                                                    Header="Gender"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=DOB, StringFormat=\{0:dd-MM-yyyy\}}"
+                                                                    Header="DOB"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=EMAIL}"
+                                                                    Header="Email"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=ADDRESS}"
+                                                                    Header="Address"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=PHONE}"
+                                                                    Header="Phone"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=ADNO}"
+                                                                    Header="ADNo"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=IMAGE}"
+                                                                    Header="Image"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=DISU, StringFormat=\{0:dd-MM-yyyy\}}"
+                                                                    Header="Disu"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=LOCK_DATE, StringFormat=\{0:dd-MM-yyyy\}}"
+                                                                    Header="Suspended Date"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=DATE_TO_LOCK, StringFormat=\{0:dd-MM-yyyy\}}"
+                                                                    Header="Expire Date"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=CHECK_DATE_TO_LOCK}"
+                                                                    Header="Auto Suspension"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                                <DataGridTextColumn
+                                                                    Width="Auto"
+                                                                    Binding="{Binding Path=STATUS}"
+                                                                    Header="Status"
+                                                                    IsReadOnly="True"
+                                                                    Visibility="Visible" />
+                                                            </DataGrid.Columns>
+                                                        </DataGrid>
+                                                    </Grid>
+                                                    <Grid Grid.Row="1">
+                                                        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                                             <Button
                                                                 Name="btn_DeselectedProfile"
-                                                                Width="70"
-                                                                Height="20"
-                                                                Margin="5,0"
                                                                 Padding="0"
                                                                 HorizontalContentAlignment="Center"
                                                                 VerticalContentAlignment="Center"
+                                                                BorderThickness="0"
                                                                 Click="Btn_DeselectedProfile_Click"
+                                                                FontSize="16"
                                                                 IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
-                                                                Deselected
+                                                                Unselect
                                                             </Button>
                                                         </DockPanel>
-                                                    </StackPanel>
+                                                    </Grid>
 
                                                 </Grid>
 
                                             </Grid>
                                         </Border>
-                                    </Grid>
-                                    <Grid Grid.Row="2" Background="#f1f1f1">
-                                        <DockPanel
-                                            Margin="0,5"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center">
-
-                                            <Button
-                                                Name="btn_ModifyList_SendToAdd"
-                                                Width="50"
-                                                Height="20"
-                                                Margin="5,0"
-                                                Padding="0"
-                                                HorizontalContentAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                Click="Btn_ModifyList_SendToAdd_Click"
-                                                IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
-                                                Add
-                                            </Button>
-                                            <Button
-                                                Name="btn_ModifyList_SendToUpdate"
-                                                Width="50"
-                                                Height="20"
-                                                Margin="5,0"
-                                                Padding="0"
-                                                HorizontalContentAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                Click="Btn_ModifyList_SendToUpdate_Click"
-                                                IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
-                                                Update
-                                            </Button>
-                                            <Button
-                                                Name="btn_ModifyList_SendToRemove"
-                                                Width="50"
-                                                Height="20"
-                                                Margin="5,0"
-                                                Padding="0"
-                                                HorizontalContentAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                Click="Btn_ModifyList_SendToRemove_Click"
-                                                IsEnabled="{Binding IsModifyDataGridOpen, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
-                                                Remove
-                                            </Button>
-                                        </DockPanel>
-
                                     </Grid>
                                 </Grid>
                             </TabItem>
@@ -853,32 +849,31 @@
                                             CanUserDeleteRows="False"
                                             CanUserReorderColumns="False"
                                             CanUserResizeRows="False"
-                                            FontSize="12"
                                             ItemsSource="{Binding Devices, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                             SelectedCellsChanged="DeviceRFListData_SelectedCellsChanged"
                                             SelectionMode="Single"
                                             SelectionUnit="FullRow">
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn
-                                                    Width="*"
+                                                    Width="Auto"
                                                     Binding="{Binding Path=ID}"
                                                     Header="Id"
                                                     IsReadOnly="True"
                                                     Visibility="Visible" />
                                                 <DataGridTextColumn
-                                                    Width="*"
+                                                    Width="Auto"
                                                     Binding="{Binding Path=GATE}"
                                                     Header="Name"
                                                     IsReadOnly="True"
                                                     Visibility="Visible" />
                                                 <DataGridTextColumn
-                                                    Width="*"
+                                                    Width="Auto"
                                                     Binding="{Binding Path=IP}"
                                                     Header="Ip"
                                                     IsReadOnly="True"
                                                     Visibility="Visible" />
                                                 <DataGridTextColumn
-                                                    Width="*"
+                                                    Width="Auto"
                                                     Binding="{Binding Path=CLASS}"
                                                     Header="Class"
                                                     IsReadOnly="True"
@@ -912,7 +907,7 @@
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>-->
                                                 <DataGridTextColumn
-                                                    Width="*"
+                                                    Width="Auto"
                                                     Binding="{Binding Path=connectStatus, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                     Header="Connection"
                                                     IsReadOnly="True"
@@ -988,11 +983,12 @@
                                                                     <!--<Viewbox
                                                                         MinHeight="170"
                                                                         MaxHeight="220">-->
+
                                                                     <Image
                                                                         Name="img_profile"
                                                                         Height="200"
                                                                         Source="pack://siteoforigin:,,,/Resources/images.png" />
-                                                                    <!--</Viewbox>-->
+                                                                    <!--</Viewbox> pack://siteoforigin:,,,/Resources/images.png-->
                                                                 </StackPanel>
                                                             </StackPanel>
                                                             <StackPanel>
@@ -1069,8 +1065,7 @@
                                                                             Name="cbb_class"
                                                                             Height="20"
                                                                             Margin="5,0"
-                                                                            IsEnabled="False"
-                                                                            SelectionChanged="Cbb_class_SelectionChanged">
+                                                                            IsEnabled="False">
                                                                             <ComboBoxItem>Staff</ComboBoxItem>
                                                                             <ComboBoxItem>Parent</ComboBoxItem>
                                                                             <ComboBoxItem>Student</ComboBoxItem>
@@ -1208,13 +1203,26 @@
                                                                         <Label Content="Image" FontWeight="Normal" />
                                                                     </Grid>
                                                                     <Grid Grid.Column="1">
-                                                                        <TextBox
-                                                                            Name="tb_image"
-                                                                            Margin="5,0"
-                                                                            VerticalAlignment="Center"
-                                                                            IsReadOnly="True"
-                                                                            Text=""
-                                                                            TextAlignment="Left" />
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition />
+                                                                            <ColumnDefinition Width="40" />
+                                                                        </Grid.ColumnDefinitions>
+                                                                        <Grid Grid.Column="0">
+                                                                            <TextBox
+                                                                                Name="tb_image"
+                                                                                Margin="5,0"
+                                                                                VerticalAlignment="Center"
+                                                                                IsReadOnly="True"
+                                                                                Text="" />
+                                                                        </Grid>
+                                                                        <Grid Grid.Column="1">
+                                                                            <Button
+                                                                                Name="btn_imageReplace"
+                                                                                Height="20"
+                                                                                Click="Btn_imageReplace_Click"
+                                                                                Content="..."
+                                                                                IsEnabled="False" />
+                                                                        </Grid>
                                                                     </Grid>
                                                                 </Grid>
                                                             </StackPanel>
@@ -1321,30 +1329,22 @@
                                                                     <Image Width="12" Source="pack://siteoforigin:,,,/Resources/table_edit.png" />
                                                                     <Label FontSize="10">Save Profile</Label>
                                                                 </StackPanel>
-                                                                <!--<iconPacks:PackIconMaterial Kind="Delete" Foreground="OrangeRed" />-->
                                                             </Button>
-                                                            <!--<Button
-                                                             Name="btn_editProfile"
-                                                             Margin="5 0"
-                                                             BorderBrush="#a9a9a9"
-                                                             FontWeight="Normal"
-                                                             Height="20"
-                                                             Width="70"
-                                                             Content="Edit"
-                                                             Click="Edit_Click"></Button>-->
-                                                            <!--<Button
-                                                             Margin="5 0"
-                                                             BorderBrush="#a9a9a9"
-                                                             FontWeight="Normal"
-                                                             Height="20"
-                                                             Width="70"
-                                                             Content="Delete"></Button>-->
-                                                            <!--<Button
-                                                             Margin="5 0"
-                                                             FontWeight="Normal"
-                                                             Height="20"
-                                                             Width="70"
-                                                             Content="Report"></Button>-->
+                                                            <Button
+                                                                Name="cancel"
+                                                                Width="100"
+                                                                Height="25"
+                                                                Margin="0,0,0,0"
+                                                                Padding="0,0,0,0"
+                                                                Background="Transparent"
+                                                                BorderThickness="0"
+                                                                Click="Btn_cancel_Click"
+                                                                Visibility="Hidden">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image Width="12" Source="pack://siteoforigin:,,,/Resources/cancel.png" />
+                                                                    <Label FontSize="10">Cancel</Label>
+                                                                </StackPanel>
+                                                            </Button>
                                                         </StackPanel>
                                                     </Grid>
                                                 </Grid>

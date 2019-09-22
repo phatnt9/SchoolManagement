@@ -179,7 +179,6 @@ namespace SchoolManagement.View
                         profile.DISU = ngayThang;
 
                         profile.IMAGE = xlRange.Cells[i, 7].Value2.ToString();
-                        ImportProfileImage(importFileFolder, profile.IMAGE);
 
                         profile.CLASS = xlRange.Cells[i, 9].Value2.ToString();
                         profile.EMAIL = (xlRange.Cells[i, 10].Value2 == null) ? "" : xlRange.Cells[i, 10].Value2.ToString();
@@ -249,11 +248,17 @@ namespace SchoolManagement.View
                         {
                             if (addorupdate)
                             {
-                                SqliteDataAccess.SaveProfileRF(profile);
+                                if(SqliteDataAccess.SaveProfileRF(profile))
+                                {
+                                    ImportProfileImage(importFileFolder, profile.IMAGE);
+                                }
                             }
                             else
                             {
-                                SqliteDataAccess.UpdateProfileRF(profile, profile.STATUS);
+                                if(SqliteDataAccess.UpdateProfileRF(profile, profile.STATUS))
+                                {
+                                    ImportProfileImage(importFileFolder, profile.IMAGE);
+                                }
                             }
                         }
                         catch (Exception ex)

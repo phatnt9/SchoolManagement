@@ -2,6 +2,7 @@
 using SchoolManagement.View;
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
 
 namespace SchoolManagement
@@ -47,25 +48,18 @@ namespace SchoolManagement
                 }
                 if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\" + "default.png"))
                 {
-                    File.Copy(Environment.CurrentDirectory + @"\Resources\default.png",
-                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\default.png",
-                        false);
+                    string DefaultImageFileNamePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\Image\default.png";
+                    File.Copy(Environment.CurrentDirectory + @"\Resources\default.png",DefaultImageFileNamePath,false);
                 }
                 if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB"))
                 {
                     Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB");
-                    //if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\"+ "Datastore.db"))
-                    //{
-                    //    File.Copy(Environment.CurrentDirectory + @"\Datastore.db",
-                    //        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\Datastore.db",
-                    //        true);
-                    //}
                 }
                 if (!File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\" + "Datastore.db"))
                 {
-                    File.Copy(Environment.CurrentDirectory + @"\Datastore.db",
-                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\Datastore.db",
-                        false);
+                    string DBFileNamePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB\Datastore.db";
+                    //SQLiteConnection.CreateFile(DBFileNamePath);
+                    File.Copy(Environment.CurrentDirectory + @"\Datastore.db",DBFileNamePath,false);
                 }
             }
             catch (Exception ex)

@@ -25,6 +25,7 @@ namespace SchoolManagement.View
             InitializeComponent();
             this.mainW = mainW;
             Title = "Edit Device";
+            tb_ip.IsEnabled = false;
             btn_addSave.Content = "Save";
             tb_gate.Text = deviceRF.GATE;
             tb_ip.Text = deviceRF.IP;

@@ -19,6 +19,7 @@ namespace SchoolManagement.Model
 
         public enum STATUSPROFILE
         {
+            Ready,
             Updated,
             Updating,
             Failed,
@@ -28,12 +29,18 @@ namespace SchoolManagement.Model
 
         public enum CLIENTCMD
         {
+            CLIENT_READY = 1000,
             REQUEST_PROFILE_ADD = 110,
             REQUEST_PROFILE_UPDATE = 111,
             REQUEST_PROFILE_DELETE = 112,
             REQUEST_REG_PERSON_LIST = 120,
             REQUEST_SYNC_TIME = 130,
-            CONFIRM_SENT_PROFILE_SUCCESS = 310,
+            CONFIRM_ADD_PROFILE_SUCCESS = 310,
+            CONFIRM_UPDATE_PROFILE_SUCCESS = 311,
+            CONFIRM_DELETE_PROFILE_SUCCESS = 312,
+            CONFIRM_ADD_PROFILE_UNSUCCESS = 320,
+            CONFIRM_UPDATE_PROFILE_UNSUCCESS = 321,
+            CONFIRM_DELETE_PROFILE_UNSUCCESS = 322,
         }
 
         public enum SERVERRESPONSE
@@ -48,6 +55,8 @@ namespace SchoolManagement.Model
             RESP_DATAFORMAT_ERROR = 300,
             RESP_PERSONLIST_ERROR = 320,
         }
+
+        //public enum
 
         public class JStringProfile
         {
@@ -64,7 +73,7 @@ namespace SchoolManagement.Model
 
         public struct FLAGSTATUSCLIENT
         {
-            public bool OnConfirmProfileSuccess;
+            public CLIENTCMD OnConfirmProfileSuccess;
         }
 
         private int publishdata;
@@ -80,7 +89,7 @@ namespace SchoolManagement.Model
         {
             this.mainWindowModel = mainWindowModel;
 
-            OnFlagStatusClient.OnConfirmProfileSuccess = false;
+            OnFlagStatusClient.OnConfirmProfileSuccess = CLIENTCMD.CLIENT_READY;
         }
 
         protected override void OnOpenedEvent()
@@ -196,7 +205,10 @@ namespace SchoolManagement.Model
                             }
                             else
                             {
-                                Jprofile.data = mainWindowModel.GetListSerialId(ip);
+                                //if (!mainWindowModel.IsModifyDataGridOpen)
+                                {
+                                    Jprofile.data = mainWindowModel.GetListSerialId(ip);
+                                }
                             }
                             var jsonSettings = new JsonSerializerSettings();
                             jsonSettings.DateFormatString = "yyyy-MM-dd";
@@ -212,18 +224,27 @@ namespace SchoolManagement.Model
                             new Thread((MainWindowModel) =>
                             {
                                 int cntTimeOut = 0;
-                                while (cntTimeOut++ < 60)
+
+                                do
                                 {
-                                    if (OnFlagStatusClient.OnConfirmProfileSuccess)
+                                    if (OnFlagStatusClient.OnConfirmProfileSuccess == CLIENTCMD.CONFIRM_ADD_PROFILE_SUCCESS ||
+                                        OnFlagStatusClient.OnConfirmProfileSuccess == CLIENTCMD.CONFIRM_ADD_PROFILE_UNSUCCESS ||
+                                        OnFlagStatusClient.OnConfirmProfileSuccess == CLIENTCMD.CONFIRM_DELETE_PROFILE_SUCCESS ||
+                                        OnFlagStatusClient.OnConfirmProfileSuccess == CLIENTCMD.CONFIRM_DELETE_PROFILE_UNSUCCESS ||
+                                        OnFlagStatusClient.OnConfirmProfileSuccess == CLIENTCMD.CONFIRM_UPDATE_PROFILE_SUCCESS ||
+                                        OnFlagStatusClient.OnConfirmProfileSuccess == CLIENTCMD.CONFIRM_UPDATE_PROFILE_UNSUCCESS)
                                     {
                                         break;
                                     }
-
                                     Thread.Sleep(1000);
                                 }
-                                if (OnFlagStatusClient.OnConfirmProfileSuccess)
+                                while (cntTimeOut++ < 120);
+
+                                if (OnFlagStatusClient.OnConfirmProfileSuccess == CLIENTCMD.CONFIRM_ADD_PROFILE_SUCCESS ||
+                                    OnFlagStatusClient.OnConfirmProfileSuccess == CLIENTCMD.CONFIRM_DELETE_PROFILE_SUCCESS ||
+                                    OnFlagStatusClient.OnConfirmProfileSuccess == CLIENTCMD.CONFIRM_UPDATE_PROFILE_SUCCESS)
                                 {
-                                    OnFlagStatusClient.OnConfirmProfileSuccess = false;
+                                    OnFlagStatusClient.OnConfirmProfileSuccess = CLIENTCMD.CLIENT_READY;
                                     statusProfile = STATUSPROFILE.Updated;
                                     if(SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString() + " " + DateTime.Now.ToString("MM/dd/yyyy h:mm:ss tt")))
                                     {
@@ -232,6 +253,7 @@ namespace SchoolManagement.Model
                                 }
                                 else
                                 {
+                                    OnFlagStatusClient.OnConfirmProfileSuccess = CLIENTCMD.CLIENT_READY;
                                     statusProfile = STATUSPROFILE.Failed;
                                     if(SqliteDataAccess.UpdateDeviceRF(ip, statusProfile.ToString()))
                                     {
@@ -306,22 +328,42 @@ namespace SchoolManagement.Model
                 switch (status)
                 {
                     case CLIENTCMD.REQUEST_PROFILE_ADD:
-                        sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_ADD, new List<Profile>());
+                        //sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_ADD, new List<Profile>());
                         //dynamic product=new JOb
                         break;
 
                     case CLIENTCMD.REQUEST_PROFILE_UPDATE:
-                        sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_UPDATE, new List<Profile>());
+                        //sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_UPDATE, new List<Profile>());
                         //dynamic product=new JOb
                         break;
 
                     case CLIENTCMD.REQUEST_PROFILE_DELETE:
-                        sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_DELETE, new List<Profile>());
+                        //sendProfile(ip, SERVERRESPONSE.RESP_PROFILE_DELETE, new List<Profile>());
                         //dynamic product=new JOb
                         break;
 
-                    case CLIENTCMD.CONFIRM_SENT_PROFILE_SUCCESS:
-                        OnFlagStatusClient.OnConfirmProfileSuccess = true;
+                    case CLIENTCMD.CONFIRM_ADD_PROFILE_SUCCESS:
+                        OnFlagStatusClient.OnConfirmProfileSuccess = status;
+                        break;
+
+                    case CLIENTCMD.CONFIRM_UPDATE_PROFILE_SUCCESS:
+                        OnFlagStatusClient.OnConfirmProfileSuccess = status;
+                        break;
+
+                    case CLIENTCMD.CONFIRM_DELETE_PROFILE_SUCCESS:
+                        OnFlagStatusClient.OnConfirmProfileSuccess = status;
+                        break;
+
+                    case CLIENTCMD.CONFIRM_ADD_PROFILE_UNSUCCESS:
+                        OnFlagStatusClient.OnConfirmProfileSuccess = status;
+                        break;
+
+                    case CLIENTCMD.CONFIRM_UPDATE_PROFILE_UNSUCCESS:
+                        OnFlagStatusClient.OnConfirmProfileSuccess = status;
+                        break;
+
+                    case CLIENTCMD.CONFIRM_DELETE_PROFILE_UNSUCCESS:
+                        OnFlagStatusClient.OnConfirmProfileSuccess = status;
                         break;
 
                     case CLIENTCMD.REQUEST_SYNC_TIME:

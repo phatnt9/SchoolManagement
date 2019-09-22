@@ -18,6 +18,46 @@ namespace SchoolManagement.Model
             string test = "Data Source=" + Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\ATEK\DB" + @".\Datastore.db;Version=3;";
             return test;
         }
+        public static void CreateTables()
+        {
+            SQLiteConnection.CreateFile("MyDatabase.db");
+            string test = "Data Source=" + Environment.CurrentDirectory + @".\MyDatabase.db;Version=3;";
+            using (IDbConnection cnn = new SQLiteConnection(test))
+            {
+                //create table highscores (name varchar(20), score int)
+                cnn.Execute("CREATE TABLE RF_DEVICE " +
+                    "(ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                    "IP TEXT NOT NULL UNIQUE, " +
+                    "GATE TEXT NOT NULL, " +
+                    "CLASS TEXT NOT NULL DEFAULT 0, " +
+                    "STATUS TEXT DEFAULT 'Pending')");
+
+                cnn.Execute("CREATE TABLE RF_PROFILE " +
+                    "(ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE," +
+                    "PIN_NO TEXT NOT NULL UNIQUE," +
+                    "NAME TEXT NOT NULL," +
+                    "CLASS TEXT NOT NULL DEFAULT 'Visitor'," +
+                    "GENDER INTEGER NOT NULL DEFAULT 0," +
+                    "DOB DATE NOT NULL," +
+                    "EMAIL TEXT," +
+                    "ADDRESS TEXT," +
+                    "PHONE TEXT," +
+                    "ADNO TEXT NOT NULL," +
+                    "DISU DATE NOT NULL," +
+                    "STATUS TEXT NOT NULL," +
+                    "LOCK_DATE DATE," +
+                    "IMAGE TEXT NOT NULL," +
+                    "DATE_TO_LOCK DATE," +
+                    "CHECK_DATE_TO_LOCK	INTEGER NOT NULL DEFAULT 0)");
+
+                cnn.Execute("CREATE TABLE RF_TIMECHECK " +
+                    "(ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE," +
+                    "PIN_NO VARCHAR(255) NOT NULL," +
+                    "TIME_CHECK DATETIME NOT NULL," +
+                    "IP TEXT NOT NULL," +
+                    "FOREIGN KEY(PIN_NO) REFERENCES RF_PROFILE(PIN_NO))");
+            }
+        }
 
         public static List<Device> LoadDeviceRF()
         {

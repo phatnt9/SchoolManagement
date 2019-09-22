@@ -12,9 +12,23 @@ using System.Windows.Data;
 using System.Windows.Forms;
 using System.Globalization;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Windows.Media;
 
 namespace SchoolManagement.ViewModel
 {
+    public class MyImageSourceConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (new ImageSourceConverter()).ConvertFromString(value.ToString());
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class ImportButtonEnableConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -65,11 +79,15 @@ namespace SchoolManagement.ViewModel
         {
             Ready,
             Exporting,
+            Searching,
             Completed,
             Finished,
             Cancelled,
             Error,
         }
+
+        MainWindow mainW;
+
         public System.Timers.Timer timerSyncTimeSheet;
         private static readonly log4net.ILog logFile = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private BackgroundWorker worker;
@@ -92,8 +110,9 @@ namespace SchoolManagement.ViewModel
         public ObservableCollection<TimeRecord> TimeChecks => _timeChecks;
         
         //public DeviceItem deviceItem;
-        public MainWindowModel()
+        public MainWindowModel(MainWindow mainW)
         {
+            this.mainW = mainW;
             PgbStatus = AppStatus.Ready;
             //
             ReloadListProfileRFDGV();
@@ -123,7 +142,7 @@ namespace SchoolManagement.ViewModel
                 catch (Exception ex)
                 {
                     logFile.Error(ex.Message);
-                    Constant.mainWindowPointer.WriteLog(ex.Message);
+                    Constant.mainWindowPointer.WriteLog(ex.Message+ "TimerSyncTimeSheet_Elapsed");
                 }
             });
         }
@@ -155,7 +174,7 @@ namespace SchoolManagement.ViewModel
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
-                Constant.mainWindowPointer.WriteLog(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message+ "CheckSuspendAllProfile");
             }
         }
 
@@ -176,7 +195,7 @@ namespace SchoolManagement.ViewModel
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
-                Constant.mainWindowPointer.WriteLog(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message + "ReloadListProfileRFDGV");
             }
         }
 
@@ -216,7 +235,7 @@ namespace SchoolManagement.ViewModel
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
-                Constant.mainWindowPointer.WriteLog(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message+ "ReloadListDeviceRFDGV");
             }
         }
 
@@ -288,7 +307,7 @@ namespace SchoolManagement.ViewModel
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
-                Constant.mainWindowPointer.WriteLog(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message + "ReloadListTimeCheckDGV");
             }
         }
 
@@ -311,7 +330,7 @@ namespace SchoolManagement.ViewModel
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
-                Constant.mainWindowPointer.WriteLog(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message+ "CheckinServer");
                 return false;
             }
             finally
@@ -329,7 +348,7 @@ namespace SchoolManagement.ViewModel
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
-                Constant.mainWindowPointer.WriteLog(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message+ "GetListSerialId");
                 return new List<Profile>();
             }
         }
@@ -429,7 +448,7 @@ namespace SchoolManagement.ViewModel
             catch (Exception ex)
             {
                 logFile.Error(ex.Message);
-                Constant.mainWindowPointer.WriteLog(ex.Message);
+                Constant.mainWindowPointer.WriteLog(ex.Message+ "ExportListTimeCheck");
             }
             finally
             {
@@ -475,37 +494,40 @@ namespace SchoolManagement.ViewModel
                         }
                     }
                     //Send
-                    if (device.deviceItem.webSocket.IsAlive && (listProfileToSendForThisDevice.Count > 0))
-                    //if ((listProfileToSendForThisDevice.Count>0))
+                    if (device.deviceItem.webSocket != null)
                     {
-                        DeviceItem.SERVERRESPONSE serRes;
-                        switch (mode)
+                        //if (device.deviceItem.webSocket.IsAlive && (listProfileToSendForThisDevice.Count > 0))
                         {
-                            case Mode.ADD:
+                            DeviceItem.SERVERRESPONSE serRes;
+                            switch (mode)
                             {
-                                serRes = DeviceItem.SERVERRESPONSE.RESP_PROFILE_ADD;
-                                break;
+                                case Mode.ADD:
+                                {
+                                    serRes = DeviceItem.SERVERRESPONSE.RESP_PROFILE_ADD;
+                                    break;
+                                }
+                                case Mode.UPDATE:
+                                {
+                                    serRes = DeviceItem.SERVERRESPONSE.RESP_PROFILE_UPDATE;
+                                    break;
+                                }
+                                case Mode.DELETE:
+                                {
+                                    serRes = DeviceItem.SERVERRESPONSE.RESP_PROFILE_DELETE;
+                                    break;
+                                }
+                                default:
+                                {
+                                    serRes = DeviceItem.SERVERRESPONSE.RESP_PROFILE_ADD;
+                                    break;
+                                }
                             }
-                            case Mode.UPDATE:
-                            {
-                                serRes = DeviceItem.SERVERRESPONSE.RESP_PROFILE_UPDATE;
-                                break;
-                            }
-                            case Mode.DELETE:
-                            {
-                                serRes = DeviceItem.SERVERRESPONSE.RESP_PROFILE_DELETE;
-                                break;
-                            }
-                            default:
-                            {
-                                serRes = DeviceItem.SERVERRESPONSE.RESP_PROFILE_ADD;
-                                break;
-                            }
+                            device.deviceItem.sendProfile(device.IP, serRes, listProfileToSendForThisDevice);
+                            ProfilesToSend.Clear();
                         }
-                        device.deviceItem.sendProfile(device.IP, serRes, listProfileToSendForThisDevice);
                     }
+                    
                 }
-                ProfilesToSend.Clear();
             }
         }
 
@@ -531,7 +553,7 @@ namespace SchoolManagement.ViewModel
 
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            //mainW.pbStatus.Value = e.ProgressPercentage;
+            mainW.pbStatus.Value = e.ProgressPercentage;
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -551,7 +573,7 @@ namespace SchoolManagement.ViewModel
                 PgbStatus = AppStatus.Completed;
             }
             // general cleanup code, runs when there was an error or not.
-            //mainW.pbStatus.Value = 0;
+            mainW.pbStatus.Value = 0;
             PgbStatus = AppStatus.Ready;
         }
 
